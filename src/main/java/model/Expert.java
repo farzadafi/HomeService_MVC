@@ -24,9 +24,9 @@ public class Expert extends User {
             joinColumns = {@JoinColumn(name = "expert_id")},
             inverseJoinColumns = {@JoinColumn(name = "subservices_id")})
     @ManyToMany(fetch = FetchType.LAZY)
-    private Set<SubService> subServices;
+    private Set<SubServices> subServices;
 
-    public Expert(String firstName, String lastName, String email, String password, Date date, Long balance, Role userType, String city, byte[] image, Integer stars, boolean accepted, Set<SubService> subServices) {
+    public Expert(String firstName, String lastName, String email, String password, Date date, Long balance, Role userType, String city, byte[] image, Integer stars, boolean accepted, Set<SubServices> subServices) {
         super(firstName, lastName, email, password, date, balance, userType);
         this.city = city;
         this.image = image;

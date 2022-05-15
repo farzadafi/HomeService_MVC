@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 @Builder
 @Entity
-public class SubService extends Base<Integer> {
+public class SubServices extends Base<Integer> {
 
     @ManyToMany( mappedBy = "subServices",fetch = FetchType.LAZY)
     private Set<Expert> experts;

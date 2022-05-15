@@ -22,7 +22,7 @@ public class Order extends Base<Integer> {
     private Customer customer;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private SubService subService;
+    private SubServices subService;
 
     private Long proposedPrice;
     @Column(nullable = false)
@@ -44,7 +44,7 @@ public class Order extends Base<Integer> {
     private String alley;
     private Integer houseNumber;
 
-    public Order(Customer customer, SubService subService, Long proposedPrice, String description,
+    public Order(Customer customer, SubServices subService, Long proposedPrice, String description,
                  Date workDate, String city, String street, String alley, Integer houseNumber) {
         this.customer = customer;
         this.subService = subService;
