@@ -9,7 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ServicesSave {
+public class ServicesDTO {
+    private Integer id;
 
     @Name
     @ServicesName
