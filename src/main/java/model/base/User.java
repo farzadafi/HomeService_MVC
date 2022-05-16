@@ -33,16 +33,16 @@ public class User extends Base<Integer> {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    private Long balance = 50000L;
+    private Long balance ;
 
     @Enumerated(EnumType.STRING)
-    private Role userType;
+    private Role role;
 
-    public User(String firstName, String lastName, String email, String password, Role userType) {
+    public User(String firstName, String lastName, String email, String password, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.userType = userType;
+        this.role = role;
     }
 }
