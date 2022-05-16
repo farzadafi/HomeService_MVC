@@ -1,3 +1,4 @@
+/*
 package com.example.HomeService_MVC.core;
 
 import org.springframework.context.annotation.Configuration;
@@ -22,3 +23,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin();
     }
 }
+
+ */
