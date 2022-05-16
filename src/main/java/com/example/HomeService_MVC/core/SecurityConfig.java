@@ -1,4 +1,3 @@
-/*
 package com.example.HomeService_MVC.core;
 
 import org.springframework.context.annotation.Configuration;
@@ -10,15 +9,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("api/**")
+                .antMatchers("/api/**")
                 .authenticated()
                 .anyRequest()
-                .permitAll();
+                .permitAll()
+                .and()
+                .formLogin();
     }
 }
-
- */
