@@ -3,10 +3,7 @@ package com.example.HomeService_MVC.model;
 import com.example.HomeService_MVC.model.base.Base;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -16,6 +13,8 @@ import java.util.Set;
 @Builder
 @Entity
 public class SubServices extends Base<Integer> {
+    @Column(nullable = false,unique = true)
+    private String subServicesName;
 
     @ManyToMany( mappedBy = "subServices",fetch = FetchType.LAZY)
     private Set<Expert> experts;
