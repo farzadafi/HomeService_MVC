@@ -1,11 +1,14 @@
 package com.example.HomeService_MVC.service.impel;
 
-import com.example.HomeService_MVC.dto.services.ServicesSave;
+import com.example.HomeService_MVC.dto.services.ServicesDTO;
 import com.example.HomeService_MVC.model.Services;
 import com.example.HomeService_MVC.repository.ServicesRepository;
 import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Service;
 import com.example.HomeService_MVC.service.interfaces.ServicesService;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServicesServiceImpel implements ServicesService {
@@ -19,14 +22,23 @@ public class ServicesServiceImpel implements ServicesService {
     }
 
     @Override
-    public void save(ServicesSave servicesSave) {
+    public void save(ServicesDTO servicesSave) {
         Services services = mapper.map(servicesSave,Services.class);
-        System.out.println(services.getServices());
         servicesRepository.save(services);
     }
 
     @Override
     public Services findByServicesName(String servicesName) {
         return servicesRepository.findByServices(servicesName);
+    }
+
+    @Override
+    public List<Services> findAll() {
+        return servicesRepository.findAll();
+    }
+
+    @Override
+    public Optional<Services> findById(Integer id) {
+        return servicesRepository.findById(id);
     }
 }
