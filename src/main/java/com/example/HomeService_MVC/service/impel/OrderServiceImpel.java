@@ -51,7 +51,7 @@ public class OrderServiceImpel implements OrderService {
 
     @Override
     public List<Order> findAllStartOrder(Integer customerId) {
-        return orderRepository.findAllStartedOrderByCustomerIdAndOrderStatus(customerId, OrderStatus.EXPERT_SUGGESTION,OrderStatus.EXPERT_SELECTION);
+        return orderRepository.findAllByCustomerIdAndOrderStatus(customerId, OrderStatus.EXPERT_SUGGESTION,OrderStatus.EXPERT_SELECTION);
     }
 
     @Override
