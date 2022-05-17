@@ -1,6 +1,7 @@
 package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.dto.user.ExpertSave;
+import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,5 +22,11 @@ public class ExpertController {
     public ResponseEntity<ExpertSave> save(@Valid @ModelAttribute @RequestBody ExpertSave expertSave) {
         expertServiceImpel.save(expertSave);
         return ResponseEntity.ok(expertSave);
+    }
+
+    @PutMapping("/updatePassword")
+    public ResponseEntity<String> updatePassword(@Valid @RequestBody PasswordDTO passwordDTO){
+        expertServiceImpel.updatePassword(1,passwordDTO);
+        return ResponseEntity.ok("OK");
     }
 }
