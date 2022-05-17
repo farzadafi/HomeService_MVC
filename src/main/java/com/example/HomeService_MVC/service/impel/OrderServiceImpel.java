@@ -11,6 +11,8 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Service;
 import com.example.HomeService_MVC.service.interfaces.OrderService;
 
+import java.util.List;
+
 @Service
 public class OrderServiceImpel implements OrderService {
 
@@ -37,5 +39,10 @@ public class OrderServiceImpel implements OrderService {
         order.setCustomer(customer);
         order.setSubService(subServices);
         orderRepository.save(order);
+    }
+
+    @Override
+    public List<Order> findAllByCustomerId(Integer customerId) {
+        return orderRepository.findAllByCustomerId(customerId);
     }
 }
