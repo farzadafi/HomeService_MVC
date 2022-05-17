@@ -2,16 +2,20 @@ package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
 import com.example.HomeService_MVC.dto.services.SubServicesDTO;
+import com.example.HomeService_MVC.dto.user.AdminDTO;
 import com.example.HomeService_MVC.dto.user.ExpertSave;
 import com.example.HomeService_MVC.dto.user.ExpertViewDTO;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
+import com.example.HomeService_MVC.service.impel.AdminServiceImpel;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -20,10 +24,12 @@ import java.util.Set;
 public class AdminController {
 
     private final ExpertServiceImpel expertServiceImpel;
+    private final AdminServiceImpel adminServiceImpel;
     private final DozerBeanMapper mapper;
 
-    public AdminController(ExpertServiceImpel expertServiceImpel, DozerBeanMapper mapper) {
+    public AdminController(ExpertServiceImpel expertServiceImpel, AdminServiceImpel adminServiceImpel, DozerBeanMapper mapper) {
         this.expertServiceImpel = expertServiceImpel;
+        this.adminServiceImpel = adminServiceImpel;
         this.mapper = mapper;
     }
 
@@ -71,6 +77,12 @@ public class AdminController {
     @GetMapping("/removeExpertSubServices/{expertEmail}/{servicesId}")
     public ResponseEntity<String> removeExpertSubServices(@PathVariable("expertEmail") String expertEmail, @PathVariable("servicesId") Integer servicesId){
         expertServiceImpel.removeExpertSubServices(expertEmail,servicesId);
+        return ResponseEntity.ok("OK");
+    }
+
+    @PutMapping("/updateAdmin")
+    public ResponseEntity<String> updateAdmin(@Valid @RequestBody AdminDTO adminDTO){
+        adminServiceImpel.updateAdmin(adminDTO);
         return ResponseEntity.ok("OK");
     }
 }
