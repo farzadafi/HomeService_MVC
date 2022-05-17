@@ -1,6 +1,7 @@
 package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
+import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
 import com.example.HomeService_MVC.dto.services.SubServicesDTO;
 import com.example.HomeService_MVC.dto.user.AdminDTO;
 import com.example.HomeService_MVC.dto.user.ExpertSave;
@@ -63,7 +64,7 @@ public class AdminController {
         Expert expert = expertServiceImpel.findByEmail(expertEmail).orElseThrow(() -> new ExpertNotFoundException("This Expert is not found!"));
         Set<SubServices> subServicesSet = expert.getSubServices();
         if(subServicesSet == null || subServicesSet.size() == 0)
-            return ResponseEntity.ok(null);
+            throw new SubServicesNotFoundException("This Expert doesn't have any SubServices until yet");
         else{
             List<SubServicesDTO> dtoList = new ArrayList<>();
             for (SubServices s:subServicesSet
