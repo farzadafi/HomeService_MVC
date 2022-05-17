@@ -15,7 +15,7 @@ import javax.validation.constraints.Min;
 @Builder
 public class SubServicesDTO {
     @Column(nullable = false)
-    private Integer servicesId;
+    private Integer id;
 
     @Name
     @SubServices
