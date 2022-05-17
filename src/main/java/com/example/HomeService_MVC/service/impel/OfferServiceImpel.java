@@ -5,9 +5,12 @@ import com.example.HomeService_MVC.dto.offer.OfferDTO;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.Offer;
 import com.example.HomeService_MVC.model.Order;
+import com.example.HomeService_MVC.model.enumoration.OrderStatus;
 import com.example.HomeService_MVC.repository.OfferRepository;
 import com.example.HomeService_MVC.service.interfaces.OfferService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class OfferServiceImpel implements OfferService {
@@ -30,8 +33,30 @@ public class OfferServiceImpel implements OfferService {
             throw new InvalidProposedPriceException("You have to enter a price more than " + order.getProposedPrice());
         Expert expert = expertServiceImpel.getById(expertId);
         Offer offer = new Offer(offerDTO.getProposedPrice(),offerDTO.getDurationWork(),offerDTO.getStartTime(),order,expert);
+        order.setOrderStatus(OrderStatus.EXPERT_SELECTION);
         offer.setExpert(expert);
         offer.setOrders(order);
+        orderServiceImpel.update(order);
         offerRepository.save(offer);
+    }
+
+    @Override
+    public List<Offer> findAllByOrdersId(Integer orderId) {
+        return offerRepository.findAllByOrdersId(orderId);
+    }
+
+    @Override
+    public void selectOffer(Integer orderId, Integer offerId) {
+        Order order = orderServiceImpel.getById(offerId);
+        Offer offer = getById(offerId);
+        order.setOrderStatus(OrderStatus.WAITING_FOR_EXPERT);
+        offer.setAccepted(true);
+        orderServiceImpel.update(order);
+        offerRepository.save(offer);
+    }
+
+    @Override
+    public Offer getById(Integer id) {
+        return offerRepository.getById(id);
     }
 }
