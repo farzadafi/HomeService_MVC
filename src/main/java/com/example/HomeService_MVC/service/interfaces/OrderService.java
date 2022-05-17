@@ -1,6 +1,7 @@
 package com.example.HomeService_MVC.service.interfaces;
 
 import com.example.HomeService_MVC.dto.order.OrderDTO;
+import com.example.HomeService_MVC.model.Offer;
 import com.example.HomeService_MVC.model.Order;
 import com.example.HomeService_MVC.model.SubServices;
 
@@ -14,4 +15,5 @@ public interface OrderService {
     List<Order> findAllStartedOrderByCity(String city, Set<SubServices> subServices);
     Order getById(Integer id);
     void update(Order order);
+    void updateStatusToStart(Offer offer);
 }

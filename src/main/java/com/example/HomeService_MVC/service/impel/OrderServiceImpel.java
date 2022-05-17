@@ -4,6 +4,7 @@ import com.example.HomeService_MVC.controller.exception.InvalidProposedPriceExce
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
 import com.example.HomeService_MVC.dto.order.OrderDTO;
 import com.example.HomeService_MVC.model.Customer;
+import com.example.HomeService_MVC.model.Offer;
 import com.example.HomeService_MVC.model.Order;
 import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.model.enumoration.OrderStatus;
@@ -66,6 +67,13 @@ public class OrderServiceImpel implements OrderService {
 
     @Override
     public void update(Order order) {
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void updateStatusToStart(Offer offer) {
+        Order order = offer.getOrders();
+        order.setOrderStatus(OrderStatus.STARTED);
         orderRepository.save(order);
     }
 }
