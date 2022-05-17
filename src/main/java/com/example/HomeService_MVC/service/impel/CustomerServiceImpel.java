@@ -1,6 +1,7 @@
 package com.example.HomeService_MVC.service.impel;
 
 import com.example.HomeService_MVC.dto.user.CustomerSave;
+import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.enumoration.Role;
 import org.dozer.DozerBeanMapper;
@@ -26,6 +27,12 @@ public class CustomerServiceImpel implements CustomerService {
         customer.setPassword(customerSave.getPassword()[0]);
         customer.setBalance(50000L);
         customer.setRole(Role.CUSTOMER);
+        customerRepository.save(customer);
+    }
+
+    @Override
+    public void updatePassword(Customer customer, PasswordDTO passwordDTO) {
+        customer.setPassword(passwordDTO.getSinglePassword());
         customerRepository.save(customer);
     }
 }
