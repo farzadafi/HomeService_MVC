@@ -31,10 +31,11 @@ public class OrderServiceImpel implements OrderService {
     public void PlaceAnOffer(Integer customerId,OrderDTO orderDTO, Integer subServicesId) {
         Customer customer = customerServiceImpel.getById(customerId);
         SubServices subServices = subServicesServiceImpel.findById(subServicesId).orElseThrow(() -> new SubServicesNotFoundException("This subServices not found!"));
-        if(subServices.getMinimalPrice() < orderDTO.getProposedPrice())
+        if(subServices.getMinimalPrice() > orderDTO.getProposedPrice())
             throw new InvalidProposedPriceException("You have to enter a price grater than " + subServices.getMinimalPrice());
         Order order = mapper.map(orderDTO,Order.class);
         order.setCustomer(customer);
+        order.setSubService(subServices);
         orderRepository.save(order);
     }
 }
