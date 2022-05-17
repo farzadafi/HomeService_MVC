@@ -1,6 +1,7 @@
 package com.example.HomeService_MVC.service.impel;
 
 import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
+import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
 import com.example.HomeService_MVC.dto.user.ExpertSave;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -62,7 +64,7 @@ public class ExpertServiceImpel implements ExpertService {
     @Override
     public void addExpertToSubService(String expertEmail, Integer subServicesId) {
         Expert expert = findByEmail(expertEmail).orElseThrow(() -> new ExpertNotFoundException("This Expert is not found!"));
-        SubServices subServices = subServicesServiceImpel.findById(subServicesId).orElseThrow(() -> new ExpertNotFoundException("This subServices is not found!"));
+        SubServices subServices = subServicesServiceImpel.findById(subServicesId).orElseThrow(() -> new SubServicesNotFoundException("This subServices is not found!"));
         Set<SubServices> subServicesSet = expert.getSubServices();
         subServicesSet.add(subServices);
         expert.setSubServices(subServicesSet);
@@ -72,5 +74,15 @@ public class ExpertServiceImpel implements ExpertService {
     @Override
     public Optional<Expert> findByEmail(String expertEmail) {
         return expertRepository.findExpertByEmail(expertEmail);
+    }
+
+    @Override
+    public void removeExpertSubServices(String expertEmail, Integer subServicesId) {
+        Expert expert = findByEmail(expertEmail).orElseThrow(() -> new ExpertNotFoundException("This Expert is not found!"));
+        Set<SubServices> subServicesSet = expert.getSubServices();
+        SubServices subServices = subServicesServiceImpel.findById(subServicesId).orElseThrow(() -> new SubServicesNotFoundException("This subServices is not found!"));
+        subServicesSet.remove(subServices);
+        expert.setSubServices(subServicesSet);
+        expertRepository.save(expert);
     }
 }

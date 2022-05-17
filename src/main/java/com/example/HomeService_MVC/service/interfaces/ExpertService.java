@@ -13,4 +13,5 @@ public interface ExpertService {
     void ExpertAccept(Integer id);
     void addExpertToSubService(String expertEmail,Integer subServicesId);
     Optional<Expert> findByEmail(String expertEmail);
+    void removeExpertSubServices(String email,Integer subServicesId);
 }
