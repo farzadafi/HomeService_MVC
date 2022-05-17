@@ -18,6 +18,6 @@ public class DescriptionConstraintValidator implements ConstraintValidator<Descr
                     space++;
             }
             int alpha = description.length() - space;
-        return description.length() >= space / 2 + 1;
+            return alpha >= space;
     }
 }
