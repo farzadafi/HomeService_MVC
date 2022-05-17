@@ -1,6 +1,7 @@
 package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
+import com.example.HomeService_MVC.dto.user.ExpertSave;
 import com.example.HomeService_MVC.dto.user.ExpertViewDTO;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
@@ -39,6 +40,12 @@ public class AdminController {
     @GetMapping("/confirmExpert/{expertId}")
     public ResponseEntity<String> confirmExpert(@PathVariable("expertId") Integer expertId) {
         expertServiceImpel.ExpertAccept(expertId);
+        return ResponseEntity.ok("OK");
+    }
+
+    @PostMapping("/addExpertToSubServices/{subServicesId}")
+    public ResponseEntity<String> addExpertToSubServices(@RequestBody ExpertSave expertSave, @PathVariable Integer subServicesId){
+        expertServiceImpel.addExpertToSubService(expertSave.getEmail(),subServicesId);
         return ResponseEntity.ok("OK");
     }
 }
