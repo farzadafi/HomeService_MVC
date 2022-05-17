@@ -72,8 +72,8 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/startOffer/{offerId}")
-    public ResponseEntity<String> startOffer(@PathVariable("offerId") Integer offerId){
+    @GetMapping("/startOrder/{offerId}")
+    public ResponseEntity<String> startOrder(@PathVariable("offerId") Integer offerId){
         Offer offer = offerServiceImpel.getById(offerId);
         orderServiceImpel.updateStatusToStart(offer);
         return ResponseEntity.ok("OK");
