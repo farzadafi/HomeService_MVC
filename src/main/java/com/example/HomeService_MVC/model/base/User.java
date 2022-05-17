@@ -29,6 +29,9 @@ public class User extends Base<Integer> {
     @Column(nullable = false)
     private String password;
 
+    @Transient
+    private String confPassword;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
@@ -44,5 +47,9 @@ public class User extends Base<Integer> {
         this.email = email;
         this.password = password;
         this.role = role;
+    }
+
+    public User(String firstName, String lastName, String email, String password, Date date, Long balance, Role userType) {
+
     }
 }
