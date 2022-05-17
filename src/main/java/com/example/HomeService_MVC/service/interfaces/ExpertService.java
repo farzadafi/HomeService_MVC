@@ -11,4 +11,6 @@ public interface ExpertService {
     List<Expert> findAllByAcceptedFalse();
     Optional<Expert> findById(Integer id);
     void ExpertAccept(Integer id);
+    void addExpertToSubService(String expertEmail,Integer subServicesId);
+    Optional<Expert> findByEmail(String expertEmail);
 }
