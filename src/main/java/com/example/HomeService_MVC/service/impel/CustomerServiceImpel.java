@@ -23,6 +23,7 @@ public class CustomerServiceImpel implements CustomerService {
     @Override
     public void save(CustomerSave customerSave) {
         Customer customer = mapper.map(customerSave,Customer.class);
+        customer.setPassword(customerSave.getPassword()[0]);
         customer.setBalance(50000L);
         customer.setRole(Role.CUSTOMER);
         customerRepository.save(customer);
