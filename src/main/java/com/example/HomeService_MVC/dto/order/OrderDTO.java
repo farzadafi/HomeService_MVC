@@ -13,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class OrderDTO {
+    private Integer id;
     @Column(nullable = false)
     @Min(value=1, message="must be equal or greater than 1")
     private Long proposedPrice;
