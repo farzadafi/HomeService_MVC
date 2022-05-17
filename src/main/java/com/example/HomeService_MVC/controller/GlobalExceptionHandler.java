@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @ExceptionHandler(ServicesNotFoundException.class)
     public ResponseEntity<String> serviceExceptionHandler(ServicesNotFoundException e) {

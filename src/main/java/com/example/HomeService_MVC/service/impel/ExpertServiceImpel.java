@@ -1,6 +1,5 @@
 package com.example.HomeService_MVC.service.impel;
 
-import com.example.HomeService_MVC.controller.GlobalExceptionHandler;
 import com.example.HomeService_MVC.dto.user.ExpertSave;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.enumoration.Role;
@@ -18,7 +17,7 @@ public class ExpertServiceImpel implements ExpertService {
 
     private final ExpertRepository expertRepository;
     private final DozerBeanMapper mapper;
-    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     public ExpertServiceImpel(ExpertRepository expertRepository, DozerBeanMapper mapper) {
         this.expertRepository = expertRepository;
