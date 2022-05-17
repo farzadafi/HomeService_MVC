@@ -8,6 +8,9 @@ import com.example.HomeService_MVC.service.interfaces.SubServicesService;
 import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class SubServicesServiceImpel implements SubServicesService {
 
@@ -29,5 +32,15 @@ public class SubServicesServiceImpel implements SubServicesService {
     @Override
     public SubServices findBySubServicesName(String subServicesName) {
         return subServicesRepository.findBySubServicesName(subServicesName);
+    }
+
+    @Override
+    public List<SubServices> findAllByServicesId(Integer servicesId) {
+        return subServicesRepository.findAllByServicesId(servicesId);
+    }
+
+    @Override
+    public Optional<SubServices> findById(Integer id) {
+        return subServicesRepository.findById(id);
     }
 }
