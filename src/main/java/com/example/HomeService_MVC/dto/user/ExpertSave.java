@@ -28,8 +28,10 @@ public class ExpertSave {
     private String email;
 
     @Column(nullable = false)
-    @Password
     private String password;
+
+    @Column(nullable = false)
+    private String confPassword;
 
     @Column(nullable = false)
     private String city;
@@ -37,4 +39,9 @@ public class ExpertSave {
     @Column(nullable = false)
     @Image
     private MultipartFile image;
+
+    @Password
+    public String[] getPassword(){
+        return new String[]{password,confPassword};
+    }
 }
