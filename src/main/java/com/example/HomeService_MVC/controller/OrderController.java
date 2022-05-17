@@ -3,8 +3,10 @@ package com.example.HomeService_MVC.controller;
 import com.example.HomeService_MVC.controller.exception.OrderNotFoundException;
 import com.example.HomeService_MVC.dto.order.OrderDTO;
 import com.example.HomeService_MVC.model.Expert;
+import com.example.HomeService_MVC.model.Offer;
 import com.example.HomeService_MVC.model.Order;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
+import com.example.HomeService_MVC.service.impel.OfferServiceImpel;
 import com.example.HomeService_MVC.service.impel.OrderServiceImpel;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
@@ -21,11 +23,13 @@ public class OrderController {
     private final OrderServiceImpel orderServiceImpel;
     private final DozerBeanMapper mapper;
     private final ExpertServiceImpel expertServiceImpel;
+    private final OfferServiceImpel offerServiceImpel;
 
-    public OrderController(OrderServiceImpel orderServiceImpel, DozerBeanMapper mapper, ExpertServiceImpel expertServiceImpel) {
+    public OrderController(OrderServiceImpel orderServiceImpel, DozerBeanMapper mapper, ExpertServiceImpel expertServiceImpel, OfferServiceImpel offerServiceImpel) {
         this.orderServiceImpel = orderServiceImpel;
         this.mapper = mapper;
         this.expertServiceImpel = expertServiceImpel;
+        this.offerServiceImpel = offerServiceImpel;
     }
 
     @PostMapping("/placeAnOffer/{subServicesId}")
@@ -66,6 +70,13 @@ public class OrderController {
             List<OrderDTO> dtoList = orderToOrderDTO(orderList);
             return ResponseEntity.ok(dtoList);
         }
+    }
+
+    @GetMapping("/startOffer/{offerId}")
+    public ResponseEntity<String> startOffer(@PathVariable("offerId") Integer offerId){
+        Offer offer = offerServiceImpel.getById(offerId);
+        orderServiceImpel.updateStatusToStart(offer);
+        return ResponseEntity.ok("OK");
     }
 
     public List<OrderDTO> orderToOrderDTO(List<Order> orderList){
