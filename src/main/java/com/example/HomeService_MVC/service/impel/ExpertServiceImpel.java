@@ -1,5 +1,6 @@
 package com.example.HomeService_MVC.service.impel;
 
+import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
 import com.example.HomeService_MVC.dto.user.ExpertSave;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.enumoration.Role;
@@ -11,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ExpertServiceImpel implements ExpertService {
@@ -35,6 +38,23 @@ public class ExpertServiceImpel implements ExpertService {
             e.printStackTrace();
             LOGGER.warn(e.getMessage());
         }
+        expertRepository.save(expert);
+    }
+
+    @Override
+    public List<Expert> findAllByAcceptedFalse() {
+        return expertRepository.findAllByAcceptedFalse();
+    }
+
+    @Override
+    public Optional<Expert> findById(Integer id) {
+        return expertRepository.findById(id);
+    }
+
+    @Override
+    public void ExpertAccept(Integer id) {
+        Expert expert = findById(id).orElseThrow(() -> new ExpertNotFoundException("This Expert is not found!"));
+        expert.setAccepted(true);
         expertRepository.save(expert);
     }
 }
