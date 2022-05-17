@@ -35,4 +35,9 @@ public class CustomerServiceImpel implements CustomerService {
         customer.setPassword(passwordDTO.getSinglePassword());
         customerRepository.save(customer);
     }
+
+    @Override
+    public Customer getById(Integer id) {
+        return customerRepository.getById(id);
+    }
 }

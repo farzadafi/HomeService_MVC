@@ -8,4 +8,5 @@ import com.example.HomeService_MVC.model.Customer;
 public interface CustomerService  {
     void save(CustomerSave customerSave);
     void updatePassword(Customer customer, PasswordDTO passwordDTO);
+    Customer getById(Integer id);
 }
