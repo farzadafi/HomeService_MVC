@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Password {
 
-    String message() default "at least 8 and have space,alpha,number,low and upper case!";
+    String message() default "at least 8 and have space,alpha,number,low and upper case,same of Conf!";
 
     Class<?>[] groups() default {};
 
