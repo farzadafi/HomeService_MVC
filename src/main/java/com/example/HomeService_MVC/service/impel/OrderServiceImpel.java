@@ -63,4 +63,9 @@ public class OrderServiceImpel implements OrderService {
     public Order getById(Integer id) {
         return orderRepository.getById(id);
     }
+
+    @Override
+    public void update(Order order) {
+        orderRepository.save(order);
+    }
 }

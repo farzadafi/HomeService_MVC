@@ -13,4 +13,5 @@ public interface OrderService {
     List<Order> findAllStartOrder(Integer customerId);
     List<Order> findAllStartedOrderByCity(String city, Set<SubServices> subServices);
     Order getById(Integer id);
+    void update(Order order);
 }
