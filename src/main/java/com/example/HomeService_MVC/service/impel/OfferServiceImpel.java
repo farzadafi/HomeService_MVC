@@ -59,4 +59,9 @@ public class OfferServiceImpel implements OfferService {
     public Offer getById(Integer id) {
         return offerRepository.getById(id);
     }
+
+    @Override
+    public List<Offer> findAllByExpertIdAndStatus(Integer expertId, OrderStatus orderStatus) {
+        return offerRepository.findAllByExpertIdAndStatus(expertId,orderStatus);
+    }
 }
