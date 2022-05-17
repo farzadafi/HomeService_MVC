@@ -29,7 +29,7 @@ public class ExpertServiceImpel implements ExpertService {
         Expert expert = new Expert();
         try {
             expert = new Expert(expertSave.getFirstName(),expertSave.getLastName(),
-                    expertSave.getEmail(),expertSave.getPassword(),null,50000L, Role.EXPERT,
+                    expertSave.getEmail(),expertSave.getPassword()[0],null,50000L, Role.EXPERT,
                     expertSave.getCity(),expertSave.getImage().getBytes(),0,false,null);
         } catch (IOException e) {
             e.printStackTrace();
