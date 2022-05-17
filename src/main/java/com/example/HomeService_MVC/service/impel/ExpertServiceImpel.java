@@ -3,6 +3,7 @@ package com.example.HomeService_MVC.service.impel;
 import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
 import com.example.HomeService_MVC.dto.user.ExpertSave;
+import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.model.enumoration.Role;
@@ -54,6 +55,11 @@ public class ExpertServiceImpel implements ExpertService {
     }
 
     @Override
+    public Expert getById(Integer id) {
+        return expertRepository.getById(id);
+    }
+
+    @Override
     public void ExpertAccept(Integer id) {
         Expert expert = findById(id).orElseThrow(() -> new ExpertNotFoundException("This Expert is not found!"));
         expert.setAccepted(true);
@@ -84,4 +90,12 @@ public class ExpertServiceImpel implements ExpertService {
         expert.setSubServices(subServicesSet);
         expertRepository.save(expert);
     }
+
+    @Override
+    public void updatePassword(Integer expertId, PasswordDTO passwordDTO) {
+        Expert expert = getById(expertId);
+        expert.setPassword(passwordDTO.getSinglePassword());
+        expertRepository.save(expert);
+    }
+
 }
