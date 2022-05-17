@@ -4,8 +4,8 @@ package com.example.HomeService_MVC.controller;
 import com.example.HomeService_MVC.controller.exception.OfferNotFoundException;
 import com.example.HomeService_MVC.dto.offer.OfferDTO;
 import com.example.HomeService_MVC.model.Offer;
+import com.example.HomeService_MVC.model.enumoration.OrderStatus;
 import com.example.HomeService_MVC.service.impel.OfferServiceImpel;
-import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +45,18 @@ public class OfferController {
         offerServiceImpel.selectOffer(orderId,offerID);
         return ResponseEntity.ok("OK");
     }
+
+    @GetMapping("/viewAcceptedOffer")
+    public ResponseEntity<List<OfferDTO>> viewAcceptedOffer(){
+        List<Offer> offerList = offerServiceImpel.findAllByExpertIdAndStatus(1, OrderStatus.WAITING_FOR_EXPERT);
+        if(offerList == null || offerList.size() == 0)
+            throw new OfferNotFoundException("You dont have any Accepted offer until now!");
+        else{
+            List<OfferDTO> dtoList = offerToOfferDTO(offerList);
+            return ResponseEntity.ok(dtoList);
+        }
+    }
+
 
     public List<OfferDTO> offerToOfferDTO(List<Offer> offerList){
         List<OfferDTO> dtoList = new ArrayList<>();
