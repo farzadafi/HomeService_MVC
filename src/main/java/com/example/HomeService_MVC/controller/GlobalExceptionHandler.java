@@ -1,6 +1,7 @@
 package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
+import com.example.HomeService_MVC.controller.exception.InvalidProposedPriceException;
 import com.example.HomeService_MVC.controller.exception.ServicesNotFoundException;
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
 import org.slf4j.Logger;
@@ -33,4 +34,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
+    @ExceptionHandler(InvalidProposedPriceException.class)
+    public ResponseEntity<String> InvalidProposedPriceExceptionHandler(InvalidProposedPriceException e) {
+        LOGGER.warn(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
 }
