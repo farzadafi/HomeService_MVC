@@ -39,7 +39,6 @@ public class Order extends Base<Integer> {
 
     @Column(nullable = false)
     private String city;
-    @Column(nullable = false)
     private String street;
     private String alley;
     private Integer houseNumber;
