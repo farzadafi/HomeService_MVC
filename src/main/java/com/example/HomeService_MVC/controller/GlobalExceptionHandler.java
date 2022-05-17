@@ -2,6 +2,7 @@ package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
 import com.example.HomeService_MVC.controller.exception.ServicesNotFoundException;
+import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ExpertNotFoundException.class)
     public ResponseEntity<String> expertExceptionHandler(ExpertNotFoundException e) {
+        LOGGER.warn(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
+    @ExceptionHandler(SubServicesNotFoundException.class)
+    public ResponseEntity<String> SubServicesExceptionHandler(SubServicesNotFoundException e) {
         LOGGER.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
