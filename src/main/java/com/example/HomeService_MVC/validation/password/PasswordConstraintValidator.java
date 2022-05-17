@@ -3,17 +3,19 @@ package com.example.HomeService_MVC.validation.password;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class PasswordConstraintValidator implements ConstraintValidator<Password,String> {
+public class PasswordConstraintValidator implements ConstraintValidator<Password,String[]> {
     @Override
     public void initialize(Password constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 
     @Override
-    public boolean isValid(String password, ConstraintValidatorContext constraintValidatorContext) {
-        if(password.length() < 8 )
+    public boolean isValid(String[] password, ConstraintValidatorContext constraintValidatorContext) {
+        if(!password[0].equals(password[1]))
             return false;
-        char[] passwordArray = password.toCharArray();
+        if(password[0].length() < 8 )
+            return false;
+        char[] passwordArray = password[0].toCharArray();
         char[] signArray =  new char[] {'!','@','#','$','%','^','&','*','(',')','-','+','=','.',',','>','<','?','/','|',':',';'};
         int space = 0,lowerCase = 0,upperCase = 0,sign = 0,digit = 0;
         for (char c : passwordArray)
