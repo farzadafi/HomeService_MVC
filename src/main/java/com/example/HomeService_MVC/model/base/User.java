@@ -50,6 +50,6 @@ public class User extends Base<Integer> {
     }
 
     public User(String firstName, String lastName, String email, String password, Date date, Long balance, Role userType) {
-
+        super();
     }
 }
