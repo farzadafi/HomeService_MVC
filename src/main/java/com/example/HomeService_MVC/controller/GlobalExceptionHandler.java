@@ -42,4 +42,10 @@ public class GlobalExceptionHandler {
         LOGGER.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+
+    @ExceptionHandler(OfferNotFoundException.class)
+    public ResponseEntity<String> offerExceptionHandler(OfferNotFoundException e) {
+        LOGGER.warn(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
 }
