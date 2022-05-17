@@ -26,6 +26,13 @@ public class CustomerSave {
     private String email;
 
     @Column(nullable = false)
-    @Password
     private String password;
+
+    @Column(nullable = false)
+    private String confPassword;
+
+    @Password
+    public String[] getPassword(){
+        return new String[]{password,confPassword};
+    }
 }
