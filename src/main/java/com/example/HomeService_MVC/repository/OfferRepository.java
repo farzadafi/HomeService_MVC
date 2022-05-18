@@ -17,4 +17,9 @@ public interface OfferRepository extends JpaRepository<Offer,Integer> {
         "o.isAccepted = true " )
     List<Offer> findAllByExpertIdAndStatus(@Param("expertId") Integer expertId,
                                            @Param("ordersStatus") OrderStatus orderStatus);
+
+    @Query
+    ("FROM Offer AS o WHERE o.orders.id = :orderId AND " +
+                           "o.isAccepted = true")
+    Offer findByOrderIdAndAcceptedTrue(Integer orderId);
 }
