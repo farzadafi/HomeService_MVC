@@ -97,6 +97,24 @@ public class OrderController {
         return ResponseEntity.ok("OK");
     }
 
+    @GetMapping("/viewOrderForPaid")
+    public ResponseEntity<List<OrderDTO>> viewOrderForPaid(){
+        List<Order> orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(1, OrderStatus.DONE);
+        if(orderList == null || orderList.size() == 0)
+            throw new OrderNotFoundException("You dont have any order In Done Status!");
+        else{
+            List<OrderDTO> dtoList = orderToOrderDTO(orderList);
+            return ResponseEntity.ok(dtoList);
+        }
+    }
+
+    @GetMapping("/PaidOrder/{orderId}")
+    public ResponseEntity<String> paidOrder(@PathVariable("orderId") Integer orderId){
+        Offer offer = offerServiceImpel.findByOrdersIdAndAcceptedTrue(orderId);
+        orderServiceImpel.paidOrder(1,orderId,offer);
+        return ResponseEntity.ok("OK");
+    }
+
     public List<OrderDTO> orderToOrderDTO(List<Order> orderList){
         List<OrderDTO> dtoList = new ArrayList<>();
         for (Order o:orderList
