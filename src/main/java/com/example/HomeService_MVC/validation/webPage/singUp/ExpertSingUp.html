@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./../bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="./../js/bootstrap.min.js">
+    <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <style>
+
+        body {
+            background: linear-gradient(135deg, #00c3ff, #eeef1c);
+            background: linear-gradient(135deg, #fc00ff, #00dbde);
+            background-image: linear-gradient(135deg, #ff00ba 0%, #ccbc08 100%);
+            background-image: linear-gradient(150deg, #0cfaee 0%, #e403d1 100%, #fff01f 100%);
+            min-height: 93vh;
+            height: 1000px;
+            width: 1820px;
+        }
+
+        .rightdiv{
+            height: 100%;
+            border-radius: 0% 10% 10% 0%;
+            transform: translate(-50%, -50%);
+            position: fixed;
+            top:50%;
+            left: 75%;
+            background-color: rgba(0, 0, 0,0.2);
+            width: 50%;
+            padding-top: 50px;
+        }
+
+        .leftdiv{
+            height: 100%;
+            border-radius: 10% 0% 0% 10%;
+            transform: translate(-50%, -50%);
+            position: fixed;
+            top:50%;
+            left: 25%;
+            background-color: rgba(0, 0, 0,0.2);
+            width: 50%;
+            padding-top: 50px;
+        }
+
+        .mainDiv{
+            height: 90%;
+            border-radius: 7% 7% 7% 7%;
+            transform: translate(-50%, -50%);
+            position: absolute;
+            left: 50%;
+            top:50%;
+            background-color: rgba(0, 0, 0,0);
+        }
+
+        @font-face{ font-family: farzad; src: url('./../Entezar/EntezarB4_v2.0.1_.ttf'); }
+
+        input{
+            font: 40px 'farzad';
+            background-color: rgba(0,0,0, 0.1);
+            margin-left: 90px;
+            margin-top: 30px;
+            height: 20px;
+        }
+
+        p{
+            margin-top: 20px;
+            text-align: center;
+            font: 40px 'farzad';
+        }
+
+        input::placeholder{
+            color: white;
+        }
+
+    </style>
+
+    <script>
+
+
+        function previewFile() {
+            var preview = document.querySelector('img');
+            var file    = document.querySelector('input[type=file]').files[0];
+            var reader  = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            }
+
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                preview.src = "";
+            }
+        }
+
+        $(document).ready(function() {
+            $('#submit').click(function(event){
+
+                data = $('.password').val();
+                var len = data.length;
+
+                if(len < 1) {
+                    alert("Password cannot be blank");
+                    event.preventDefault();
+                }
+
+                if($('.password').val() != $('.confPassword').val()) {
+                    alert("Password and Confirm Password don't match");
+                    event.preventDefault();
+                    $('#password').val('');
+                    $('#confPassword').val('');
+                }
+
+            });
+        });
+
+    </script>
+
+
+</head>
+<body>
+<div class=" container-fluid w-75 mainDiv ">
+    <form action="">
+        <p class="text-center font-weight-bold text-justify text-white">لطفا اطلاعات خود را وارد کنید</p>
+        <div class="rightdiv">
+            <label for="firstName"><br>
+                <input class="rounded-pill border-0 p-lg-5  " type="text" name="firstName" pattern=".{3,}" title="at least 3 word!" placeholder="نام" required><br>
+            </label>
+
+            <label for="lastName"><br>
+                <input class="rounded-pill border-0 p-lg-5 " type="text" name="lastName" pattern=".{3,}" title="at least 3 word!" placeholder="نام خانوادگی" required><br>
+            </label>
+
+            <label for="nationalId"><br>
+                <input class="rounded-pill  border-0 p-lg-5  "type="text" name="email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="a@mail.com" placeholder="ایمیل" required><br>
+            </label>
+
+            <label for="password"><br>
+                <input class="rounded-pill  border-0 p-lg-5 password "type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="lowerCase+UpperCase+space+symbol+number+8char" placeholder="رمز"><br>
+            </label>
+
+            <label for="password"><br>
+                <input class="rounded-pill  border-0 p-lg-5 confpassword "type="password" name="confPassword" id="confPassword"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="lowerCase+UpperCase+space+symbol+number+8char" placeholder="تکرار رمز"><br>
+            </label>
+        </div>
+
+        <div class="leftdiv">
+            <label for="nationalId"><br>
+                <input class="rounded-pill  border-0 p-lg-5  "type="text" name="city" placeholder="شهر" required><br>
+            </label>
+
+            <p class="text-center font-weight-bolder text-white mt-5">آپلود عکس</p>
+
+            <input class="rounded-pill  p-lg-5 w-75 btn mt-2" name="image" required type="file" onchange="previewFile()"><br>
+            <div class="text-center">
+                <img class="rounded-pill " src="" height="200" alt="">
+            </div>
+
+            <div class="text-center">
+                <input class="rounded-pill btn btn-info p-lg-5 font-italic font-weight-bold my-5 mr-5" class="submit" id="submit" type="submit" value="ثبت نام">
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
