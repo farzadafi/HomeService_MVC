@@ -110,7 +110,7 @@ public class OrderController {
 
     @GetMapping("/PaidOrder/{orderId}")
     public ResponseEntity<String> paidOrder(@PathVariable("orderId") Integer orderId){
-        Offer offer = offerServiceImpel.findByOrdersIdAndAcceptedTrue(orderId);
+        Offer offer = offerServiceImpel.findByOrderIdAndAcceptedTrue(orderId);
         orderServiceImpel.paidOrder(1,orderId,offer);
         return ResponseEntity.ok("OK");
     }
