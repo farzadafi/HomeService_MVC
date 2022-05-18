@@ -52,7 +52,7 @@ public class OrderServiceImpel implements OrderService {
 
     @Override
     public List<Order> findAllStartOrder(Integer customerId) {
-        return orderRepository.findAllByCustomerIdAndOrderStatus(customerId, OrderStatus.EXPERT_SUGGESTION,OrderStatus.EXPERT_SELECTION);
+        return orderRepository.findAllByCustomerIdAndTwoOrderStatus(customerId, OrderStatus.EXPERT_SUGGESTION,OrderStatus.EXPERT_SELECTION);
     }
 
     @Override
@@ -74,6 +74,18 @@ public class OrderServiceImpel implements OrderService {
     public void updateStatusToStart(Offer offer) {
         Order order = offer.getOrders();
         order.setOrderStatus(OrderStatus.STARTED);
+        orderRepository.save(order);
+    }
+
+    @Override
+    public List<Order> findAllByCustomerIdAndOrderStatus(Integer customerId, OrderStatus orderStatus) {
+        return orderRepository.findAllByCustomerIdAndOrderStatus(customerId,orderStatus);
+    }
+
+    @Override
+    public void setDoneOrder(Integer orderId) {
+        Order order = getById(orderId);
+        order.setOrderStatus(OrderStatus.DONE);
         orderRepository.save(order);
     }
 }
