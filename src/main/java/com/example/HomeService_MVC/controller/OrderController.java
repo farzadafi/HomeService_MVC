@@ -5,6 +5,7 @@ import com.example.HomeService_MVC.dto.order.OrderDTO;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.Offer;
 import com.example.HomeService_MVC.model.Order;
+import com.example.HomeService_MVC.model.enumoration.OrderStatus;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
 import com.example.HomeService_MVC.service.impel.OfferServiceImpel;
 import com.example.HomeService_MVC.service.impel.OrderServiceImpel;
@@ -76,6 +77,23 @@ public class OrderController {
     public ResponseEntity<String> startOrder(@PathVariable("offerId") Integer offerId){
         Offer offer = offerServiceImpel.getById(offerId);
         orderServiceImpel.updateStatusToStart(offer);
+        return ResponseEntity.ok("OK");
+    }
+
+    @GetMapping("/viewOrderForDone")
+    public ResponseEntity<List<OrderDTO>> viewOrderForDone(){
+        List<Order> orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(1, OrderStatus.STARTED);
+        if(orderList == null || orderList.size() == 0)
+            throw new OrderNotFoundException("You dont have any order In Started Status!");
+        else{
+            List<OrderDTO> dtoList = orderToOrderDTO(orderList);
+            return ResponseEntity.ok(dtoList);
+        }
+    }
+
+    @GetMapping("/doneOrder/{orderId}")
+    public ResponseEntity<String> doneOrder(@PathVariable("orderId") Integer orderId){
+        orderServiceImpel.setDoneOrder(orderId);
         return ResponseEntity.ok("OK");
     }
 
