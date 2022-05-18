@@ -115,6 +115,17 @@ public class OrderController {
         return ResponseEntity.ok("OK");
     }
 
+    @GetMapping("/viewPaidOrder")
+    public ResponseEntity<List<OrderDTO>> viewPaidOrder(){
+        List<Order> orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(1, OrderStatus.PAID);
+        if(orderList == null || orderList.size() == 0)
+            throw new OrderNotFoundException("You dont have any order In Paid Status!");
+        else{
+            List<OrderDTO> dtoList = orderToOrderDTO(orderList);
+            return ResponseEntity.ok(dtoList);
+        }
+    }
+
     public List<OrderDTO> orderToOrderDTO(List<Order> orderList){
         List<OrderDTO> dtoList = new ArrayList<>();
         for (Order o:orderList
