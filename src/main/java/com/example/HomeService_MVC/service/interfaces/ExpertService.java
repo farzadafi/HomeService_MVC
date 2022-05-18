@@ -17,4 +17,5 @@ public interface ExpertService {
     Optional<Expert> findByEmail(String expertEmail);
     void removeExpertSubServices(String email,Integer subServicesId);
     void updatePassword(Integer expertId, PasswordDTO passwordDTO);
+    void updateBalance(Expert expert);
 }

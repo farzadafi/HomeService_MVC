@@ -98,4 +98,9 @@ public class ExpertServiceImpel implements ExpertService {
         expertRepository.save(expert);
     }
 
+    @Override
+    public void updateBalance(Expert expert) {
+        expertRepository.save(expert);
+    }
+
 }
