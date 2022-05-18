@@ -8,6 +8,7 @@ import com.example.HomeService_MVC.model.Order;
 import com.example.HomeService_MVC.model.enumoration.OrderStatus;
 import com.example.HomeService_MVC.repository.OfferRepository;
 import com.example.HomeService_MVC.service.interfaces.OfferService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,7 +43,7 @@ public class OfferServiceImpel implements OfferService {
 
     @Override
     public List<Offer> findAllByOrdersId(Integer orderId) {
-        return offerRepository.findAllByOrdersId(orderId);
+        return offerRepository.findAllByOrdersId(orderId, Sort.by(Sort.Direction.DESC,"proposedPrice"));
     }
 
     @Override
