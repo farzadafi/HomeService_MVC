@@ -17,7 +17,7 @@ public interface OrderRepository extends JpaRepository<Order,Integer> {
     ("FROM Order AS o WHERE o.customer.id = :customerId AND " +
                         "o.orderStatus = :orderStatusOne OR " +
                            "o.orderStatus = :orderStatusTwo ")
-    List<Order> findAllByCustomerIdAndOrderStatus(@Param("customerId") Integer customerId,
+    List<Order> findAllByCustomerIdAndTwoOrderStatus(@Param("customerId") Integer customerId,
                                                    @Param("orderStatusOne") OrderStatus orderStatusOne,
                                                    @Param("orderStatusTwo") OrderStatus orderStatusTwo);
 
@@ -30,4 +30,6 @@ public interface OrderRepository extends JpaRepository<Order,Integer> {
                                             @Param("subServices") Set<SubServices> subServices,
                                             @Param("orderStatusOne") OrderStatus orderStatusOne,
                                             @Param("orderStatusTwo") OrderStatus orderStatusTwo);
+
+    List<Order> findAllByCustomerIdAndOrderStatus(Integer customerId,OrderStatus orderStatus);
 }
