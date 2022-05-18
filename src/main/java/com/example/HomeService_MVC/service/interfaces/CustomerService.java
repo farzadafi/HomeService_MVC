@@ -9,4 +9,5 @@ public interface CustomerService  {
     void save(CustomerSave customerSave);
     void updatePassword(Customer customer, PasswordDTO passwordDTO);
     Customer getById(Integer id);
+    void updateBalance(Customer customer);
 }

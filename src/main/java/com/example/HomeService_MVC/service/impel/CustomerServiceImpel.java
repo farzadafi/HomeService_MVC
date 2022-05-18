@@ -40,4 +40,9 @@ public class CustomerServiceImpel implements CustomerService {
     public Customer getById(Integer id) {
         return customerRepository.getById(id);
     }
+
+    @Override
+    public void updateBalance(Customer customer) {
+        customerRepository.save(customer);
+    }
 }
