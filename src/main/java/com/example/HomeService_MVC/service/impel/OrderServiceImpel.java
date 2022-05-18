@@ -1,12 +1,10 @@
 package com.example.HomeService_MVC.service.impel;
 
 import com.example.HomeService_MVC.controller.exception.InvalidProposedPriceException;
+import com.example.HomeService_MVC.controller.exception.NotEnoughBalanceException;
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
 import com.example.HomeService_MVC.dto.order.OrderDTO;
-import com.example.HomeService_MVC.model.Customer;
-import com.example.HomeService_MVC.model.Offer;
-import com.example.HomeService_MVC.model.Order;
-import com.example.HomeService_MVC.model.SubServices;
+import com.example.HomeService_MVC.model.*;
 import com.example.HomeService_MVC.model.enumoration.OrderStatus;
 import com.example.HomeService_MVC.repository.OrderRepository;
 import org.dozer.DozerBeanMapper;
@@ -23,12 +21,14 @@ public class OrderServiceImpel implements OrderService {
     private final CustomerServiceImpel customerServiceImpel;
     private final DozerBeanMapper mapper;
     private final OrderRepository orderRepository;
+    private final ExpertServiceImpel expertServiceImpel;
 
-    public OrderServiceImpel(SubServicesServiceImpel subServicesServiceImpel, CustomerServiceImpel customerServiceImpel, DozerBeanMapper mapper, OrderRepository orderRepository) {
+    public OrderServiceImpel(SubServicesServiceImpel subServicesServiceImpel, CustomerServiceImpel customerServiceImpel, DozerBeanMapper mapper, OrderRepository orderRepository, ExpertServiceImpel expertServiceImpel) {
         this.subServicesServiceImpel = subServicesServiceImpel;
         this.customerServiceImpel = customerServiceImpel;
         this.mapper = mapper;
         this.orderRepository = orderRepository;
+        this.expertServiceImpel = expertServiceImpel;
     }
 
 
@@ -86,6 +86,21 @@ public class OrderServiceImpel implements OrderService {
     public void setDoneOrder(Integer orderId) {
         Order order = getById(orderId);
         order.setOrderStatus(OrderStatus.DONE);
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void paidOrder(Integer customerId, Integer orderId,Offer offer) {
+        Customer customer = customerServiceImpel.getById(customerId);
+        Expert expert = offer.getExpert();
+        if(customer.getBalance() < offer.getProposedPrice())
+            throw new NotEnoughBalanceException("You dont have enough money in your account!");
+        Order order = getById(orderId);
+        order.setOrderStatus(OrderStatus.PAID);
+        customer.setBalance(customer.getBalance() - offer.getProposedPrice());
+        expert.setBalance(offer.getProposedPrice());
+        expertServiceImpel.updateBalance(expert);
+        customerServiceImpel.updateBalance(customer);
         orderRepository.save(order);
     }
 }

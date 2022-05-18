@@ -19,4 +19,5 @@ public interface OrderService {
     void updateStatusToStart(Offer offer);
     List<Order> findAllByCustomerIdAndOrderStatus(Integer customerId, OrderStatus orderStatus);
     void setDoneOrder(Integer orderId);
+    void paidOrder(Integer customerId,Integer orderId,Offer offer);
 }
