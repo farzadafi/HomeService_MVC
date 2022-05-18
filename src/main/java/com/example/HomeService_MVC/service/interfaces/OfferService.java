@@ -12,4 +12,5 @@ public interface OfferService {
     void selectOffer(Integer orderId,Integer offerId);
     Offer getById(Integer id);
     List<Offer> findAllByExpertIdAndStatus(Integer expertId, OrderStatus orderStatus);
+    Offer findByOrderIdAndAcceptedTrue(Integer orderId);
 }
