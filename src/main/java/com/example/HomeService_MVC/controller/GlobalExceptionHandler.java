@@ -48,4 +48,10 @@ public class GlobalExceptionHandler {
         LOGGER.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+
+    @ExceptionHandler(NotEnoughBalanceException.class)
+    public ResponseEntity<String> balanceExceptionHandler(NotEnoughBalanceException e) {
+        LOGGER.warn(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
 }
