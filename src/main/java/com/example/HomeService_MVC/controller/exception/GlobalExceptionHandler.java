@@ -1,4 +1,4 @@
-package com.example.HomeService_MVC.controller;
+package com.example.HomeService_MVC.controller.exception;
 
 import com.example.HomeService_MVC.controller.exception.*;
 import org.slf4j.Logger;
