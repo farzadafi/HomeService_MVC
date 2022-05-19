@@ -1,6 +1,7 @@
 package com.example.HomeService_MVC.service.impel;
 
 import com.example.HomeService_MVC.controller.exception.InvalidProposedPriceException;
+import com.example.HomeService_MVC.controller.exception.OfferNotFoundException;
 import com.example.HomeService_MVC.dto.offer.OfferDTO;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.Offer;
@@ -11,6 +12,7 @@ import com.example.HomeService_MVC.service.interfaces.OfferService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,8 +44,13 @@ public class OfferServiceImpel implements OfferService {
     }
 
     @Override
-    public List<Offer> findAllByOrdersId(Integer orderId) {
-        return offerRepository.findAllByOrdersId(orderId, Sort.by(Sort.Direction.DESC,"proposedPrice"));
+    public List<OfferDTO> findAllByOrdersId(Integer orderId) {
+        List<Offer> offerList =  offerRepository.findAllByOrdersId(orderId, Sort.by(Sort.Direction.DESC,"proposedPrice"));
+        if(offerList == null || offerList.size() == 0)
+            throw new OfferNotFoundException("You dont have any offer until now!");
+        else {
+            return offerToOfferDTO(offerList);
+        }
     }
 
     @Override
@@ -62,12 +69,26 @@ public class OfferServiceImpel implements OfferService {
     }
 
     @Override
-    public List<Offer> findAllByExpertIdAndStatus(Integer expertId, OrderStatus orderStatus) {
-        return offerRepository.findAllByExpertIdAndStatus(expertId,orderStatus);
+    public List<OfferDTO> findAllByExpertIdAndStatus(Integer expertId, OrderStatus orderStatus) {
+        List<Offer> offerList = offerRepository.findAllByExpertIdAndStatus(expertId,orderStatus);
+        if(offerList == null || offerList.size() == 0)
+            throw new OfferNotFoundException("You dont have any Accepted offer until now!");
+        else {
+            return offerToOfferDTO(offerList);
+        }
     }
 
     @Override
     public Offer findByOrderIdAndAcceptedTrue(Integer orderId) {
         return offerRepository.findByOrderIdAndAcceptedTrue(orderId);
+    }
+
+    public List<OfferDTO> offerToOfferDTO(List<Offer> offerList){
+        List<OfferDTO> dtoList = new ArrayList<>();
+        for (Offer o:offerList
+        ) {
+            dtoList.add(new OfferDTO(o.getId(),o.getProposedPrice(),o.getDurationWork(),o.getStartTime()));
+        }
+        return dtoList;
     }
 }

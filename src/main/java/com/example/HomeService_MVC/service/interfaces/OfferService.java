@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface OfferService {
     void placeAnOffer(Integer expertId, OfferDTO offerDTO,Integer orderId);
-    List<Offer> findAllByOrdersId(Integer orderId);
+    List<OfferDTO> findAllByOrdersId(Integer orderId);
     void selectOffer(Integer orderId,Integer offerId);
     Offer getById(Integer id);
-    List<Offer> findAllByExpertIdAndStatus(Integer expertId, OrderStatus orderStatus);
+    List<OfferDTO> findAllByExpertIdAndStatus(Integer expertId, OrderStatus orderStatus);
     Offer findByOrderIdAndAcceptedTrue(Integer orderId);
 }
