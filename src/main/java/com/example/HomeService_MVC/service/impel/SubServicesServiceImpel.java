@@ -42,8 +42,16 @@ public class SubServicesServiceImpel implements SubServicesService {
     }
 
     @Override
-    public List<SubServices> findAllByServicesId(Integer servicesId) {
-        return subServicesRepository.findAllByServicesId(servicesId);
+    public List<SubServicesDTO> findAllByServicesId(Integer servicesId) {
+        List<SubServices> subServicesList = subServicesRepository.findAllByServicesId(servicesId);
+        if(subServicesList == null || subServicesList.size() == 0)
+            throw  new SubServicesNotFoundException("not subServices defined until now");
+        List<SubServicesDTO> dtoList = new ArrayList<>();
+        for (SubServices s:subServicesList
+        ) {
+            dtoList.add(mapper.map(s,SubServicesDTO.class));
+        }
+        return dtoList;
     }
 
     @Override
