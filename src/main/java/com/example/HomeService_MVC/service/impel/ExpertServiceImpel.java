@@ -3,17 +3,20 @@ package com.example.HomeService_MVC.service.impel;
 import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
 import com.example.HomeService_MVC.dto.user.ExpertSave;
+import com.example.HomeService_MVC.dto.user.ExpertViewDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.model.enumoration.Role;
 import com.example.HomeService_MVC.repository.ExpertRepository;
 import com.example.HomeService_MVC.service.interfaces.ExpertService;
+import org.dozer.DozerBeanMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -24,10 +27,12 @@ public class ExpertServiceImpel implements ExpertService {
     private final ExpertRepository expertRepository;
     private final SubServicesServiceImpel subServicesServiceImpel;
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+    private final DozerBeanMapper mapper;
 
-    public ExpertServiceImpel(ExpertRepository expertRepository, SubServicesServiceImpel subServicesServiceImpel) {
+    public ExpertServiceImpel(ExpertRepository expertRepository, SubServicesServiceImpel subServicesServiceImpel, DozerBeanMapper mapper) {
         this.expertRepository = expertRepository;
         this.subServicesServiceImpel = subServicesServiceImpel;
+        this.mapper = mapper;
     }
 
     @Override
@@ -45,8 +50,16 @@ public class ExpertServiceImpel implements ExpertService {
     }
 
     @Override
-    public List<Expert> findAllByAcceptedFalse() {
-        return expertRepository.findAllByAcceptedFalse();
+    public List<ExpertViewDTO> findAllByAcceptedFalse() {
+        List<Expert> expertList = expertRepository.findAllByAcceptedFalse();
+        if(expertList == null || expertList.size() == 0)
+            throw new ExpertNotFoundException("unfortunately any expert doesn't register until now!");
+        List<ExpertViewDTO> dtoList = new ArrayList<>();
+        for (Expert e:expertList
+        ) {
+            dtoList.add(mapper.map(e,ExpertViewDTO.class));
+        }
+        return dtoList;
     }
 
     @Override
