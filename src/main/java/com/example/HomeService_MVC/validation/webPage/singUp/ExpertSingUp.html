@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="./../bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="./../js/bootstrap.min.js">
     <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <style>
 
@@ -22,9 +21,9 @@
             width: 1820px;
         }
 
-        .rightdiv{
+        .rightDiv{
             height: 100%;
-            border-radius: 0% 10% 10% 0%;
+            border-radius: 0 10% 10% 0;
             transform: translate(-50%, -50%);
             position: fixed;
             top:50%;
@@ -34,9 +33,9 @@
             padding-top: 50px;
         }
 
-        .leftdiv{
+        .leftDiv{
             height: 100%;
-            border-radius: 10% 0% 0% 10%;
+            border-radius: 10% 0 0 10%;
             transform: translate(-50%, -50%);
             position: fixed;
             top:50%;
@@ -78,94 +77,125 @@
 
     </style>
 
-    <script>
-
-
-        function previewFile() {
-            var preview = document.querySelector('img');
-            var file    = document.querySelector('input[type=file]').files[0];
-            var reader  = new FileReader();
-
-            reader.onloadend = function () {
-                preview.src = reader.result;
-            }
-
-
-            if (file) {
-                reader.readAsDataURL(file);
-            } else {
-                preview.src = "";
-            }
-        }
-
-        $(document).ready(function() {
-            $('#submit').click(function(event){
-
-                data = $('.password').val();
-                var len = data.length;
-
-                if(len < 1) {
-                    alert("Password cannot be blank");
-                    event.preventDefault();
-                }
-
-                if($('.password').val() != $('.confPassword').val()) {
-                    alert("Password and Confirm Password don't match");
-                    event.preventDefault();
-                    $('#password').val('');
-                    $('#confPassword').val('');
-                }
-
-            });
-        });
-
-    </script>
-
 
 </head>
 <body>
 <div class=" container-fluid w-75 mainDiv ">
-    <form action="">
+    <div id="formExpert">
         <p class="text-center font-weight-bold text-justify text-white">لطفا اطلاعات خود را وارد کنید</p>
-        <div class="rightdiv">
+        <div class="rightDiv">
             <label for="firstName"><br>
-                <input class="rounded-pill border-0 p-lg-5  " type="text" name="firstName" pattern=".{3,}" title="at least 3 word!" placeholder="نام" required><br>
+                <input class="rounded-pill border-0 p-lg-5 " id="firstName" type="text" name="firstName" pattern=".{3,}" title="at least 3 word!" placeholder="نام" required><br>
             </label>
 
             <label for="lastName"><br>
-                <input class="rounded-pill border-0 p-lg-5 " type="text" name="lastName" pattern=".{3,}" title="at least 3 word!" placeholder="نام خانوادگی" required><br>
+                <input class="rounded-pill border-0 p-lg-5 " id="lastName" type="text" name="lastName" pattern=".{3,}" title="at least 3 word!" placeholder="نام خانوادگی" required><br>
             </label>
 
-            <label for="nationalId"><br>
-                <input class="rounded-pill  border-0 p-lg-5  "type="text" name="email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="a@mail.com" placeholder="ایمیل" required><br>
-            </label>
-
-            <label for="password"><br>
-                <input class="rounded-pill  border-0 p-lg-5 password "type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="lowerCase+UpperCase+space+symbol+number+8char" placeholder="رمز"><br>
+            <label for="email"><br>
+                <input class="rounded-pill  border-0 p-lg-5  " id="email" type="text" name="email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="a@mail.com" placeholder="ایمیل" required><br>
             </label>
 
             <label for="password"><br>
-                <input class="rounded-pill  border-0 p-lg-5 confpassword "type="password" name="confPassword" id="confPassword"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="lowerCase+UpperCase+space+symbol+number+8char" placeholder="تکرار رمز"><br>
+                <input class="rounded-pill  border-0 p-lg-5 password " type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="lowerCase+UpperCase+space+symbol+number+8char" placeholder="رمز"><br>
+            </label>
+
+            <label for="confPassword"><br>
+                <input class="rounded-pill  border-0 p-lg-5 confPassword "type="password" name="confPassword" id="confPassword"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="lowerCase+UpperCase+space+symbol+number+8char" placeholder="تکرار رمز"><br>
             </label>
         </div>
 
-        <div class="leftdiv">
-            <label for="nationalId"><br>
-                <input class="rounded-pill  border-0 p-lg-5  "type="text" name="city" placeholder="شهر" required><br>
+        <div class="leftDiv">
+            <label for="city"><br>
+                <input class="rounded-pill  border-0 p-lg-5  " id="city" type="text" name="city" placeholder="شهر" required><br>
             </label>
 
             <p class="text-center font-weight-bolder text-white mt-5">آپلود عکس</p>
 
-            <input class="rounded-pill  p-lg-5 w-75 btn mt-2" name="image" required type="file" onchange="previewFile()"><br>
+            <input class="rounded-pill  p-lg-5 w-75 btn mt-2" id="image" name="image" required type="file" onchange="previewFile()"><br>
             <div class="text-center">
                 <img class="rounded-pill " src="" height="200" alt="">
             </div>
 
             <div class="text-center">
-                <input class="rounded-pill btn btn-info p-lg-5 font-italic font-weight-bold my-5 mr-5" class="submit" id="submit" type="submit" value="ثبت نام">
+                <button class="rounded-pill btn btn-info p-lg-5 font-italic font-weight-bold my-5 mr-5 submit"  id="submit" >
+                    ثبت نام</button>
             </div>
         </div>
-    </form>
+    </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+
+
+    function previewFile() {
+        let preview = document.querySelector('img');
+        let file    = document.querySelector('input[type=file]').files[0];
+        let reader  = new FileReader();
+
+        reader.onloadend = function () {
+            preview.src = reader.result;
+        }
+
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = "";
+        }
+    }
+
+        $('#submit').click(function(event){
+
+            let data = $('.password').val();
+            let len = data.length;
+
+            if(len < 1) {
+                alert("Password cannot be blank");
+                event.preventDefault();
+            }
+
+            if($('.password').val() !== $('.confPassword').val()) {
+                alert("Password and Confirm Password don't match");
+                event.preventDefault();
+                $('#password').val('');
+                $('#confPassword').val('');
+            }
+        });
+
+            $("#submit").on('click',function() {
+                let formData = new FormData();
+                formData.append("firstName",$("#firstName"));
+                formData.append("lastName",$("#lastName"));
+                formData.append("email",$("#email"));
+                formData.append("password",$("#password"));
+                formData.append("confPassword",$("#confPassword"));
+                formData.append("city",$("city"));
+                formData.append("image",$("#image")[0].files[0]);
+
+                $.ajax({
+                    url : "http://localhost:8080/expert/save",
+                    data : formData,
+                    type: "POST",
+                    contentType: false,
+                    processData: false,
+                    cache: false
+                }).done(function (result){
+                    if (result.status === "OK") {
+                        alert("you are sign up is successful");
+                        location.href="";
+                    } else {
+                    }
+                    console.log(result);
+                }).fail(function (e){
+                    alert("Error!")
+                    console.log("ERROR: ", e);
+                });
+            });
+</script>
+
+
+
 </body>
 </html>
