@@ -12,4 +12,5 @@ public interface SubServicesService {
     SubServices findBySubServicesName(String subServicesName);
     List<SubServices> findAllByServicesId(Integer servicesId);
     Optional<SubServices> findById(Integer id);
+    List<SubServicesDTO> expertSubService(String expertEmail);
 }
