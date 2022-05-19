@@ -11,13 +11,13 @@ import java.util.Set;
 
 public interface OrderService {
     void PlaceAnOrder(Integer customerId,OrderDTO orderDTO,Integer subServicesId);
-    List<Order> findAllByCustomerId(Integer customerId);
-    List<Order> findAllStartOrder(Integer customerId);
-    List<Order> findAllStartedOrderByCity(String city, Set<SubServices> subServices);
+    List<OrderDTO> findAllByCustomerId(Integer customerId);
+    List<OrderDTO> findAllStartOrder(Integer customerId);
+    List<OrderDTO> findAllStartedOrderByCity(String city, Set<SubServices> subServices);
     Order getById(Integer id);
     void update(Order order);
     void updateStatusToStart(Offer offer);
-    List<Order> findAllByCustomerIdAndOrderStatus(Integer customerId, OrderStatus orderStatus);
+    List<OrderDTO> findAllByCustomerIdAndOrderStatus(Integer customerId, OrderStatus orderStatus);
     void setDoneOrder(Integer orderId);
     void paidOrder(Integer customerId,Integer orderId,Offer offer);
 }
