@@ -1,5 +1,6 @@
 package com.example.HomeService_MVC.service.impel;
 
+import com.example.HomeService_MVC.controller.exception.ServicesNotFoundException;
 import com.example.HomeService_MVC.dto.services.ServicesDTO;
 import com.example.HomeService_MVC.model.Services;
 import com.example.HomeService_MVC.repository.ServicesRepository;
@@ -7,6 +8,7 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Service;
 import com.example.HomeService_MVC.service.interfaces.ServicesService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,8 +35,16 @@ public class ServicesServiceImpel implements ServicesService {
     }
 
     @Override
-    public List<Services> findAll() {
-        return servicesRepository.findAll();
+    public List<ServicesDTO> findAll() {
+        List<Services> servicesList = servicesRepository.findAll();
+        if(servicesList.size() == 0)
+            throw  new ServicesNotFoundException("not services defined until now");
+        List<ServicesDTO> dtoList = new ArrayList<>();
+        for (Services s:servicesList
+        ) {
+            dtoList.add(mapper.map(s,ServicesDTO.class));
+        }
+        return dtoList;
     }
 
     @Override
