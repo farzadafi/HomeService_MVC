@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="./../bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="./../js/bootstrap.min.js">
+    <link rel="stylesheet" href="../bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../js/bootstrap.min.js">
     <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
 
     <style>
@@ -55,7 +55,7 @@
             background-color: rgba(0, 0, 0,0);
         }
 
-        @font-face{ font-family: farzad; src: url('./../Entezar/EntezarB4_v2.0.1_.ttf'); }
+        @font-face{ font-family: farzad; src: url('../Entezar/EntezarB4_v2.0.1_.ttf'); }
 
         input{
             font: 40px 'farzad';
@@ -166,12 +166,12 @@
 
             $("#submit").on('click',function() {
                 let formData = new FormData();
-                formData.append("firstName",$("#firstName"));
-                formData.append("lastName",$("#lastName"));
-                formData.append("email",$("#email"));
-                formData.append("password",$("#password"));
-                formData.append("confPassword",$("#confPassword"));
-                formData.append("city",$("city"));
+                formData.append("firstName",$("#firstName").val());
+                formData.append("lastName",$("#lastName").val());
+                formData.append("email",$("#email").val());
+                formData.append("password",$("#password").val());
+                formData.append("confPassword",$("#confPassword").val());
+                formData.append("city",$("#city").val());
                 formData.append("image",$("#image")[0].files[0]);
 
                 $.ajax({
