@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -27,12 +26,10 @@ public class ExpertServiceImpel implements ExpertService {
     private final ExpertRepository expertRepository;
     private final SubServicesServiceImpel subServicesServiceImpel;
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
-    private final DozerBeanMapper mapper;
 
-    public ExpertServiceImpel(ExpertRepository expertRepository, SubServicesServiceImpel subServicesServiceImpel, DozerBeanMapper mapper) {
+    public ExpertServiceImpel(ExpertRepository expertRepository, SubServicesServiceImpel subServicesServiceImpel) {
         this.expertRepository = expertRepository;
         this.subServicesServiceImpel = subServicesServiceImpel;
-        this.mapper = mapper;
     }
 
     @Override
