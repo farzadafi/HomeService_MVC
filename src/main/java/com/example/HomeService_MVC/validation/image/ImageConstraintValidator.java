@@ -1,6 +1,5 @@
 package com.example.HomeService_MVC.validation.image;
 
-import net.sf.jmimemagic.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.ConstraintValidator;
@@ -16,18 +15,10 @@ public class ImageConstraintValidator implements ConstraintValidator<Image, Mult
 
     @Override
     public boolean isValid(MultipartFile multipartFile, ConstraintValidatorContext constraintValidatorContext) {
-        MagicMatch match ;
-        try {
-            match = Magic.getMagicMatch(multipartFile.getBytes());
-        } catch (MagicParseException | MagicMatchNotFoundException | MagicException | IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-        String mimeType = match.getMimeType();
-        if(mimeType.length() < 1)
+        if(multipartFile.isEmpty())
             return false;
 
-        String[] array = mimeType.split("/");
+        String[] array = multipartFile.getContentType().split("/");
         if(!array[0].equals("image"))
             return false;
         if( (!array[1].equals("jpg")) && (!array[1].equals("jpeg")) )
