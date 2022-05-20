@@ -55,19 +55,4 @@ public class SubServicesServiceImpel implements SubServicesService {
     public Optional<SubServices> findById(Integer id) {
         return subServicesRepository.findById(id);
     }
-
-    @Override
-    public List<SubServicesDTO> expertSubService(Expert expert) {
-        Set<SubServices> subServicesSet = expert.getSubServices();
-        if(subServicesSet == null || subServicesSet.size() == 0)
-            throw new SubServicesNotFoundException("This Expert doesn't have any SubServices until yet");
-        else{
-            List<SubServicesDTO> dtoList = new ArrayList<>();
-            for (SubServices s:subServicesSet
-            ) {
-                dtoList.add(mapper.map(s,SubServicesDTO.class));
-            }
-            return dtoList;
-        }
-    }
 }

@@ -2,7 +2,6 @@ package com.example.HomeService_MVC.service.impel;
 
 import com.example.HomeService_MVC.controller.exception.InvalidProposedPriceException;
 import com.example.HomeService_MVC.controller.exception.NotEnoughBalanceException;
-import com.example.HomeService_MVC.controller.exception.OrderNotFoundException;
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
 import com.example.HomeService_MVC.dto.order.OrderDTO;
 import com.example.HomeService_MVC.model.*;
@@ -12,7 +11,6 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Service;
 import com.example.HomeService_MVC.service.interfaces.OrderService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -48,31 +46,18 @@ public class OrderServiceImpel implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> findAllByCustomerId(Integer customerId) {
-        List<Order> orderList = orderRepository.findAllByCustomerId(customerId);
-        if(orderList == null || orderList.size() == 0)
-            throw new OrderNotFoundException("You dont have any order until now!");
-        else
-            return orderToOrderDTO(orderList);
+    public List<Order> findAllByCustomerId(Integer customerId) {
+        return orderRepository.findAllByCustomerId(customerId);
     }
 
     @Override
-    public List<OrderDTO> findAllStartOrder(Integer customerId) {
-        List<Order> orderList = orderRepository.findAllByCustomerIdAndTwoOrderStatus(customerId, OrderStatus.EXPERT_SUGGESTION,OrderStatus.EXPERT_SELECTION);
-        if(orderList == null || orderList.size() == 0)
-            throw new OrderNotFoundException("You dont have any order in started status!");
-        else
-            return orderToOrderDTO(orderList);
+    public List<Order> findAllStartOrder(Integer customerId) {
+        return orderRepository.findAllByCustomerIdAndTwoOrderStatus(customerId, OrderStatus.EXPERT_SUGGESTION,OrderStatus.EXPERT_SELECTION);
     }
 
     @Override
-    public List<OrderDTO> findAllStartedOrderByCity(String city, Set<SubServices> subServices) {
-        List<Order> orderList = orderRepository.findAllStartedOrderByCity(city,subServices,OrderStatus.EXPERT_SUGGESTION,OrderStatus.EXPERT_SELECTION);
-        if(orderList == null || orderList.size() == 0)
-            throw new OrderNotFoundException("You dont have any order for your subServices and city!");
-        else
-            return orderToOrderDTO(orderList);
-
+    public List<Order> findAllStartedOrderByCity(String city, Set<SubServices> subServices) {
+        return orderRepository.findAllStartedOrderByCity(city,subServices,OrderStatus.EXPERT_SUGGESTION,OrderStatus.EXPERT_SELECTION);
     }
 
     @Override
@@ -93,12 +78,8 @@ public class OrderServiceImpel implements OrderService {
     }
 
     @Override
-    public List<OrderDTO> findAllByCustomerIdAndOrderStatus(Integer customerId, OrderStatus orderStatus) {
-        List<Order> orderList = orderRepository.findAllByCustomerIdAndOrderStatus(customerId,orderStatus);
-        if(orderList == null || orderList.size() == 0)
-            throw new OrderNotFoundException("You dont have any order In Started Status!");
-        else
-            return orderToOrderDTO(orderList);
+    public List<Order> findAllByCustomerIdAndOrderStatus(Integer customerId, OrderStatus orderStatus) {
+        return orderRepository.findAllByCustomerIdAndOrderStatus(customerId,orderStatus);
     }
 
     @Override
@@ -121,15 +102,5 @@ public class OrderServiceImpel implements OrderService {
         expertServiceImpel.updateBalance(expert);
         customerServiceImpel.updateBalance(customer);
         orderRepository.save(order);
-    }
-
-
-    public List<OrderDTO> orderToOrderDTO(List<Order> orderList){
-        List<OrderDTO> dtoList = new ArrayList<>();
-        for (Order o:orderList
-        ) {
-            dtoList.add(mapper.map(o,OrderDTO.class));
-        }
-        return dtoList;
     }
 }

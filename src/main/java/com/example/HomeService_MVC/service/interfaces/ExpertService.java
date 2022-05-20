@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface ExpertService {
     void save(ExpertSave expertSave);
-    List<ExpertViewDTO> findAllByAcceptedFalse();
+    List<Expert> findAllByAcceptedFalse();
     Optional<Expert> findById(Integer id);
     Expert getById(Integer id);
     void ExpertAccept(Integer id);

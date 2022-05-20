@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface ServicesService {
     void save(ServicesDTO servicesSave);
     Services findByServicesName(String servicesName);
-    List<ServicesDTO> findAll();
+    List<Services> findAll();
     Optional<Services> findById(Integer id);
 }

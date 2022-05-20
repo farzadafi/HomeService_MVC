@@ -44,13 +44,8 @@ public class OfferServiceImpel implements OfferService {
     }
 
     @Override
-    public List<OfferDTO> findAllByOrdersId(Integer orderId) {
-        List<Offer> offerList =  offerRepository.findAllByOrdersId(orderId, Sort.by(Sort.Direction.DESC,"proposedPrice"));
-        if(offerList == null || offerList.size() == 0)
-            throw new OfferNotFoundException("You dont have any offer until now!");
-        else {
-            return offerToOfferDTO(offerList);
-        }
+    public List<Offer> findAllByOrdersId(Integer orderId) {
+        return offerRepository.findAllByOrdersId(orderId, Sort.by(Sort.Direction.DESC,"proposedPrice"));
     }
 
     @Override
@@ -69,13 +64,8 @@ public class OfferServiceImpel implements OfferService {
     }
 
     @Override
-    public List<OfferDTO> findAllByExpertIdAndStatus(Integer expertId, OrderStatus orderStatus) {
-        List<Offer> offerList = offerRepository.findAllByExpertIdAndStatus(expertId,orderStatus);
-        if(offerList == null || offerList.size() == 0)
-            throw new OfferNotFoundException("You dont have any Accepted offer until now!");
-        else {
-            return offerToOfferDTO(offerList);
-        }
+    public List<Offer> findAllByExpertIdAndStatus(Integer expertId, OrderStatus orderStatus) {
+        return offerRepository.findAllByExpertIdAndStatus(expertId,orderStatus);
     }
 
     @Override
@@ -83,12 +73,4 @@ public class OfferServiceImpel implements OfferService {
         return offerRepository.findByOrderIdAndAcceptedTrue(orderId);
     }
 
-    public List<OfferDTO> offerToOfferDTO(List<Offer> offerList){
-        List<OfferDTO> dtoList = new ArrayList<>();
-        for (Offer o:offerList
-        ) {
-            dtoList.add(new OfferDTO(o.getId(),o.getProposedPrice(),o.getDurationWork(),o.getStartTime()));
-        }
-        return dtoList;
-    }
 }

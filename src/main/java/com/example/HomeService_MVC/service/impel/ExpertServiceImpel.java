@@ -50,16 +50,8 @@ public class ExpertServiceImpel implements ExpertService {
     }
 
     @Override
-    public List<ExpertViewDTO> findAllByAcceptedFalse() {
-        List<Expert> expertList = expertRepository.findAllByAcceptedFalse();
-        if(expertList == null || expertList.size() == 0)
-            throw new ExpertNotFoundException("unfortunately any expert doesn't register until now!");
-        List<ExpertViewDTO> dtoList = new ArrayList<>();
-        for (Expert e:expertList
-        ) {
-            dtoList.add(mapper.map(e,ExpertViewDTO.class));
-        }
-        return dtoList;
+    public List<Expert> findAllByAcceptedFalse() {
+        return expertRepository.findAllByAcceptedFalse();
     }
 
     @Override

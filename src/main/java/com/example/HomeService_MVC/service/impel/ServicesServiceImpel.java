@@ -35,16 +35,8 @@ public class ServicesServiceImpel implements ServicesService {
     }
 
     @Override
-    public List<ServicesDTO> findAll() {
-        List<Services> servicesList = servicesRepository.findAll();
-        if(servicesList.size() == 0)
-            throw  new ServicesNotFoundException("not services defined until now");
-        List<ServicesDTO> dtoList = new ArrayList<>();
-        for (Services s:servicesList
-        ) {
-            dtoList.add(mapper.map(s,ServicesDTO.class));
-        }
-        return dtoList;
+    public List<Services> findAll() {
+        return servicesRepository.findAll();
     }
 
     @Override
