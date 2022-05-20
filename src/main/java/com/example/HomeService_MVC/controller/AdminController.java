@@ -1,9 +1,11 @@
 package com.example.HomeService_MVC.controller;
 
+import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
 import com.example.HomeService_MVC.dto.services.SubServicesDTO;
 import com.example.HomeService_MVC.dto.user.AdminDTO;
 import com.example.HomeService_MVC.dto.user.ExpertSave;
 import com.example.HomeService_MVC.dto.user.ExpertViewDTO;
+import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.service.impel.AdminServiceImpel;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
 import com.example.HomeService_MVC.service.impel.SubServicesServiceImpel;
@@ -47,7 +49,8 @@ public class AdminController {
 
     @GetMapping("/showExpertSubServices/{expertEmail}")
     public ResponseEntity<List<SubServicesDTO>> showExpertSubServices(@PathVariable("expertEmail") String expertEmail){
-        List<SubServicesDTO> dtoList = subServicesServiceImpel.expertSubService(expertEmail);
+        Expert expert = expertServiceImpel.findByEmail(expertEmail).orElseThrow(() -> new ExpertNotFoundException("This Expert is not found!"));
+        List<SubServicesDTO> dtoList = subServicesServiceImpel.expertSubService(expert);
         return ResponseEntity.ok(dtoList);
     }
 
