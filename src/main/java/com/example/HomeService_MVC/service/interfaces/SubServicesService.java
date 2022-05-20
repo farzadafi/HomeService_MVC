@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface SubServicesService {
     void save(SubServicesDTO subServicesDTO, Services services);
     SubServices findBySubServicesName(String subServicesName);
-    List<SubServicesDTO> findAllByServicesId(Integer servicesId);
+    List<SubServices> findAllByServicesId(Integer servicesId);
     Optional<SubServices> findById(Integer id);
 }
