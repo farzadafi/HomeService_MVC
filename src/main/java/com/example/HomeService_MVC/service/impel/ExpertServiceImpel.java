@@ -37,11 +37,19 @@ public class ExpertServiceImpel implements ExpertService {
 
     @Override
     public void save(ExpertSave expertSave) {
+        //todo ok this constructor
         Expert expert = new Expert();
+        expert.setFirstName(expertSave.getFirstName());
+        expert.setLastName(expertSave.getLastName());
+        expert.setEmail(expertSave.getEmail());
+        expert.setPassword(expertSave.getPassword()[0]);
+        expert.setConfPassword(expertSave.getConfPassword());
+        expert.setBalance(50000L);
+        expert.setRole(Role.EXPERT);
+        expert.setCity(expertSave.getCity());
+        expert.setStars(0);
         try {
-            expert = new Expert(expertSave.getFirstName(),expertSave.getLastName(),
-                    expertSave.getEmail(),expertSave.getPassword()[0],null,50000L, Role.EXPERT,
-                    expertSave.getCity(),expertSave.getImage().getBytes(),0,false,null);
+            expert.setImage(expertSave.getImage().getBytes());
         } catch (IOException e) {
             e.printStackTrace();
             LOGGER.warn(e.getMessage());
