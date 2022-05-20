@@ -1,6 +1,7 @@
 package com.example.HomeService_MVC.service.interfaces;
 
 import com.example.HomeService_MVC.dto.services.SubServicesDTO;
+import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.Services;
 import com.example.HomeService_MVC.model.SubServices;
 
@@ -12,5 +13,5 @@ public interface SubServicesService {
     SubServices findBySubServicesName(String subServicesName);
     List<SubServicesDTO> findAllByServicesId(Integer servicesId);
     Optional<SubServices> findById(Integer id);
-    List<SubServicesDTO> expertSubService(String expertEmail);
+    List<SubServicesDTO> expertSubService(Expert expert);
 }

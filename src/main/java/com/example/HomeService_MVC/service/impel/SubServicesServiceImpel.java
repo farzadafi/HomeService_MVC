@@ -1,6 +1,5 @@
 package com.example.HomeService_MVC.service.impel;
 
-import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
 import com.example.HomeService_MVC.dto.services.SubServicesDTO;
 import com.example.HomeService_MVC.model.Expert;
@@ -21,12 +20,10 @@ public class SubServicesServiceImpel implements SubServicesService {
 
     private final SubServicesRepository subServicesRepository;
     private final DozerBeanMapper mapper;
-    private final ExpertServiceImpel expertServiceImpel;
 
-    public SubServicesServiceImpel(SubServicesRepository subServicesRepository, DozerBeanMapper mapper, ExpertServiceImpel expertServiceImpel) {
+    public SubServicesServiceImpel(SubServicesRepository subServicesRepository, DozerBeanMapper mapper) {
         this.subServicesRepository = subServicesRepository;
         this.mapper = mapper;
-        this.expertServiceImpel = expertServiceImpel;
     }
 
     @Override
@@ -60,8 +57,7 @@ public class SubServicesServiceImpel implements SubServicesService {
     }
 
     @Override
-    public List<SubServicesDTO> expertSubService(String expertEmail) {
-        Expert expert = expertServiceImpel.findByEmail(expertEmail).orElseThrow(() -> new ExpertNotFoundException("This Expert is not found!"));
+    public List<SubServicesDTO> expertSubService(Expert expert) {
         Set<SubServices> subServicesSet = expert.getSubServices();
         if(subServicesSet == null || subServicesSet.size() == 0)
             throw new SubServicesNotFoundException("This Expert doesn't have any SubServices until yet");
