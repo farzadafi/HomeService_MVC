@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="../bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="../js/bootstrap.min.js">
     <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.14/sweetalert2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.14/sweetalert2.css"></script>
+
 
     <style>
 
@@ -101,11 +106,11 @@
             </label>
 
             <label for="password"><br>
-                <input class="rounded-pill  border-0 p-lg-5 password " type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="lowerCase+UpperCase+space+symbol+number+8char" placeholder="رمز"><br>
+                <input class="rounded-pill  border-0 p-lg-5 password" type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="lowerCase+UpperCase+space+symbol+number+8char" placeholder="رمز"><br>
             </label>
 
             <label for="confPassword"><br>
-                <input class="rounded-pill  border-0 p-lg-5" type="password" name="confPassword" id="confPassword"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="lowerCase+UpperCase+space+symbol+number+8char" placeholder="تکرار رمز"><br>
+                <input class="rounded-pill  border-0 p-lg-5 confPassword" type="password" name="confPassword" id="confPassword"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="lowerCase+UpperCase+space+symbol+number+8char" placeholder="تکرار رمز"><br>
             </label>
         </div>
 
@@ -142,7 +147,6 @@
             preview.src = reader.result;
         }
 
-
         if (file) {
             reader.readAsDataURL(file);
         } else {
@@ -156,12 +160,12 @@
             let len = data.length;
 
             if(len < 1) {
-                alert("Password cannot be blank");
                 event.preventDefault();
+                alert("لطفا رمز ها را وارد کنید");
             }
 
             if($('.password').val() !== $('.confPassword').val()) {
-                alert("Password and Confirm Password don't match");
+                alert("لطفا رمز های یکسانی وارد کنید");
                 event.preventDefault();
                 $('#password').val('');
                 $('#confPassword').val('');
@@ -186,12 +190,38 @@
                     dataType: 'text',
                     processData: false,
                     cache: false,
-                }).done(function() {
-                    alert( "success" );
+                }).done(function(msg) {
+                    if(msg === "OK") {
+                        Swal.fire({
+                            title: 'ثبت موفق!',
+                            text: 'در حال منتقل شدن به صفحه ورود',
+                            type: 'success',
+                            confirmButtonText: 'Cool',
+                            didOpen: function () {
+                                Swal.showLoading()
+                                setTimeout(function () {
+                                    Swal.close()
+                                }, 3000)
+                            }
+                        })
+                        window.location = "https://www.aspsnippets.com/";
+                    }
+                    else
+                        alert(msg)
                 })
-                    .fail(function(jqXHR,exception, errorThrown) {
-                        if(exception === "select just jpg image!" )
-                            alert("farzzd")
+                    .fail(function() {
+                        Swal.fire({
+                            title: 'خطا!',
+                            text: 'لطفا دوباره امتحان کنید',
+                            type: 'success',
+                            confirmButtonText: 'Cool',
+                            didOpen: function () {
+                                Swal.showLoading()
+                                setTimeout(function () {
+                                    Swal.close()
+                                }, 2000)
+                            }
+                        })
                     })
 
             });
