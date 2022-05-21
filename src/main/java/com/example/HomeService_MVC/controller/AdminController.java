@@ -10,6 +10,7 @@ import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.service.impel.AdminServiceImpel;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
+import com.example.HomeService_MVC.service.impel.UserServiceImpel;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +27,13 @@ public class AdminController {
     private final ExpertServiceImpel expertServiceImpel;
     private final AdminServiceImpel adminServiceImpel;
     private final DozerBeanMapper mapper;
+    private final UserServiceImpel userServiceImpel;
 
-    public AdminController(ExpertServiceImpel expertServiceImpel, AdminServiceImpel adminServiceImpel, DozerBeanMapper mapper) {
+    public AdminController(ExpertServiceImpel expertServiceImpel, AdminServiceImpel adminServiceImpel, DozerBeanMapper mapper, UserServiceImpel userServiceImpel) {
         this.expertServiceImpel = expertServiceImpel;
         this.adminServiceImpel = adminServiceImpel;
         this.mapper = mapper;
+        this.userServiceImpel = userServiceImpel;
     }
 
     @GetMapping("/getAllExpertFalse")
@@ -84,5 +87,13 @@ public class AdminController {
     public ResponseEntity<String> updateAdmin(@Valid @RequestBody AdminDTO adminDTO){
         adminServiceImpel.updateAdmin(adminDTO);
         return ResponseEntity.ok("OK");
+    }
+
+    @PostMapping("/findByEmail")
+    public String findByEmail(@RequestBody String email){
+        if(!userServiceImpel.existsByEmail(email))
+            return "OK";
+        else
+            return " ";
     }
 }
