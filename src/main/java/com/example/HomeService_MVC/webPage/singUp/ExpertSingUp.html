@@ -138,6 +138,31 @@
 <script>
 
 
+    $("#email").keyup(function(){
+        const pattern = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
+        let email = $(this).val().trim('');
+        if(email.length > 0) {
+            $.ajax({
+                url: "http://localhost:8080/admin/findByEmail",
+                type: "POST",
+                dataType: 'text',
+                contentType: false,
+                processData: false,
+                cache: false,
+                data: email,
+            }).done(function(msg) {
+                if( pattern.test(email) && msg === "OK") {
+                    $("#email").css({'background-color': 'green'});
+                }
+                else{
+                    $("#email").css({'background-color' : 'red'})
+                }
+            })
+        } else {
+            $("#username").css({'background-color': "none"});
+        }
+    })
+
     function previewFile() {
         let preview = document.querySelector('img');
         let file    = document.querySelector('input[type=file]').files[0];
@@ -236,7 +261,6 @@
             }
         }
     }
-
 
     </script>
 </body>
