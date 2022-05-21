@@ -21,9 +21,9 @@ public class CustomerController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<CustomerSave> save(@Valid @RequestBody CustomerSave customerSave) {
+    public String save(@Valid @ModelAttribute @RequestBody CustomerSave customerSave) {
         customerServiceImpel.save(customerSave);
-        return ResponseEntity.ok(customerSave);
+        return "OK";
     }
 
     @PutMapping("/updatePassword")
