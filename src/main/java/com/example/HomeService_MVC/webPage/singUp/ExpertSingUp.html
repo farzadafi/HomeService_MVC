@@ -65,6 +65,10 @@
             height: 20px;
         }
 
+        button{
+            font: 40px 'farzad';
+        }
+
         p{
             margin-top: 20px;
             text-align: center;
@@ -101,7 +105,7 @@
             </label>
 
             <label for="confPassword"><br>
-                <input class="rounded-pill  border-0 p-lg-5 confPassword "type="password" name="confPassword" id="confPassword"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="lowerCase+UpperCase+space+symbol+number+8char" placeholder="تکرار رمز"><br>
+                <input class="rounded-pill  border-0 p-lg-5" type="password" name="confPassword" id="confPassword"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="lowerCase+UpperCase+space+symbol+number+8char" placeholder="تکرار رمز"><br>
             </label>
         </div>
 
@@ -112,13 +116,13 @@
 
             <p class="text-center font-weight-bolder text-white mt-5">آپلود عکس</p>
 
-            <input class="rounded-pill  p-lg-5 w-75 btn mt-2" id="image" name="image" required type="file" onchange="previewFile()"><br>
+            <input class="rounded-pill  p-lg-5 w-75 btn mt-2" id="image" name="image" required type="file" onchange="OnFileValidation();previewFile()"><br>
             <div class="text-center">
                 <img class="rounded-pill " src="" height="200" alt="">
             </div>
 
             <div class="text-center">
-                <button class="rounded-pill btn btn-info p-lg-5 font-italic font-weight-bold my-5 mr-5 submit"  id="submit" >
+                <button class="rounded-pill btn btn-info text-justify  p-lg-5 font-italic font-weight-bold my-5 mr-5 submit"  id="submit" >
                     ثبت نام</button>
             </div>
         </div>
@@ -166,36 +170,44 @@
 
             $("#submit").on('click',function() {
                 let formData = new FormData();
-                formData.append("firstName",$("#firstName").val());
-                formData.append("lastName",$("#lastName").val());
-                formData.append("email",$("#email").val());
-                formData.append("password",$("#password").val());
-                formData.append("confPassword",$("#confPassword").val());
-                formData.append("city",$("#city").val());
-                formData.append("image",$("#image")[0].files[0]);
+                formData.append("firstName", $("#firstName").val());
+                formData.append("lastName", $("#lastName").val());
+                formData.append("email", $("#email").val());
+                formData.append("password", $("#password").val());
+                formData.append("confPassword", $("#confPassword").val());
+                formData.append("city", $("#city").val());
+                formData.append("image", $("#image")[0].files[0]);
 
                 $.ajax({
-                    url : "http://localhost:8080/expert/save",
-                    data : formData,
+                    url: "http://localhost:8080/expert/save",
+                    data: formData,
                     type: "POST",
                     contentType: false,
+                    dataType: 'text',
                     processData: false,
-                    cache: false
-                }).done(function (result){
-                    if (result.status === "OK") {
-                        alert("you are sign up is successful");
-                        location.href="";
-                    } else {
-                    }
-                    console.log(result);
-                }).fail(function (e){
-                    alert("Error!")
-                    console.log("ERROR: ", e);
-                });
+                    cache: false,
+                }).done(function() {
+                    alert( "success" );
+                })
+                    .fail(function(jqXHR,exception, errorThrown) {
+                        if(exception === "select just jpg image!" )
+                            alert("farzzd")
+                    })
+
             });
-</script>
+
+    function OnFileValidation() {
+        const image = document.getElementById("image");
+        if (typeof (image.files) != "undefined") {
+            const size = parseFloat(image.files[0].size / (1024 * 1024)).toFixed(2);
+            if (size > 0.300) {
+                alert('Please select image size less than 300 KB');
+                $('#image').val('');
+            }
+        }
+    }
 
 
-
+    </script>
 </body>
 </html>
