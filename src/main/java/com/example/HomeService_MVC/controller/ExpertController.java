@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/expert")
 public class ExpertController {
 
@@ -19,9 +20,9 @@ public class ExpertController {
     }
 
     @PostMapping(value = "/save",consumes = { MediaType.MULTIPART_FORM_DATA_VALUE} )
-    public ResponseEntity<ExpertSave> save(@Valid @ModelAttribute @RequestBody ExpertSave expertSave) {
+    public String save(@Valid @ModelAttribute @RequestBody ExpertSave expertSave) {
         expertServiceImpel.save(expertSave);
-        return ResponseEntity.ok(expertSave);
+        return "OK";
     }
 
     @PutMapping("/updatePassword")
