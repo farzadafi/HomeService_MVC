@@ -1,7 +1,7 @@
 package com.example.HomeService_MVC.dto.user;
 
 import lombok.*;
-import com.example.HomeService_MVC.validation.email.Email;
+import com.example.HomeService_MVC.validation.image.email.Email;
 import com.example.HomeService_MVC.validation.name.Name;
 import com.example.HomeService_MVC.validation.password.Password;
 

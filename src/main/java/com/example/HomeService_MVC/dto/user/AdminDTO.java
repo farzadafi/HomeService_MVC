@@ -1,6 +1,6 @@
 package com.example.HomeService_MVC.dto.user;
 
-import com.example.HomeService_MVC.validation.email.Email;
+import com.example.HomeService_MVC.validation.image.email.Email;
 import com.example.HomeService_MVC.validation.password.Password;
 import lombok.*;
 import javax.persistence.Column;
