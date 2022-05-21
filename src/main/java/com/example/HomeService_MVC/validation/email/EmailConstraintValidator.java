@@ -20,8 +20,6 @@ public class EmailConstraintValidator implements ConstraintValidator<Email,Strin
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {
-        if(userServiceImpel.existsByEmail(email))
-            return false;
         String EMAIL_REGEX = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
         if (email.length() < 10)
             return false;
@@ -32,6 +30,6 @@ public class EmailConstraintValidator implements ConstraintValidator<Email,Strin
             if (Character.isSpaceChar(ch))
                 return false;
         }
-        return true;
+        return !userServiceImpel.existsByEmail(email);
     }
 }
