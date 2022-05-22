@@ -30,6 +30,6 @@ public class EmailConstraintValidator implements ConstraintValidator<Email,Strin
             if (Character.isSpaceChar(ch))
                 return false;
         }
-        return !userServiceImpel.existsByEmail(email);
+        return userServiceImpel.findByEmail(email).isEmpty();
     }
 }
