@@ -1,8 +1,11 @@
 package com.example.HomeService_MVC.service.impel;
 
+import com.example.HomeService_MVC.model.base.User;
 import com.example.HomeService_MVC.repository.UserRepository;
 import com.example.HomeService_MVC.service.interfaces.UserService;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserServiceImpel implements UserService {
@@ -14,7 +17,9 @@ public class UserServiceImpel implements UserService {
     }
 
     @Override
-    public boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
+
+
 }
