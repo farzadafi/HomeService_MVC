@@ -91,7 +91,7 @@ public class AdminController {
 
     @PostMapping("/findByEmail")
     public String findByEmail(@RequestBody String email){
-        if(!userServiceImpel.existsByEmail(email))
+        if(userServiceImpel.findByEmail(email).isEmpty())
             return "OK";
         else
             return " ";
