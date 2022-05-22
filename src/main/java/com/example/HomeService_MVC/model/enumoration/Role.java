@@ -1,7 +1,7 @@
 package com.example.HomeService_MVC.model.enumoration;
 
 public enum Role {
-    ADMIN,
-    EXPERT,
-    CUSTOMER
+    ROLE_ADMIN,
+    ROLE_EXPERT,
+    ROLE_CUSTOMER
 }
