@@ -7,6 +7,7 @@ import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.repository.ExpertRepository;
 import com.example.HomeService_MVC.service.interfaces.ExpertService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,15 +18,18 @@ import java.util.Set;
 public class ExpertServiceImpel implements ExpertService {
 
     private final ExpertRepository expertRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final SubServicesServiceImpel subServicesServiceImpel;
 
-    public ExpertServiceImpel(ExpertRepository expertRepository, SubServicesServiceImpel subServicesServiceImpel) {
+    public ExpertServiceImpel(ExpertRepository expertRepository, BCryptPasswordEncoder bCryptPasswordEncoder, SubServicesServiceImpel subServicesServiceImpel) {
         this.expertRepository = expertRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.subServicesServiceImpel = subServicesServiceImpel;
     }
 
     @Override
     public void save(Expert expert) {
+        expert.setPassword(bCryptPasswordEncoder.encode(expert.getPassword()));
         expertRepository.save(expert);
     }
 
