@@ -40,7 +40,7 @@ public class ExpertController {
     private Expert convertExpertDTO(ExpertSave expertSave){
         Expert expert = new Expert(expertSave.getFirstName(),expertSave.getLastName(),
                 expertSave.getEmail(),expertSave.getConfPassword(),
-                5000L, Role.EXPERT,expertSave.getCity()
+                5000L, Role.ROLE_EXPERT,expertSave.getCity()
                 ,null,0);
         try {
             expert.setImage(expertSave.getImage().getBytes());
