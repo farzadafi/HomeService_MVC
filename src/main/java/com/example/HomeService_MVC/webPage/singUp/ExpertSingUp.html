@@ -17,9 +17,6 @@
     <style>
 
         body {
-            background: linear-gradient(135deg, #00c3ff, #eeef1c);
-            background: linear-gradient(135deg, #fc00ff, #00dbde);
-            background-image: linear-gradient(135deg, #ff00ba 0%, #ccbc08 100%);
             background-image: linear-gradient(150deg, #0cfaee 0%, #e403d1 100%, #fff01f 100%);
             min-height: 93vh;
             height: 1000px;
@@ -181,15 +178,15 @@
 
         $('#submit').click(function(event){
 
-            let data = $('.password').val();
-            let len = data.length;
+            let password = $('.password').val();
+            let len = password.length;
 
             if(len < 1) {
                 event.preventDefault();
                 alert("لطفا رمز ها را وارد کنید");
             }
 
-            if($('.password').val() !== $('.confPassword').val()) {
+            if( password !== $('.confPassword').val()) {
                 alert("لطفا رمز های یکسانی وارد کنید");
                 event.preventDefault();
                 $('#password').val('');
