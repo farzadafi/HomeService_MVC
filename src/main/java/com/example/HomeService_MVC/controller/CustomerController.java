@@ -32,4 +32,16 @@ public class CustomerController {
         return ResponseEntity.ok("OK");
     }
 
+    /*
+    @PreAuthorize("hasRole('EXPERT')")
+    //@PreAuthorize("hasAnyRole('EXPERT','ADMIN')")
+    //@PreAuthorize("hasAuthority('EXPERT')")
+    @GetMapping("/hello")
+    public String farzad(Authentication authentication){
+        //return principal.getName();
+        Expert user = (Expert) authentication.getPrincipal();
+        return user.toString();
+    }
+     */
+
 }
