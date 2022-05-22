@@ -5,7 +5,6 @@ import com.example.HomeService_MVC.model.enumoration.Role;
 import lombok.*;
 
 import javax.persistence.Entity;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -13,8 +12,8 @@ import java.util.Date;
 @Entity
 public class Customer extends User {
 
-    public Customer(String firstName, String lastName, String email, String password, Date date, Long balance, Role userType) {
-        super(firstName, lastName, email, password, date, balance, userType);
+    public Customer(String firstName, String lastName, String email, String password, Long balance, Role role) {
+        super(firstName, lastName, email, password, balance, role);
     }
 
     public Customer() {

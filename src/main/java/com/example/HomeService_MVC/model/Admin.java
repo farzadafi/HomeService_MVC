@@ -5,7 +5,6 @@ import com.example.HomeService_MVC.model.enumoration.Role;
 import lombok.*;
 
 import javax.persistence.Entity;
-import java.util.Date;
 
 @AllArgsConstructor
 @Getter
@@ -14,7 +13,7 @@ import java.util.Date;
 @Entity
 public class Admin extends User {
 
-    public Admin(String firstName, String lastName, String email, String password, Date date, Long balance, Role userType) {
-        super(firstName, lastName, email, password, date, balance, userType);
+    public Admin(String firstName, String lastName, String email, String password, Long balance, Role role) {
+        super(firstName, lastName, email, password, balance, role);
     }
 }

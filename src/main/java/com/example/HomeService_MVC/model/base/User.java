@@ -41,15 +41,13 @@ public class User extends Base<Integer> {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User(String firstName, String lastName, String email, String password, Role role) {
+    public User(String firstName, String lastName, String email, String password,Long balance, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.balance = balance;
         this.role = role;
     }
 
-    public User(String firstName, String lastName, String email, String password, Date date, Long balance, Role userType) {
-        super();
-    }
 }
