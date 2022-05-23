@@ -47,6 +47,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/customer/save","/admin/findByEmail");
+        web.ignoring().antMatchers("/customer/save","/admin/findByEmail","/user/login");
     }
 }
