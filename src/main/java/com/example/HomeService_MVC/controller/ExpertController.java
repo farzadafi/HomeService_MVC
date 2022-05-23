@@ -1,6 +1,6 @@
 package com.example.HomeService_MVC.controller;
 
-import com.example.HomeService_MVC.dto.user.ExpertSave;
+import com.example.HomeService_MVC.dto.user.ExpertDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.enumoration.Role;
@@ -26,7 +26,7 @@ public class ExpertController {
     }
 
     @PostMapping(value = "/save",consumes = { MediaType.MULTIPART_FORM_DATA_VALUE} )
-    public String save(@Valid @ModelAttribute @RequestBody ExpertSave expertSave) {
+    public String save(@Valid @ModelAttribute @RequestBody ExpertDTO expertSave) {
         expertServiceImpel.save(convertExpertDTO(expertSave));
         return "OK";
     }
@@ -37,7 +37,7 @@ public class ExpertController {
         return ResponseEntity.ok("OK");
     }
 
-    private Expert convertExpertDTO(ExpertSave expertSave){
+    private Expert convertExpertDTO(ExpertDTO expertSave){
         Expert expert = new Expert(expertSave.getFirstName(),expertSave.getLastName(),
                 expertSave.getEmail(),expertSave.getConfPassword(),
                 5000L, Role.ROLE_EXPERT,expertSave.getCity()

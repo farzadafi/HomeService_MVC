@@ -1,7 +1,7 @@
 package com.example.HomeService_MVC.controller;
 
 
-import com.example.HomeService_MVC.dto.user.CustomerSave;
+import com.example.HomeService_MVC.dto.user.CustomerDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Customer;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class CustomerController {
     }
 
     @PostMapping("/save")
-    public String save(@Valid @ModelAttribute @RequestBody CustomerSave customerSave) {
+    public String save(@Valid @ModelAttribute @RequestBody CustomerDTO customerSave) {
         customerServiceImpel.save(customerSave);
         return "OK";
     }

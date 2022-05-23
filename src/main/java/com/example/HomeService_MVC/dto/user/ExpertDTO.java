@@ -14,7 +14,7 @@ import javax.persistence.Column;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ExpertSave {
+public class ExpertDTO {
     @Column(nullable = false)
     @Name
     private String firstName;

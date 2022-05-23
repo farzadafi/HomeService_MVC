@@ -1,6 +1,6 @@
 package com.example.HomeService_MVC.service.impel;
 
-import com.example.HomeService_MVC.dto.user.CustomerSave;
+import com.example.HomeService_MVC.dto.user.CustomerDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.enumoration.Role;
@@ -25,7 +25,7 @@ public class CustomerServiceImpel implements CustomerService {
 
 
     @Override
-    public void save(CustomerSave customerSave) {
+    public void save(CustomerDTO customerSave) {
         Customer customer = mapper.map(customerSave,Customer.class);
         customer.setBalance(50000L);
         customer.setRole(Role.ROLE_CUSTOMER);

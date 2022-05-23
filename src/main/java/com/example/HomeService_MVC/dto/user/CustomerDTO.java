@@ -12,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CustomerSave {
+public class CustomerDTO {
     @Column(nullable = false)
     @Name
     private String firstName;

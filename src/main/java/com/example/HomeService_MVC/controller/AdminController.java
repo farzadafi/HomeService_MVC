@@ -4,7 +4,7 @@ import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
 import com.example.HomeService_MVC.dto.services.SubServicesDTO;
 import com.example.HomeService_MVC.dto.user.AdminDTO;
-import com.example.HomeService_MVC.dto.user.ExpertSave;
+import com.example.HomeService_MVC.dto.user.ExpertDTO;
 import com.example.HomeService_MVC.dto.user.ExpertViewDTO;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
@@ -56,7 +56,7 @@ public class AdminController {
     }
 
     @PostMapping("/addExpertToSubServices/{subServicesId}")
-    public ResponseEntity<String> addExpertToSubServices(@RequestBody ExpertSave expertSave, @PathVariable Integer subServicesId){
+    public ResponseEntity<String> addExpertToSubServices(@RequestBody ExpertDTO expertSave, @PathVariable Integer subServicesId){
         expertServiceImpel.addExpertToSubService(expertSave.getEmail(),subServicesId);
         return ResponseEntity.ok("OK");
     }
