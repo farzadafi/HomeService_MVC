@@ -1,0 +1,120 @@
+<!doctype html>
+<html dir="rtl" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./../bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="./../js/bootstrap.min.js">
+    <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
+
+    <style>
+
+        @font-face{ font-family: farzad; src: url('./../Entezar/EntezarB4_v2.0.1_.ttf    '); }
+
+        body{
+            font-family: 'farzad',serif;
+        }
+
+        * {box-sizing: border-box}
+
+        body {
+            background-image: linear-gradient(150deg, #0cfaee 50%, #e403d1 100%, #fff01f 100%);
+            min-height: 93vh;
+            height: 1000px;
+            width: 1920px;
+            font-family: farzad, sans-serif;
+        }
+
+        /* Style the buttons inside the tab */
+        .tab button {
+            transition: 0.9s;
+            font-size: 30px;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: #65f2ff;
+        }
+
+        /* Create an active/current "tab button" class */
+        .tab button.active {
+            background-color: rgba(0, 0, 0,0.1);
+        }
+
+        /* Style the tab content */
+        .tabContent {
+            height: 90%;
+            text-align: right;
+            background-color: rgba(0, 0, 0,0.2);
+            border-radius: 10px;
+            border: white groove 1px ;
+        }
+
+        .trans{
+            background-color: rgba(0, 0, 0,0.5);
+            border-radius: 10px;
+            border: white groove 1px ;
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg flex-column navbar-light trans ">
+        <div class="container">
+            <i class="fas fa-user-tie fa-5x text-warning" ></i>
+            <div class="row align-content-start">
+            <div >
+                <a href="https://www.instagram.com/?hl=en" target="_blank" class="fas fa-sign-out-alt fa-3x"></a>
+            </div>
+        </div>
+        </div>
+    </nav>
+
+<div class="tab float-right  ">
+    <button class="tabLinks btn btn-lg py-3 pr-0 pl-0 text-center w-100" onclick="openCity(event, 'London')" id="defaultOpen">گزینه ها</button>
+    <button class="tabLinks btn btn-lg py-3 pr-0 pl-0 text-center w-100" onclick="openCity(event, 'Paris')"  >سارا</button>
+    <button class="tabLinks btn btn-lg py-3 pr-0 pl-0 text-center w-100" onclick="openCity(event, 'Tokyo')">فرشته</button>
+</div>
+
+<div id="London" class="tabContent text-center " style="font-size: 30px">
+    <h1>پنل مدیریت</h1>
+    <p>به پنل مدیریت خوش آمدید</p>
+</div>
+
+<div id="Paris" class="tabContent ">
+    <h3>Paris</h3>
+    <p>Paris is the capital of France.</p>
+</div>
+
+<div id="Tokyo" class="tabContent">
+    <h3>Tokyo</h3>
+    <p>Tokyo is the capital of Japan.</p>
+</div>
+
+<script>
+    function openCity(evt, cityName) {
+        let i, tabContent, tabLinks;
+        tabContent = document.getElementsByClassName("tabContent");
+        for (i = 0; i < tabContent.length; i++) {
+            tabContent[i].style.display = "none";
+        }
+        tabLinks = document.getElementsByClassName("tabLinks");
+        for (i = 0; i < tabLinks.length; i++) {
+            tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+</script>
+
+
+
+</body>
+</html>
