@@ -4,6 +4,7 @@ package com.example.HomeService_MVC.controller;
 import com.example.HomeService_MVC.dto.user.CustomerDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Customer;
+import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.HomeService_MVC.service.impel.CustomerServiceImpel;
@@ -15,14 +16,17 @@ import javax.validation.Valid;
 public class CustomerController {
 
     private final CustomerServiceImpel customerServiceImpel;
+    private final DozerBeanMapper mapper;
 
-    public CustomerController(CustomerServiceImpel customerServiceImpel) {
+    public CustomerController(CustomerServiceImpel customerServiceImpel, DozerBeanMapper mapper) {
         this.customerServiceImpel = customerServiceImpel;
+        this.mapper = mapper;
     }
 
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute @RequestBody CustomerDTO customerSave) {
-        customerServiceImpel.save(customerSave);
+        Customer customer = mapper.map(customerSave,Customer.class);
+        customerServiceImpel.save(customer);
         return "OK";
     }
 

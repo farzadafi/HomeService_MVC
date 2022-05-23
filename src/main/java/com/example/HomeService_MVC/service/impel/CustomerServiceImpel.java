@@ -1,10 +1,8 @@
 package com.example.HomeService_MVC.service.impel;
 
-import com.example.HomeService_MVC.dto.user.CustomerDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.enumoration.Role;
-import org.dozer.DozerBeanMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.HomeService_MVC.repository.CustomerRepository;
@@ -14,22 +12,19 @@ import com.example.HomeService_MVC.service.interfaces.CustomerService;
 public class CustomerServiceImpel implements CustomerService {
 
     private final CustomerRepository customerRepository;
-    private final DozerBeanMapper mapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public CustomerServiceImpel(CustomerRepository customerRepository, DozerBeanMapper mapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public CustomerServiceImpel(CustomerRepository customerRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.customerRepository = customerRepository;
-        this.mapper = mapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
 
     @Override
-    public void save(CustomerDTO customerSave) {
-        Customer customer = mapper.map(customerSave,Customer.class);
+    public void save(Customer customer) {
         customer.setBalance(50000L);
         customer.setRole(Role.ROLE_CUSTOMER);
-        customer.setPassword(bCryptPasswordEncoder.encode(customerSave.getPassword()[0]));
+        customer.setPassword(bCryptPasswordEncoder.encode(customer.getPassword()));
         customerRepository.save(customer);
     }
 
