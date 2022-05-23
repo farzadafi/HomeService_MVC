@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface UserService {
     Optional<User> findByEmail(String email);
+    String login(String email,String password);
 }
