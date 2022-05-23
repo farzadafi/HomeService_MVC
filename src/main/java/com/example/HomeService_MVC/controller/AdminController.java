@@ -27,13 +27,11 @@ public class AdminController {
     private final ExpertServiceImpel expertServiceImpel;
     private final AdminServiceImpel adminServiceImpel;
     private final DozerBeanMapper mapper;
-    private final UserServiceImpel userServiceImpel;
 
-    public AdminController(ExpertServiceImpel expertServiceImpel, AdminServiceImpel adminServiceImpel, DozerBeanMapper mapper, UserServiceImpel userServiceImpel) {
+    public AdminController(ExpertServiceImpel expertServiceImpel, AdminServiceImpel adminServiceImpel, DozerBeanMapper mapper) {
         this.expertServiceImpel = expertServiceImpel;
         this.adminServiceImpel = adminServiceImpel;
         this.mapper = mapper;
-        this.userServiceImpel = userServiceImpel;
     }
 
     @GetMapping("/getAllExpertFalse")
@@ -89,11 +87,4 @@ public class AdminController {
         return ResponseEntity.ok("OK");
     }
 
-    @PostMapping("/findByEmail")
-    public String findByEmail(@RequestBody String email){
-        if(userServiceImpel.findByEmail(email).isEmpty())
-            return "OK";
-        else
-            return " ";
-    }
 }
