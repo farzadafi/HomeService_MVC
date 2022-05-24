@@ -26,9 +26,9 @@ public class ServicesController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<ServicesDTO> save(@Valid @ModelAttribute @RequestBody ServicesDTO servicesSave){
-        servicesServiceImpel.save(servicesSave);
-        return ResponseEntity.ok(servicesSave);
+    public String save(@Valid @ModelAttribute @RequestBody ServicesDTO servicesDTO){
+        servicesServiceImpel.save(servicesDTO);
+        return "OK";
     }
 
     @GetMapping("/getAllServices")
