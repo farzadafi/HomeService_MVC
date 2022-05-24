@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/services")
 public class ServicesController {
 
@@ -25,7 +26,7 @@ public class ServicesController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<ServicesDTO> save(@Valid @RequestBody ServicesDTO servicesSave){
+    public ResponseEntity<ServicesDTO> save(@Valid @ModelAttribute @RequestBody ServicesDTO servicesSave){
         servicesServiceImpel.save(servicesSave);
         return ResponseEntity.ok(servicesSave);
     }
