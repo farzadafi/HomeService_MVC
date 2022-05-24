@@ -4,8 +4,11 @@ package com.example.HomeService_MVC.controller;
 import com.example.HomeService_MVC.dto.user.CustomerDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Customer;
+import com.example.HomeService_MVC.model.base.User;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.example.HomeService_MVC.service.impel.CustomerServiceImpel;
 
@@ -36,16 +39,11 @@ public class CustomerController {
         return ResponseEntity.ok("OK");
     }
 
-    /*
     @PreAuthorize("hasRole('EXPERT')")
     //@PreAuthorize("hasAnyRole('EXPERT','ADMIN')")
-    //@PreAuthorize("hasAuthority('EXPERT')")
-    @GetMapping("/hello")
-    public String farzad(Authentication authentication){
-        //return principal.getName();
-        Expert user = (Expert) authentication.getPrincipal();
+    @GetMapping("/security")
+    public String security(Authentication authentication){
+        User user = (User) authentication.getPrincipal();
         return user.toString();
     }
-     */
-
 }
