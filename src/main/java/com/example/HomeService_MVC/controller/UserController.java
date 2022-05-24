@@ -1,6 +1,5 @@
 package com.example.HomeService_MVC.controller;
 
-import com.example.HomeService_MVC.dto.user.LoginDTO;
 import com.example.HomeService_MVC.service.impel.UserServiceImpel;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,11 +19,5 @@ public class UserController {
             return "OK";
         else
             return " ";
-    }
-
-    @PostMapping("/login")
-    public String login(@ModelAttribute @RequestBody LoginDTO loginDTO){
-        System.out.println("farzad");
-        return userServiceImpel.login(loginDTO.getEmail(),loginDTO.getPassword());
     }
 }
