@@ -23,6 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.userRepository = userRepository;
     }
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -30,7 +31,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .permitAll()
                 .and()
-                .formLogin();
+                .formLogin()
+                //.successHandler(successHandler)
+                //.loginPage("/templates/login.html")
+                .permitAll();
     }
 
     @Override
@@ -47,6 +51,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/customer/save","/admin/findByEmail","/user/login");
+        web.ignoring().antMatchers("/customer/save","/admin/findByEmail","/services/save","/**");
     }
 }
