@@ -88,8 +88,6 @@
         let formData = new FormData();
         formData.append("email", $("#email").val());
         formData.append("password", $("#password").val());
-        alert(formData.get("email"))
-        alert(formData.get("password"))
 
         $.ajax({
             url: "http://localhost:8080/user/login",
@@ -136,6 +134,7 @@
                 Swal.fire({
                     title: 'خوش آمدید!',
                     text: 'در حال انتقال به پنل کاربری',
+                    type: 'success',
                     confirmButtonText: 'Cool',
                     didOpen: function () {
                         Swal.showLoading()
@@ -144,7 +143,7 @@
                         }, 3000)
                     }
                 })
-                window.location = "https://www.google.com/";
+                window.location = "./../panelPage/AdminPanel.html";
             }
             else if(msg === "EXPERT"){
                 $('#email').val('');
@@ -179,12 +178,11 @@
                 window.location = "https://www.bing.com/";
             }
             else {
-                if(msg === "ERROR") {
                     $('#email').val('');
                     $('#password').val('');
                     Swal.fire({
                         title: 'خطا!',
-                        text: 'خطا ناشناخته!!!',
+                        text: 'لطفا دوباره امتحان کنید!',
                         confirmButtonText: 'Cool',
                         didOpen: function () {
                             Swal.showLoading()
@@ -193,7 +191,6 @@
                             }, 3000)
                         }
                     })
-                }
             }
         })
             .fail(function() {
