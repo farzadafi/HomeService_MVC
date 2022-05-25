@@ -214,6 +214,11 @@
                     cache: false,
                 }).done(function(msg) {
                     if(msg === "OK") {
+                        $(':input','#formExpert')
+                            .not(':button, :submit, :reset, :hidden')
+                            .val('')
+                            .removeAttr('checked')
+                            .removeAttr('selected');
                         Swal.fire({
                             title: 'ثبت موفق!',
                             text: 'در حال منتقل شدن به صفحه ورود',
