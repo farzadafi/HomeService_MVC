@@ -86,7 +86,7 @@
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'select')" id="defaultOpen">گزینه ها</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'addService')"  >افزودن سرویس</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'subService')">افزودن زیر سرویس</button>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">تایید متخصص</button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'confirmExpert')">تایید متخصص</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">افزودن متخصص به زیر سرویس</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">حذف متخصص از زیر سرویس</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">فیلتر کردن کاربران</button>
@@ -143,7 +143,19 @@
                 </div>
     </form>
     <!------>
-
+    <div class="text-center">
+        <label for="confirmExpert">
+            <select id="confirmExpert" name="confirmExpert" class="form-select mr-5 w-100 form-select-lg mb-3 mt-5">
+                <option class="text-center " >لطفا متخصص مورد نظر را برای تایید انتخاب کنید</option>
+            </select>
+        </label>
+    </div>
+    <!------>
+    <!------>
+    <!------>
+    <!------>
+    <!------>
+    <!------>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
     function openCity(evt, cityName) {
@@ -225,9 +237,6 @@
                             $('#subServiceId').val("");
                     });
             },
-            error: function (errormessage) {
-                alert(errormessage.responseText);
-            }
         });
     });
 
@@ -288,6 +297,66 @@
                     }
                 })
             })
+    });
+
+    $("#confirmExpert").one('click',function() {
+        $.ajax({
+            url: "http://localhost:8080/admin/getAllExpertFalse",
+            type: "GET",
+            dataType: "json",
+            success: function (result)
+            {
+                let toAppend = '';
+                $.each(result,function(i,o){
+                    toAppend += '<option>'+o.id + " " +o.email + " " + o.firstName + " " + o.lastName + '</option>';
+                });
+                $('#confirmExpert').append(toAppend);
+
+                $("#confirmExpert").change(function(){
+                    if( $(this).val() !== "لطفا متخصص مورد نظر را برای تایید انتخاب کنید"){
+                        $.ajax({
+                            url: "http://localhost:8080/admin/confirmExpert/" + $(this).val()[0],
+                            type: "GET",
+                            dataType: 'text',
+                        }).done(function(msg) {
+                            if (msg === "OK") {
+                                $(':input', '#subService')
+                                    .not(':button, :submit, :reset, :hidden')
+                                    .val('')
+                                    .removeAttr('checked')
+                                    .removeAttr('selected');
+                                Swal.fire({
+                                    title: 'تایید موفق!',
+                                    confirmButtonText: 'Cool',
+                                    didOpen: function () {
+                                        Swal.showLoading()
+                                        setTimeout(function () {
+                                            Swal.close()
+                                        }, 3000)
+                                    }
+                                })
+                                location.reload(true);
+                            }
+                            else
+                                alert(msg)
+                        })
+                            .fail(function() {
+                                Swal.fire({
+                                    title: 'خطا!',
+                                    text: 'لطفا دوباره امتحان کنید',
+                                    confirmButtonText: 'Cool',
+                                    didOpen: function () {
+                                        Swal.showLoading()
+                                        setTimeout(function () {
+                                            Swal.close()
+                                        }, 2000)
+                                    }
+                                })
+                            })
+                    }
+                });
+            },
+        });
     });
 
 </script>
