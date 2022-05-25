@@ -50,4 +50,9 @@ public class ExpertController {
         }
         return expert;
     }
+
+    public ExpertDTO convertExpertToExpertDTO(Expert expert){
+        return new ExpertDTO(expert.getId(),expert.getFirstName(),expert.getLastName(),expert.getEmail()
+                            ,expert.getPassword(),expert.getConfPassword(),expert.getCity(),null);
+    }
 }
