@@ -15,6 +15,8 @@ import javax.persistence.Column;
 @NoArgsConstructor
 @Builder
 public class ExpertDTO {
+    private Integer id;
+
     @Column(nullable = false)
     @Name
     private String firstName;
