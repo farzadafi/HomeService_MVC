@@ -6,8 +6,8 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="./../bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="./../js/bootstrap.min.js">
+    <link rel="stylesheet" href="./../bootstrap/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="./../js/bootstrap.min.js" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -85,7 +85,7 @@
 <div class="tab float-right ">
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'select')" id="defaultOpen">گزینه ها</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'addService')"  >افزودن سرویس</button>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">افزودن زیر سرویس</button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'subService')">افزودن زیر سرویس</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">تایید متخصص</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">افزودن متخصص به زیر سرویس</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">حذف متخصص از زیر سرویس</button>
@@ -93,31 +93,58 @@
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">تعویض رمز</button>
 </div>
 
+    <!------>
 <div id="select" class="tabContent text-center " style="font-size: 30px">
     <h1>پنل مدیریت</h1>
     <p>به پنل مدیریت خوش آمدید</p>
 </div>
 
+    <!------>
 <div id="addService" class="tabContent text-center">
     <p class="text-center font-weight-bold text-justify text-white"></p>
-    <div id="formExpert">
+    <div >
         <label for="serviceName"><br>
             <input class="rounded-pill border-0 p-lg-5 " id="serviceName" type="text" name="serviceName" pattern=".{3,}" title="at least 3 word!" placeholder="لطفا نام سرویس را وارد کنید" required><br>
         </label>
         <div class="text-center">
-            <button class="rounded-pill btn btn-info text-justify p-lg-5 font-italic mt-5 font-weight-bold submit"  id="submitServiceName" >بت </button>
+            <button class="rounded-pill btn btn-info text-justify p-lg-5 font-italic mt-5 font-weight-bold submit"  id="submitServiceName" >ثبت</button>
         </div>
-
-
     </div>
 </div>
 
-<div id="Tokyo" class="tabContent">
-    <h3>Tokyo</h3>
-    <p>Tokyo is the capital of Japan.</p>
-</div>
+    <!------>
+    <form id="subService" class="tabContent text-center">
+        <p class="text-center font-weight-bold text-justify text-white"></p>
+        <div >
+            <label for="addSubService">
+                <select id="addSubService" name="service" class="form-select mr-5 form-select-lg mb-3 mt-5">
+                    <option >یک سرویس انتخاب کنید</option>
+            </select>
+            </label>
+        </div>
+                <div>
+                <label for="subServiceName"><br>
+                    <input class="rounded-pill border-0 p-lg-5 text-center " id="subServiceName" type="text" name="subServicesName" pattern=".{3,}" title="at least 3 word!" placeholder="لطفا نام سرویس زیر را وارد کنید" required><br>
+                </label>
+                </div>
+                <div>
+                <label for="subServiceDescription"><br>
+                    <input class="rounded-pill border-0 p-lg-5 " id="subServiceDescription" type="text" name="description" pattern=".{3,}" title="at least 3 word!" placeholder="لطفا توضیح خود را وارد کنید" required><br>
+                </label>
+                </div>
+                <label for="subServicePrice"><br>
+                    <input class="rounded-pill border-0 p-lg-5 " id="subServicePrice" type="text" pattern="^[0-9]" name="minimalPrice" title="enter positive number" placeholder="قیمت پایه را وارد کنید" required><br>
+                </label>
+                <label>
+                    <input type="text" id="subServiceId" name="id" hidden required pattern=".{1}">
+                </label>
+                <div class="text-center">
+                    <button class="rounded-pill btn btn-info text-justify p-lg-5 font-italic mt-5 font-weight-bold submit"  id="submitSubServiceName" >ثبت</button>
+                </div>
+    </form>
+    <!------>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
     function openCity(evt, cityName) {
         let i, tabContent, tabLinks;
@@ -177,9 +204,92 @@
                 })
             })
     });
+
+    $("#addSubService").one('click',function() {
+        $.ajax({
+            url: "http://localhost:8080/services/getAllServices",
+            type: "GET",
+            dataType: "json",
+            success: function (result)
+            {
+                let toAppend = '';
+                $.each(result,function(i,o){
+                    toAppend += '<option>'+o.id + " " + o.services +'</option>';
+                });
+                $('#addSubService').append(toAppend);
+
+                    $("#addSubService").change(function(){
+                        if( $(this).val() !== "یک سرویس انتخاب کنید")
+                            $('#subServiceId').val($(this).val()[0]);
+                        else
+                            $('#subServiceId').val("");
+                    });
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    });
+
+    $("#submitSubServiceName").on('click',function() {
+        let id = $("#subServiceId").val();
+        if(id === ""){
+            Swal.fire({
+                title: 'لطفا یک سرویس انتخاب کنید',
+                confirmButtonText: 'بستن',
+            });
+            return;
+        }
+        let formData = new FormData();
+        formData.append("id", id);
+        formData.append("subServicesName", $("#subServiceName").val());
+        formData.append("description", $("#subServiceDescription").val());
+        formData.append("minimalPrice", $("#subServicePrice").val());
+
+        $.ajax({
+            url: "http://localhost:8080/subServices/save",
+            data: formData,
+            type: "POST",
+            contentType: false,
+            dataType: 'text',
+            processData: false,
+            cache: false,
+        }).done(function(msg) {
+            if(msg === "OK") {
+                $(':input','#subService')
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
+                Swal.fire({
+                    title: 'ثبت موفق!',
+                    confirmButtonText: 'Cool',
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 3000)
+                    }
+                })
+            }
+            else
+                alert(msg)
+        })
+            .fail(function() {
+                Swal.fire({
+                    title: 'خطا!',
+                    text: 'لطفا دوباره امتحان کنید',
+                    confirmButtonText: 'Cool',
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            })
+    });
+
 </script>
-
-
-
 </body>
 </html>
