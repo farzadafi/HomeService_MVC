@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/subServices")
 public class SubServicesController {
 
@@ -30,10 +31,10 @@ public class SubServicesController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<SubServicesDTO> saveSubServices(@Valid @RequestBody SubServicesDTO subServicesDTO){
+    public String save(@Valid @ModelAttribute @RequestBody SubServicesDTO subServicesDTO){
         Services services = servicesServiceImpel.findById(subServicesDTO.getId()).orElseThrow(() -> new ServicesNotFoundException("This services not found!"));
         subServicesServiceImpel.save(subServicesDTO,services);
-        return ResponseEntity.ok(subServicesDTO);
+        return "OK";
     }
 
     @GetMapping("/getAllSubServices/{servicesId}")
