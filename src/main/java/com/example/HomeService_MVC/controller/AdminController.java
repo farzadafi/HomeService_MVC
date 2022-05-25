@@ -5,7 +5,6 @@ import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundExcep
 import com.example.HomeService_MVC.dto.services.SubServicesDTO;
 import com.example.HomeService_MVC.dto.user.AdminDTO;
 import com.example.HomeService_MVC.dto.user.ExpertDTO;
-import com.example.HomeService_MVC.dto.user.ExpertViewDTO;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.service.impel.AdminServiceImpel;
@@ -26,30 +25,32 @@ public class AdminController {
     private final ExpertServiceImpel expertServiceImpel;
     private final AdminServiceImpel adminServiceImpel;
     private final DozerBeanMapper mapper;
+    private final ExpertController expertController;
 
-    public AdminController(ExpertServiceImpel expertServiceImpel, AdminServiceImpel adminServiceImpel, DozerBeanMapper mapper) {
+    public AdminController(ExpertServiceImpel expertServiceImpel, AdminServiceImpel adminServiceImpel, DozerBeanMapper mapper, ExpertController expertController) {
         this.expertServiceImpel = expertServiceImpel;
         this.adminServiceImpel = adminServiceImpel;
         this.mapper = mapper;
+        this.expertController = expertController;
     }
 
     @GetMapping("/getAllExpertFalse")
-    public ResponseEntity<List<ExpertViewDTO>> getAllExpertFalse(){
+    public ResponseEntity<List<ExpertDTO>> getAllExpertFalse(){
         List<Expert> expertList = expertServiceImpel.findAllByAcceptedFalse();
         if(expertList == null || expertList.size() == 0)
             throw new ExpertNotFoundException("unfortunately any expert doesn't register until now!");
-        List<ExpertViewDTO> dtoList = new ArrayList<>();
+        List<ExpertDTO> dtoList = new ArrayList<>();
         for (Expert e:expertList
         ) {
-            dtoList.add(mapper.map(e,ExpertViewDTO.class));
+            dtoList.add(expertController.convertExpertToExpertDTO(e));
         }
         return ResponseEntity.ok(dtoList);
     }
 
     @GetMapping("/confirmExpert/{expertId}")
-    public ResponseEntity<String> confirmExpert(@PathVariable("expertId") Integer expertId) {
+    public String confirmExpert(@PathVariable("expertId") Integer expertId) {
         expertServiceImpel.ExpertAccept(expertId);
-        return ResponseEntity.ok("OK");
+        return "OK";
     }
 
     @PostMapping("/addExpertToSubServices/{subServicesId}")
