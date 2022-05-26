@@ -2,8 +2,11 @@ package com.example.HomeService_MVC.controller;
 
 
 import com.example.HomeService_MVC.dto.user.CustomerDTO;
+import com.example.HomeService_MVC.dto.user.DynamicSearch;
+import com.example.HomeService_MVC.dto.user.ExpertDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Customer;
+import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.base.User;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import com.example.HomeService_MVC.service.impel.CustomerServiceImpel;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/customer")
@@ -45,5 +50,16 @@ public class CustomerController {
     public String security(Authentication authentication){
         User user = (User) authentication.getPrincipal();
         return user.toString();
+    }
+
+    @PostMapping(value = "/gridSearch")
+    public ResponseEntity<List<CustomerDTO>> gridSearch(@ModelAttribute @RequestBody DynamicSearch dynamicSearch) {
+        List<Customer> customerList = customerServiceImpel.filterCustomer(dynamicSearch);
+        List<CustomerDTO> dtoList = new ArrayList<>();
+        for (Customer s:customerList
+        ) {
+            dtoList.add(mapper.map(s,CustomerDTO.class));
+        }
+        return ResponseEntity.ok(dtoList);
     }
 }
