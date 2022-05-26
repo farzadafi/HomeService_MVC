@@ -7,7 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="./../bootstrap/bootstrap.min.css" crossorigin="anonymous">
-    <link rel="stylesheet" href="./../js/bootstrap.min.js" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -87,7 +86,7 @@
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'addService')"  >افزودن سرویس</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'subService')">افزودن زیر سرویس</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'confirmExpertTab')">تایید متخصص</button>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">افزودن متخصص به زیر سرویس</button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'addExpertToSubServices')">افزودن متخصص به زیر سرویس</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">حذف متخصص از زیر سرویس</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">فیلتر کردن کاربران</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">تعویض رمز</button>
@@ -151,6 +150,32 @@
         </label>
     </div>
     <!------>
+    <div class="text-center tabContent " id="addExpertToSubServices">
+        <div>
+            <label for="emailExpertForAdd"><br>
+                <input class="rounded-pill border-0 p-lg-5 " id="emailExpertForAdd" type="text" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="emailExpertForAdd" title="a@email.com" placeholder="ایمیل متخصص را وارد کنید" required><br>
+            </label>
+        </div>
+        <div>
+        <label for="addExpertService">
+            <select id="addExpertService" name="addExpert" class="form-select mr-5 w-100 form-select-lg mb-3 mt-5">
+                <option class="text-center " >لطفا سرویس را انتخاب کنید</option>
+            </select>
+        </label>
+        </div>
+        <div>
+        <label for="addExpertSubService">
+            <select id="addExpertSubService" name="addExpert" class="form-select mr-5 w-100 form-select-lg mb-3 mt-5">
+                <option class="text-center " >لطفا زیر سرویس را انتخاب کنید</option>
+            </select>
+        </label>
+        </div>
+
+        <div class="text-center">
+            <button class="rounded-pill btn btn-info text-justify p-lg-5 font-italic mt-5 font-weight-bold submit"  id="submitAddExpert" >ثبت</button>
+        </div>
+
+    </div>
     <!------>
     <!------>
     <!------>
@@ -358,6 +383,87 @@
             },
         });
     });
+
+    $("#addExpertService").one('click',function() {
+        $.ajax({
+            url: "http://localhost:8080/services/getAllServices",
+            type: "GET",
+            dataType: "json",
+            success: function (result)
+            {
+                let toAppend = '';
+                $.each(result,function(i,o){
+                    toAppend += '<option>'+o.id + " " + o.services +'</option>';
+                });
+                $('#addExpertService').append(toAppend);
+
+                $("#addExpertService").change(function(){
+                    $('#addExpertSubService')
+                        .find('option')
+                        .remove()
+                        .end()
+                        .append('<option >لطفا زیر سرویس را انتخاب کنید</option>')
+                    if( $(this).val() !== "یک سرویس انتخاب کنید") {
+                        $.ajax({
+                            url: "http://localhost:8080/subServices/getAllSubServices/" + $(this).val()[0],
+                            type: "GET",
+                            dataType: "json",
+                            success: function (result) {
+                                let toAppend = '';
+                                $.each(result, function (i, o) {
+                                    toAppend += '<option>' + o.id + " " + o.subServicesName + '</option>';
+                                });
+                                $('#addExpertSubService').append(toAppend);
+
+                                $("#addExpertSubService").change(function (){
+                                    if( $(this).val() !== "لطفا زیر سرویس را انتخاب کنید"){
+                                        let form = new FormData();
+                                        form.append("id",$(this).val()[0]);
+                                        form.append("email",$("#emailExpertForAdd").val());
+                                        $.ajax({
+                                            url: "http://localhost:8080/admin/addExpertToSubServices",
+                                            type: "POST",
+                                            processData: false,
+                                            contentType: false,
+                                            cache:false,
+                                            data: form,
+                                            dataType: "text",
+                                        }).done(function (msg){
+                                            if (msg === "OK") {
+                                                $(':input', '#addExpertToSubServices')
+                                                    .not(':button, :submit, :reset, :hidden')
+                                                    .val('')
+                                                    .removeAttr('checked')
+                                                    .removeAttr('selected');
+                                                Swal.fire({
+                                                    title: 'تایید موفق!',
+                                                    confirmButtonText: 'Cool',
+                                                    didOpen: function () {
+                                                        Swal.showLoading()
+                                                        setTimeout(function () {
+                                                            Swal.close()
+                                                        }, 3000)
+                                                    }
+                                                })
+                                                location.reload(true);
+                                            }
+                                            }).fail(function() {
+                                            Swal.fire({
+                                                title: 'خطا!',
+                                                text: 'لطفا دوباره امتحان کنید',
+                                                confirmButtonText: 'Cool',
+                                            })
+                                        })
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            },
+        });
+    });
+
 
 </script>
 </body>
