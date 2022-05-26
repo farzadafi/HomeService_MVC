@@ -3,10 +3,8 @@ package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.dto.user.CustomerDTO;
 import com.example.HomeService_MVC.dto.user.DynamicSearch;
-import com.example.HomeService_MVC.dto.user.ExpertDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Customer;
-import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.base.User;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
@@ -61,5 +59,11 @@ public class CustomerController {
             dtoList.add(mapper.map(s,CustomerDTO.class));
         }
         return ResponseEntity.ok(dtoList);
+    }
+
+    @GetMapping("/showBalance")
+    public String showBalance(){
+        Customer customer = customerServiceImpel.getById(3);
+        return String.valueOf(customer.getBalance());
     }
 }

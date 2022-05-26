@@ -3,6 +3,7 @@ package com.example.HomeService_MVC.controller;
 import com.example.HomeService_MVC.dto.user.DynamicSearch;
 import com.example.HomeService_MVC.dto.user.ExpertDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
+import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.enumoration.Role;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
@@ -64,6 +65,12 @@ public class ExpertController {
         }
         System.out.println(expertList.size());
         return ResponseEntity.ok(dtoList);
+    }
+
+    @GetMapping("/showBalance")
+    public String showBalance(){
+        Expert expert = expertServiceImpel.getById(3);
+        return String.valueOf(expert.getBalance());
     }
 
     public ExpertDTO convertExpertToExpertDTO(Expert expert){
