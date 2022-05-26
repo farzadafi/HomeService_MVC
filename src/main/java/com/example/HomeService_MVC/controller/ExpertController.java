@@ -1,5 +1,6 @@
 package com.example.HomeService_MVC.controller;
 
+import com.example.HomeService_MVC.dto.user.DynamicSearch;
 import com.example.HomeService_MVC.dto.user.ExpertDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Expert;
@@ -12,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -49,6 +52,18 @@ public class ExpertController {
             LOGGER.warn(e.getMessage());
         }
         return expert;
+    }
+
+    @PostMapping(value = "/gridSearch")
+    public ResponseEntity<List<ExpertDTO>> gridSearch(@ModelAttribute @RequestBody DynamicSearch dynamicSearch) {
+        List<Expert> expertList = expertServiceImpel.filterExpert(dynamicSearch);
+        List<ExpertDTO> dtoList = new ArrayList<>();
+        for (Expert e:expertList
+             ) {
+            dtoList.add(convertExpertToExpertDTO(e));
+        }
+        System.out.println(expertList.size());
+        return ResponseEntity.ok(dtoList);
     }
 
     public ExpertDTO convertExpertToExpertDTO(Expert expert){
