@@ -5,6 +5,7 @@ import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundExcep
 import com.example.HomeService_MVC.dto.services.SubServicesDTO;
 import com.example.HomeService_MVC.dto.user.AdminDTO;
 import com.example.HomeService_MVC.dto.user.ExpertDTO;
+import com.example.HomeService_MVC.dto.user.ExpertSubServicesDTO;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.service.impel.AdminServiceImpel;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/admin")
 public class AdminController {
 
@@ -53,10 +55,10 @@ public class AdminController {
         return "OK";
     }
 
-    @PostMapping("/addExpertToSubServices/{subServicesId}")
-    public ResponseEntity<String> addExpertToSubServices(@RequestBody ExpertDTO expertSave, @PathVariable Integer subServicesId){
-        expertServiceImpel.addExpertToSubService(expertSave.getEmail(),subServicesId);
-        return ResponseEntity.ok("OK");
+    @PostMapping("/addExpertToSubServices")
+    public String addExpertToSubServices(@ModelAttribute @RequestBody ExpertSubServicesDTO dto){
+        expertServiceImpel.addExpertToSubService(dto.getEmail(),dto.getId());
+        return "OK";
     }
 
     @GetMapping("/showExpertSubServices/{expertEmail}")
