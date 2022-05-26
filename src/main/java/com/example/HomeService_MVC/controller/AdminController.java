@@ -77,10 +77,10 @@ public class AdminController {
         }
     }
 
-    @GetMapping("/removeExpertSubServices/{expertEmail}/{servicesId}")
-    public ResponseEntity<String> removeExpertSubServices(@PathVariable("expertEmail") String expertEmail, @PathVariable("servicesId") Integer servicesId){
-        expertServiceImpel.removeExpertSubServices(expertEmail,servicesId);
-        return ResponseEntity.ok("OK");
+    @PostMapping("/removeExpertSubServices")
+    public String removeExpertSubServices(@ModelAttribute @RequestBody ExpertSubServicesDTO dto){
+        expertServiceImpel.removeExpertSubServices(dto.getEmail(),dto.getId());
+        return "OK";
     }
 
     @PutMapping("/updateAdmin")
