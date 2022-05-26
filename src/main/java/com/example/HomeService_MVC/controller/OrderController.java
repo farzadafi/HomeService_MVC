@@ -2,6 +2,7 @@ package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.controller.exception.OrderNotFoundException;
 import com.example.HomeService_MVC.dto.order.OrderDTO;
+import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.Offer;
 import com.example.HomeService_MVC.model.Order;
@@ -121,5 +122,40 @@ public class OrderController {
             dtoList.add(mapper.map(o,OrderDTO.class));
         }
         return dtoList;
+    }
+    @PostMapping("/showHistory/{status}")
+    public ResponseEntity<List<OrderDTO>> showHistory(@PathVariable("status") String status) {
+        List<Order> orderList = new ArrayList<>();
+        switch (status){
+            case "suggestion" :
+                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(2,OrderStatus.EXPERT_SUGGESTION);
+                break;
+
+            case "selection" :
+                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(2,OrderStatus.EXPERT_SELECTION);
+                break;
+
+            case "waiting" :
+                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(2,OrderStatus.WAITING_FOR_EXPERT);
+                break;
+
+            case "started" :
+                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(2,OrderStatus.STARTED);
+                break;
+
+            case "done" :
+                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(2,OrderStatus.DONE);
+                break;
+
+            case "paid" :
+                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(2,OrderStatus.PAID);
+                break;
+        }
+        if(orderList == null )
+            return null;
+        else {
+            List<OrderDTO> dtoList = orderToOrderDTO(orderList);
+            return ResponseEntity.ok(dtoList);
+        }
     }
 }
