@@ -87,7 +87,7 @@
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'subService')">افزودن زیر سرویس</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'confirmExpertTab')">تایید متخصص</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'addExpertToSubServices')">افزودن متخصص به زیر سرویس</button>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">حذف متخصص از زیر سرویس</button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'removeExpertToSubServices')">حذف متخصص از زیر سرویس</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">فیلتر کردن کاربران</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">تعویض رمز</button>
 </div>
@@ -174,9 +174,22 @@
         <div class="text-center">
             <button class="rounded-pill btn btn-info text-justify p-lg-5 font-italic mt-5 font-weight-bold submit"  id="submitAddExpert" >ثبت</button>
         </div>
-
     </div>
     <!------>
+    <div class="text-center tabContent " id="removeExpertToSubServices">
+        <div>
+            <label for="emailExpertForRemove"><br>
+                <input class="rounded-pill border-0 p-lg-5 " id="emailExpertForRemove" type="text" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" name="emailExpertForRemove" title="a@email.com" placeholder="ایمیل متخصص را وارد کنید" required><br>
+            </label>
+        </div>
+        <div>
+            <label for="removeExpertService">
+                <select id="removeExpertService" name="removeExpert" class="form-select mr-5 w-100 form-select-lg mb-3 mt-5">
+                    <option class="text-center " >لطفا سرویس را انتخاب کنید</option>
+                </select>
+            </label>
+        </div>
+    </div>
     <!------>
     <!------>
     <!------>
@@ -461,6 +474,72 @@
                     }
                 });
             },
+        });
+    });
+
+    $("#emailExpertForRemove").blur('click',function() {
+        $.ajax({
+            url: "http://localhost:8080/admin/showExpertSubServices/" + $(this).val(),
+            type: "GET",
+            dataType: "json",
+            success: function (result) {
+                if(result.length === 0){
+                    alert("this expert doesn't have any services")
+                }else {
+                    let toAppend = '';
+                    $.each(result, function (i, o) {
+                        toAppend += '<option>' + o.id + " " + o.subServicesName + '</option>';
+                    });
+                    $('#removeExpertService').append(toAppend);
+
+                    $("#removeExpertService").change(function () {
+                        if ($(this).val() !== "لطفا سرویس را انتخاب کنید") {
+                            let form = new FormData();
+                            form.append("id", $(this).val()[0]);
+                            form.append("email", $("#emailExpertForRemove").val());
+                            $.ajax({
+                                url: "http://localhost:8080/admin/removeExpertSubServices",
+                                type: "POST",
+                                processData: false,
+                                contentType: false,
+                                cache: false,
+                                data: form,
+                                dataType: "text",
+                            }).done(function (msg){
+                                if (msg === "OK") {
+                                    $(':input', '#removeExpertService')
+                                        .not(':button, :submit, :reset, :hidden')
+                                        .val('')
+                                        .removeAttr('checked')
+                                        .removeAttr('selected');
+                                    Swal.fire({
+                                        title: 'حذف موفق!',
+                                        confirmButtonText: 'Cool',
+                                        didOpen: function () {
+                                            Swal.showLoading()
+                                            setTimeout(function () {
+                                                Swal.close()
+                                            }, 3000)
+                                        }
+                                    })
+                                    location.reload(true);
+                                }
+                            }).fail(function() {
+                                Swal.fire({
+                                    title: 'خطا!',
+                                    text: 'لطفا دوباره امتحان کنید',
+                                    confirmButtonText: 'بستن',
+                                })
+                            })
+                        }
+                    });
+                }
+            },error : function (){
+                Swal.fire({
+                    text: 'این متخصص هیچ سرویس فعالی ندارد',
+                    confirmButtonText: 'Cool',
+                })
+            }
         });
     });
 
