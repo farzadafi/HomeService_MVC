@@ -89,7 +89,7 @@
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'addExpertToSubServices')">افزودن متخصص به زیر سرویس</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'removeExpertToSubServices')">حذف متخصص از زیر سرویس</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">فیلتر کردن کاربران</button>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">تعویض رمز</button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'changePassword')">تعویض رمز</button>
 </div>
 
     <!------>
@@ -190,8 +190,23 @@
             </label>
         </div>
     </div>
+    <form class="text-center tabContent" id="changePassword">
+        <div>
+        <label for="password"><br>
+            <input class="rounded-pill  border-0 p-lg-5 password" type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="lowerCase+UpperCase+space+symbol+number+8char" placeholder="رمز جدید"><br>
+        </label>
+        </div>
+        <div>
+        <label for="confPassword"><br>
+            <input class="rounded-pill  border-0 p-lg-5 confPassword" type="password" name="confPassword" id="confPassword"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="lowerCase+UpperCase+space+symbol+number+8char" placeholder="تکرار رمز"><br>
+        </label>
+        </div>
+        <div class="text-center">
+            <button class="rounded-pill btn btn-info text-justify p-lg-5 font-italic mt-5 font-weight-bold submit"  id="submitChangePassword" >ثبت</button>
+        </div>
+    </form>
     <!------>
-    <!------>
+
     <!------>
     <!------>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -541,6 +556,77 @@
                 })
             }
         });
+    });
+
+    $('#submitChangePassword').click(function(event){
+
+        let password = $('.password').val();
+        let len = password.length;
+
+        if(len < 1) {
+            event.preventDefault();
+            alert("لطفا رمز ها را وارد کنید");
+        }
+
+        if( password !== $('.confPassword').val()) {
+            alert("لطفا رمز های یکسانی وارد کنید");
+            event.preventDefault();
+            $('#password').val('');
+            $('#confPassword').val('');
+        }
+    });
+
+    $("#submitChangePassword").on('click',function() {
+        let formData = new FormData();
+        formData.append("password", $("#password").val());
+        formData.append("confPassword", $("#confPassword").val());
+
+        $.ajax({
+            url: "http://localhost:8080/admin/updateAdmin",
+            data: formData,
+            type: "POST",
+            contentType: false,
+            dataType: 'text',
+            processData: false,
+            cache: false,
+        }).done(function(msg) {
+            alert(msg)
+            if(msg === "OK") {
+                $(':input','#changePassword')
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
+                Swal.fire({
+                    text: 'تغییر موفق',
+                    type: 'success',
+                    confirmButtonText: 'Cool',
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 3000)
+                    }
+                })
+                location.reload(true);
+            }
+            else
+                alert(msg)
+        })
+            .fail(function() {
+                Swal.fire({
+                    title: 'خطا!',
+                    text: 'لطفا دوباره امتحان کنید',
+                    type: 'success',
+                    confirmButtonText: 'Cool',
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            })
     });
 
 
