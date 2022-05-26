@@ -6,6 +6,7 @@ import com.example.HomeService_MVC.dto.services.SubServicesDTO;
 import com.example.HomeService_MVC.dto.user.AdminDTO;
 import com.example.HomeService_MVC.dto.user.ExpertDTO;
 import com.example.HomeService_MVC.dto.user.ExpertSubServicesDTO;
+import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.service.impel.AdminServiceImpel;
@@ -83,10 +84,10 @@ public class AdminController {
         return "OK";
     }
 
-    @PutMapping("/updateAdmin")
-    public ResponseEntity<String> updateAdmin(@Valid @RequestBody AdminDTO adminDTO){
-        adminServiceImpel.updateAdmin(adminDTO);
-        return ResponseEntity.ok("OK");
+    @PostMapping("/updateAdmin")
+    public String updateAdmin(@Valid @ModelAttribute @RequestBody PasswordDTO passwordDTO){
+        adminServiceImpel.updateAdmin(passwordDTO);
+        return "OK";
     }
 
 }
