@@ -5,61 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="../js/bootstrap.min.js">
+    <link rel="stylesheet" href="../../webPage/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../../webPage/js/bootstrap.min.js">
     <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.14/sweetalert2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.14/sweetalert2.css"></script>
-
-
-    <style>
-
-        body {
-            background-image: linear-gradient(150deg, #0cfaee 0%, #e403d1 100%, #fff01f 100%);
-            min-height: 93vh;
-            height: 1000px;
-            width: 1820px;
-        }
-
-        .mainDiv{
-            height: 90%;
-            border-radius: 90% 90% 90% 90%;
-            transform: translate(-50%, -50%);
-            padding: 0 0 0 15%;
-            position: absolute;
-            left: 50%;
-            top:50%;
-            background-color: rgba(0, 0, 0,0.3);
-        }
-
-        @font-face{ font-family: farzad; src: url('../Entezar/EntezarB4_v2.0.1_.ttf'); }
-
-        input{
-            font: 40px 'farzad';
-            background-color: rgba(0,0,0, 0.1);
-            margin: 6% 15% -10% 0;
-            height: 20px;
-        }
-
-        button{
-            font: 40px 'farzad';
-            margin: -40% 0 0 -40%;
-        }
-
-        p{
-            margin: 5% 0 0 -45%;
-            text-align: center;
-            font: 40px 'farzad';
-        }
-
-        input::placeholder{
-            color: white;
-        }
-
-    </style>
-
+    <link rel="stylesheet" href="./Customer.css">
 
 </head>
 <body>
@@ -95,107 +46,10 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
+    <script>
 
-
-            $("#submit").on('click',function() {
-                let formData = new FormData();
-                formData.append("firstName", $("#firstName").val());
-                formData.append("lastName", $("#lastName").val());
-                formData.append("email", $("#email").val());
-                formData.append("password", $("#password").val());
-                formData.append("confPassword", $("#confPassword").val());
-
-                $.ajax({
-                    url: "http://localhost:8080/customer/save",
-                    data: formData,
-                    type: "POST",
-                    contentType: false,
-                    dataType: 'text',
-                    processData: false,
-                    cache: false,
-                }).done(function(msg) {
-                    if(msg === "OK") {
-                        $(':input','#formExpert')
-                            .not(':button, :submit, :reset, :hidden')
-                            .val('')
-                            .removeAttr('checked')
-                            .removeAttr('selected');
-                        Swal.fire({
-                            title: 'ثبت موفق!',
-                            text: 'در حال منتقل شدن به صفحه ورود',
-                            type: 'success',
-                            confirmButtonText: 'Cool',
-                            didOpen: function () {
-                                Swal.showLoading()
-                                setTimeout(function () {
-                                    Swal.close()
-                                }, 3000)
-                            }
-                        })
-                        window.location = "https://www.aspsnippets.com/";
-                    }
-                    else
-                        alert(msg)
-                })
-                    .fail(function() {
-                        Swal.fire({
-                            title: 'خطا!',
-                            text: 'لطفا دوباره امتحان کنید',
-                            type: 'success',
-                            confirmButtonText: 'Cool',
-                            didOpen: function () {
-                                Swal.showLoading()
-                                setTimeout(function () {
-                                    Swal.close()
-                                }, 2000)
-                            }
-                        })
-                    })
-
-            });
-
-            $("#email").keyup(function () {
-                const pattern = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
-                let email = $(this).val().trim('');
-                if (email.length > 0) {
-                    $.ajax({
-                        url: "http://localhost:8080/user/findByEmail",
-                        type: "POST",
-                        dataType: 'text',
-                        contentType: false,
-                        processData: false,
-                        cache: false,
-                        data: email,
-                    }).done(function (msg) {
-                        if (pattern.test(email) && msg === "OK") {
-                            $("#email").css({'background-color': 'green'});
-                        } else {
-                            $("#email").css({'background-color': 'red'})
-                        }
-                    })
-                } else {
-                    $("#username").css({'background-color': "none"});
-                }
-            });
-
-            $('#submit').click(function(event){
-
-                let password = $('.password').val();
-                let len = password.length;
-
-                if(len < 1) {
-                    event.preventDefault();
-                    alert("لطفا رمز ها را وارد کنید");
-                }
-
-                if( password !== $('.confPassword').val()) {
-                    alert("لطفا رمز های یکسانی وارد کنید");
-                    event.preventDefault();
-                    $('#password').val('');
-                    $('#confPassword').val('');
-                }
-            });
+        $.getScript('./Customer.js', function() {
+        });
 
     </script>
 </body>
