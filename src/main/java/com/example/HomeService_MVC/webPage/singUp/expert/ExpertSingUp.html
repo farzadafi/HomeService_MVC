@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../bootstrap/bootstrap.min.css">
+    <script rel="stylesheet" href="../js/bootstrap.min.js" type="application/javascript" ></script>
+    <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.14/sweetalert2.min.js" ></script>
+    <link rel="stylesheet" href="Expert.css">
+
+
+</head>
+<body>
+<div class=" container-fluid w-75 mainDiv ">
+    <div id="formExpert">
+        <p class="text-center font-weight-bold text-justify text-white">لطفا اطلاعات خود را وارد کنید</p>
+        <div class="rightDiv">
+            <label for="firstName"><br>
+                <input class="rounded-pill border-0 p-lg-5 " id="firstName" type="text" name="firstName" pattern=".{3,}" title="at least 3 word!" placeholder="نام" required><br>
+            </label>
+
+            <label for="lastName"><br>
+                <input class="rounded-pill border-0 p-lg-5 " id="lastName" type="text" name="lastName" pattern=".{3,}" title="at least 3 word!" placeholder="نام خانوادگی" required><br>
+            </label>
+
+            <label for="email"><br>
+                <input class="rounded-pill  border-0 p-lg-5  " id="email" type="text" name="email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="a@mail.com" placeholder="ایمیل" required><br>
+            </label>
+
+            <label for="password"><br>
+                <input class="rounded-pill  border-0 p-lg-5 password" type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="lowerCase+UpperCase+space+symbol+number+8char" placeholder="رمز"><br>
+            </label>
+
+            <label for="confPassword"><br>
+                <input class="rounded-pill  border-0 p-lg-5 confPassword" type="password" name="confPassword" id="confPassword"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required title="lowerCase+UpperCase+space+symbol+number+8char" placeholder="تکرار رمز"><br>
+            </label>
+        </div>
+
+        <div class="leftDiv">
+            <label for="city"><br>
+                <input class="rounded-pill  border-0 p-lg-5  " id="city" type="text" name="city" placeholder="شهر" required><br>
+            </label>
+
+            <p class="text-center font-weight-bolder text-white mt-5">آپلود عکس</p>
+
+            <input class="rounded-pill  p-lg-5 w-75 btn mt-2" id="image" name="image" required type="file" onchange="OnFileValidation();previewFile()"><br>
+            <div class="text-center">
+                <img class="rounded-pill " src="" height="200" alt="">
+            </div>
+
+            <div class="text-center">
+                <button class="rounded-pill btn btn-info text-justify  p-lg-5 font-italic font-weight-bold my-5 mr-5 submit"  id="submit" >
+                    ثبت نام</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+
+    $.getScript('./Expert.js', function() {
+    });
+
+    </script>
+</body>
+</html>
