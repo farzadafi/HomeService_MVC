@@ -1,0 +1,41 @@
+body {
+    background-image: linear-gradient(150deg, #0cfaee 0%, #e403d1 100%, #fff01f 100%);
+    min-height: 93vh;
+    height: 1000px;
+    width: 1820px;
+}
+
+.mainDiv{
+    height: 70%;
+    border-radius: 30% 30% 30% 30%;
+    transform: translate(-50%, -50%);
+    padding: 0 0 0 15%;
+    position: absolute;
+    left: 50%;
+    top:50%;
+    background-color: rgba(0, 0, 0,0.1);
+}
+
+@font-face{ font-family: farzad; src: url('../Entezar/EntezarB4_v2.0.1_.ttf'); }
+
+input{
+    font: 40px 'farzad';
+    background-color: rgba(0,0,0, 0.1);
+    margin: 20% 15% -10% 0;
+    height: 20px;
+}
+
+button{
+    font: 40px 'farzad';
+    margin: 15% 0 0 -40%;
+}
+
+p{
+    margin: 5% 0 0 -45%;
+    text-align: center;
+    font: 40px 'farzad';
+}
+
+input::placeholder{
+    color: white;
+}
