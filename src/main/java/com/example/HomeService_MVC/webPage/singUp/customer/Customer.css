@@ -16,7 +16,7 @@ body {
     background-color: rgba(0, 0, 0,0.3);
 }
 
-@font-face{ font-family: farzad; src: url('../Entezar/EntezarB4_v2.0.1_.ttf'); }
+@font-face{ font-family: farzad; src: url('../../Entezar/EntezarB4_v2.0.1_.ttf'); }
 
 input{
     font: 40px 'farzad';
