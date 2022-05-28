@@ -58,7 +58,7 @@ $("#submit").on('click',function() {
                     }, 3000)
                 }
             })
-            window.location = "./../panelPage/AdminPanel.html";
+            window.location = "../panelPage/admin/AdminPanel.html";
         }
         else if(msg === "EXPERT"){
             $('#email').val('');
