@@ -1,0 +1,53 @@
+@font-face{ font-family: farzad; src: url('../../Entezar/EntezarB4_v2.0.1_.ttf    '); }
+
+body{
+    font-family: 'farzad',serif;
+}
+
+* {box-sizing: border-box}
+
+body {
+    background-image: linear-gradient(150deg, #0cfaee 50%, #e403d1 100%, #fff01f 100%);
+    min-height: 93vh;
+    height: 1003px;
+    width: 1920px;
+    font-family: farzad, sans-serif;
+}
+
+.tab button {
+    transition: 1.9s;
+    font-size: 30px;
+}
+
+.tab button:hover {
+    background-color: #65f2ff;
+}
+
+.tab button.active {
+    background-color: rgba(0, 0, 0,0.2);
+}
+
+.tabContent {
+    height: 90%;
+    text-align: right;
+    background-color: rgba(0, 0, 0,0.2);
+    border-radius: 10px;
+    border: white groove 1px ;
+}
+
+.trans{
+    background-color: rgba(0, 0, 0,0.5);
+    border-radius: 10px;
+    border: white groove 1px ;
+}
+
+input{
+    font: 40px 'farzad';
+    background-color: rgba(0,0,0, 0.1);
+    margin-top: 10%;
+    height: 20px;
+}
+
+input::placeholder{
+    color: white;
+}
