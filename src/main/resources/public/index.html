@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/mvc">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button id="submit">click here</button>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+
+      $("#submit").on('click',function() {
+            alert("clicked!")
+          $.ajax({
+              url: "http://localhost:8080/admin/test",
+              type: "GET",
+              dataType: 'text',
+          }).done(function(msg) {
+              if(msg === "OK") {
+                  alert(msg)
+              }
+              else
+                  alert(msg)
+          })
+      });
+
+  </script>
+</body>
+</html>
