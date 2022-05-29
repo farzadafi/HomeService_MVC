@@ -260,7 +260,7 @@ $("#addExpertService").one('click',function() {
                                                     }, 3000)
                                                 }
                                             })
-                                            location.reload(true);
+                                            //location.reload(true);
                                         }
                                     }).fail(function() {
                                         Swal.fire({
