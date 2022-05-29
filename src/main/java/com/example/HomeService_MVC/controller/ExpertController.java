@@ -1,9 +1,8 @@
 package com.example.HomeService_MVC.controller;
 
-import com.example.HomeService_MVC.dto.user.DynamicSearch;
+import com.example.HomeService_MVC.dto.user.DynamicSearchDTO;
 import com.example.HomeService_MVC.dto.user.ExpertDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
-import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.enumoration.Role;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
@@ -11,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -55,15 +55,17 @@ public class ExpertController {
         return expert;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/gridSearch")
-    public ResponseEntity<List<ExpertDTO>> gridSearch(@ModelAttribute @RequestBody DynamicSearch dynamicSearch) {
+    public ResponseEntity<List<ExpertDTO>> gridSearch(@ModelAttribute @RequestBody DynamicSearchDTO dynamicSearch) {
         List<Expert> expertList = expertServiceImpel.filterExpert(dynamicSearch);
         List<ExpertDTO> dtoList = new ArrayList<>();
+        if(expertList.isEmpty())
+            return ResponseEntity.ok(dtoList);
         for (Expert e:expertList
              ) {
             dtoList.add(convertExpertToExpertDTO(e));
         }
-        System.out.println(expertList.size());
         return ResponseEntity.ok(dtoList);
     }
 
