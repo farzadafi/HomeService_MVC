@@ -32,7 +32,7 @@
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'confirmExpertTab')">تایید متخصص</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'addExpertToSubServices')">افزودن متخصص به زیر سرویس</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'removeExpertToSubServices')">حذف متخصص از زیر سرویس</button>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'Tokyo')">فیلتر کردن کاربران</button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'search')">فیلتر کردن کاربران</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'changePassword')">تعویض رمز</button>
 </div>
 
@@ -134,6 +134,44 @@
         </label>
     </div>
 </div>
+<!------>
+<div id="search" class="text-center form-check form-check-inline tabContent">
+    <div>
+    <label class="form-check-label">مشتری
+        <input type="radio" name="gridSearch" id="customerSearch" class="form-check-input" checked >
+    </label>
+    <label class="form-check-label">متخصص
+        <input type="radio" name="gridSearch" id="expertSearch " class="form-check-input" >
+    </label><br>
+    </div>
+    <label>
+        <input class=" searchInput rounded-pill border-0 p-lg-4 " id="firstName"  type="text" placeholder="نام">
+    </label>
+    <label>
+        <input class=" searchInput rounded-pill border-0 p-lg-4 " type="text" id="lastName" placeholder="نام خانوادگی">
+    </label>
+    <label>
+        <input class="searchInput rounded-pill border-0 p-lg-4 "  type="text" id="email" placeholder="ایمیل">
+    </label>
+    <label>
+        <input class="searchInput rounded-pill border-0 p-lg-4 "  type="text" id="service" placeholder="سرویس">
+    </label>
+    <label>
+        <input class="searchInput rounded-pill border-0 p-lg-4 "  type="text" id="stars" placeholder="امتیاز">
+    </label>
+    <button class="btn btn-info p-lg-2" id="searchUser">جستجو</button>
+    <table id="resultTable" class=" styled-table">
+        <tr class="active-row">
+            <th id="fName">نام</th>
+            <th id="lName">نام خانوادگی</th>
+            <th>ایمیل</th>
+            <th>سرویس</th>
+            <th>امتیاز</th>
+        </tr>
+    </table>
+</div>
+
+<!------>
 <form class="text-center tabContent" id="changePassword">
     <div>
         <label for="password"><br>
@@ -149,9 +187,7 @@
         <button class="rounded-pill btn btn-info text-justify p-lg-5 font-italic mt-5 font-weight-bold submit"  id="submitChangePassword" >ثبت</button>
     </div>
 </form>
-<!------>
 
-<!------>
 <!------>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
