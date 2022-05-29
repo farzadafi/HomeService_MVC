@@ -33,9 +33,9 @@ public class OrderServiceImpel implements OrderService {
 
 
     @Override
-    public void PlaceAnOrder(Integer customerId,OrderDTO orderDTO, Integer subServicesId) {
+    public void PlaceAnOrder(Integer customerId,OrderDTO orderDTO) {
         Customer customer = customerServiceImpel.getById(customerId);
-        SubServices subServices = subServicesServiceImpel.findById(subServicesId).orElseThrow(() -> new SubServicesNotFoundException("This subServices not found!"));
+        SubServices subServices = subServicesServiceImpel.findById(orderDTO.getId()).orElseThrow(() -> new SubServicesNotFoundException("This subServices not found!"));
         if(subServices.getMinimalPrice() > orderDTO.getProposedPrice())
             throw new InvalidProposedPriceException("You have to enter a price grater than " + subServices.getMinimalPrice());
         Order order = mapper.map(orderDTO,Order.class);
