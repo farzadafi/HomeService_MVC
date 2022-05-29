@@ -8,7 +8,6 @@ import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.base.User;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.example.HomeService_MVC.service.impel.CustomerServiceImpel;
@@ -42,7 +41,6 @@ public class CustomerController {
         return ResponseEntity.ok("OK");
     }
 
-    @PreAuthorize("hasRole('EXPERT')")
     //@PreAuthorize("hasAnyRole('EXPERT','ADMIN')")
     @GetMapping("/security")
     public String security(Authentication authentication){
