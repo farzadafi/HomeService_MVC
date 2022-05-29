@@ -21,10 +21,10 @@ public class CommentController {
         this.customerServiceImpel = customerServiceImpel;
     }
 
-    @PostMapping("/save/{orderId}")
-    public ResponseEntity<String> save(@Valid @RequestBody CommentDto commentDto, @PathVariable("orderId") Integer orderId) {
-        Customer customer = customerServiceImpel.getById(1);
-        commentServiceImpel.placeAComment(customer,commentDto,orderId);
+    @PostMapping("/save")
+    public ResponseEntity<String> save(@Valid @RequestBody CommentDto commentDto) {
+        Customer customer = customerServiceImpel.getById(2);
+        commentServiceImpel.placeAComment(customer,commentDto,commentDto.getId());
         return ResponseEntity.ok("OK");
     }
 }
