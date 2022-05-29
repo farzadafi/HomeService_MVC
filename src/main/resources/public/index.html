@@ -1,30 +1,40 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.springframework.org/schema/mvc">
+<html dir="rtl" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="js/bootstrap.min.js">
+    <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
+
+    <style>
+
+        @font-face{ font-family: farzad; src: url('Entezar/EntezarB4_v2.0.1_.ttf'); }
+
+        body{
+            font-family: 'farzad',serif;
+        }
+
+    </style>
 </head>
 <body>
-<button id="submit">click here</button>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  <script>
-
-      $("#submit").on('click',function() {
-            alert("clicked!")
-          $.ajax({
-              url: "http://localhost:8080/admin/test",
-              type: "GET",
-              dataType: 'text',
-          }).done(function(msg) {
-              if(msg === "OK") {
-                  alert(msg)
-              }
-              else
-                  alert(msg)
-          })
-      });
-
-  </script>
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+    <div class="container">
+        <i class="fas fa-toolbox fa-5x text-warning" ></i>
+        <div >
+            <a href="https://www.instagram.com/?hl=en" target="_blank" class="fab fa-instagram fa-2x ml-4"></a>
+            <a href="https://telegram.org" target="_blank" class="fab fa-telegram-plane fa-2x ml-4"></a>
+            <a href="" class="fas fa-phone-alt fa-2x ml-4"></a>
+            <a href="http://localhost:8080/login" class="btn btn-warning ml-2 btn-lg "> ورود</a>
+            <a href="singUp/customer/CustomerSingUp.html" class="btn btn-warning ml-2 btn-lg  "> ثبت نام</a>
+            <a href="singUp/expert/ExpertSingUp.html" class="btn btn-warning ml-2 btn-lg "> ثبت نام متخصصین</a>
+            <i class=""></i>
+            <i class=""></i>
+            <i class=""></i>
+        </div>
+    </div>
+</nav>
 </body>
 </html>
