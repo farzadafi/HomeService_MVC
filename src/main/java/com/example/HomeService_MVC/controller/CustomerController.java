@@ -2,12 +2,13 @@ package com.example.HomeService_MVC.controller;
 
 
 import com.example.HomeService_MVC.dto.user.CustomerDTO;
-import com.example.HomeService_MVC.dto.user.DynamicSearch;
+import com.example.HomeService_MVC.dto.user.DynamicSearchDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.base.User;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import com.example.HomeService_MVC.service.impel.CustomerServiceImpel;
@@ -48,8 +49,9 @@ public class CustomerController {
         return user.toString();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/gridSearch")
-    public ResponseEntity<List<CustomerDTO>> gridSearch(@ModelAttribute @RequestBody DynamicSearch dynamicSearch) {
+    public ResponseEntity<List<CustomerDTO>> gridSearch(@ModelAttribute @RequestBody DynamicSearchDTO dynamicSearch) {
         List<Customer> customerList = customerServiceImpel.filterCustomer(dynamicSearch);
         List<CustomerDTO> dtoList = new ArrayList<>();
         for (Customer s:customerList
