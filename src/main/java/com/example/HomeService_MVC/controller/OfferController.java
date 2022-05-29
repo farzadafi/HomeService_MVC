@@ -6,7 +6,6 @@ import com.example.HomeService_MVC.dto.offer.OfferDTO;
 import com.example.HomeService_MVC.model.Offer;
 import com.example.HomeService_MVC.model.enumoration.OrderStatus;
 import com.example.HomeService_MVC.service.impel.OfferServiceImpel;
-import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/offer")
 public class OfferController {
 
