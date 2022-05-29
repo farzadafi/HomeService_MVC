@@ -2,7 +2,7 @@ package com.example.HomeService_MVC.service.impel;
 
 import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
-import com.example.HomeService_MVC.dto.user.DynamicSearch;
+import com.example.HomeService_MVC.dto.user.DynamicSearchDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
@@ -104,19 +104,26 @@ public class ExpertServiceImpel implements ExpertService {
         expertRepository.save(expert);
     }
 
-    public List<Expert> filterExpert(DynamicSearch dynamicSearch){
+    public List<Expert> filterExpert(DynamicSearchDTO dynamicSearch){
         Expert expert = new Expert(dynamicSearch.getFirstName(),
                 dynamicSearch.getLastName(),
                 dynamicSearch.getEmail(),null,null,
                 Role.ROLE_EXPERT,null,null,dynamicSearch.getStars());
 
         List<Expert> experts = expertRepository.findAll(userSpecification(expert));
-        if(dynamicSearch.getService() == null && dynamicSearch.getService().isEmpty())
+        SubServices subServices;
+        if(dynamicSearch.getService() == null || dynamicSearch.getService().isEmpty()) {
             return experts;
-        SubServices subServices = subServicesServiceImpel.findBySubServicesName(dynamicSearch.getService());
-        if(subServices == null)
-            return experts;
-        return subServices.getExperts().stream().filter(experts::contains).collect(Collectors.toList());
+        }
+        else{
+                subServices = subServicesServiceImpel.findBySubServicesName(dynamicSearch.getService());
+                if(subServices == null) {
+                    experts.clear();
+                    return experts;
+                }
+                else
+                    return subServices.getExperts().stream().filter(experts::contains).collect(Collectors.toList());
+        }
     }
 
     private Specification<Expert> userSpecification(Expert expert){
