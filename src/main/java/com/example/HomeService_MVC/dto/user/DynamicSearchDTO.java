@@ -7,11 +7,10 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DynamicSearch {
+public class DynamicSearchDTO {
     private String firstName;
     private String lastName;
     private String email;
-    private String role;
     private String service;
     private Integer stars;
 }
