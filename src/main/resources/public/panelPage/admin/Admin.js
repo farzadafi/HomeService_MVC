@@ -415,3 +415,43 @@ $("#submitChangePassword").on('click',function() {
             })
         })
 });
+
+$("#searchUser").click('click',function() {
+    if(document.getElementById('customerSearch').checked === true) {
+        let formData = new FormData();
+        formData.append("firstName", $("#firstName").val());
+        formData.append("lastName", $("#lastName").val());
+        formData.append("email", $("#email ").val());
+
+        $.ajax({
+            url:"http://localhost:8080/customer/gridSearch",
+            type:"POST",
+            dataType:"json",
+            data:formData,
+            contentType: false,
+            processData: false,
+            cache: false,
+        }).done(function (msg) {
+            alert(msg.length)
+        })
+    } else {
+        let formData = new FormData();
+        formData.append("firstName", $("#firstName").val());
+        formData.append("lastName", $("#lastName").val());
+        formData.append("email", $("#email ").val());
+        formData.append("service", $("#service ").val());
+        formData.append("stars", $("#stars ").val());
+
+        $.ajax({
+            url:"http://localhost:8080/expert/gridSearch",
+            type:"POST",
+            dataType:"json",
+            data:formData,
+            contentType: false,
+            processData: false,
+            cache: false,
+        }).done(function (msg) {
+            alert(msg.length)
+        })
+    }
+});
