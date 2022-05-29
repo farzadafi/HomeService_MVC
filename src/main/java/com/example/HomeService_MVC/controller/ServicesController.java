@@ -6,6 +6,7 @@ import com.example.HomeService_MVC.model.Services;
 import com.example.HomeService_MVC.service.impel.ServicesServiceImpel;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/services")
 public class ServicesController {
 
@@ -25,6 +26,7 @@ public class ServicesController {
         this.mapper = mapper;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute @RequestBody ServicesDTO servicesDTO){
         servicesServiceImpel.save(servicesDTO);
