@@ -1,10 +1,8 @@
 package com.example.HomeService_MVC.service.impel;
 
-import com.example.HomeService_MVC.dto.user.DynamicSearch;
+import com.example.HomeService_MVC.dto.user.DynamicSearchDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Customer;
-import com.example.HomeService_MVC.model.Expert;
-import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.model.enumoration.Role;
 import org.dozer.DozerBeanMapper;
 import org.springframework.data.jpa.domain.Specification;
@@ -17,7 +15,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CustomerServiceImpel implements CustomerService {
@@ -57,7 +54,7 @@ public class CustomerServiceImpel implements CustomerService {
         customerRepository.save(customer);
     }
 
-    public List<Customer> filterCustomer(DynamicSearch dynamicSearch){
+    public List<Customer> filterCustomer(DynamicSearchDTO dynamicSearch){
         Customer customer = mapper.map(dynamicSearch,Customer.class);
         return customerRepository.findAll(userSpecification(customer));
     }
