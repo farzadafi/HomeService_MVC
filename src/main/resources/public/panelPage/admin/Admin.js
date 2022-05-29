@@ -347,7 +347,7 @@ $("#emailExpertForRemove").blur('click',function() {
 
 $('#submitChangePassword').click(function(event){
 
-    let password = $('.password').val();
+    let password = $('.newPassword').val();
     let len = password.length;
 
     if(len < 1) {
@@ -355,7 +355,7 @@ $('#submitChangePassword').click(function(event){
         alert("لطفا رمز ها را وارد کنید");
     }
 
-    if( password !== $('.confPassword').val()) {
+    if( password !== $('.newConfPassword').val()) {
         alert("لطفا رمز های یکسانی وارد کنید");
         event.preventDefault();
         $('#password').val('');
@@ -364,20 +364,20 @@ $('#submitChangePassword').click(function(event){
 });
 
 $("#submitChangePassword").on('click',function() {
-    let formData = new FormData();
-    formData.append("password", $("#password").val());
-    formData.append("confPassword", $("#confPassword").val());
+    let password = $("#newPassword").val()
+    let confPass = $("#newConfPassword").val()
+    let formPassword = new FormData();
+    formPassword.append("password", password);
+    formPassword.append("confPassword", confPass);
 
     $.ajax({
         url: "http://localhost:8080/admin/updateAdmin",
-        data: formData,
+        data:formPassword,
         type: "POST",
-        contentType: false,
-        dataType: 'text',
+        dataType: "text",
         processData: false,
-        cache: false,
+        contentType: false,
     }).done(function(msg) {
-        alert(msg)
         if(msg === "OK") {
             $(':input','#changePassword')
                 .not(':button, :submit, :reset, :hidden')
