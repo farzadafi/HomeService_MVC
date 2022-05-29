@@ -34,9 +34,9 @@ public class OrderController {
         this.mapper = mapper;
     }
 
-    @PostMapping("/placeAnOffer/{subServicesId}")
-    public ResponseEntity<String> placeAnOffer(@Valid @RequestBody OrderDTO orderDTO, @PathVariable("subServicesId") Integer subServicesId){
-        orderServiceImpel.PlaceAnOrder(1,orderDTO,subServicesId);
+    @PostMapping("/placeAnOffer")
+    public ResponseEntity<String> placeAnOffer(@RequestBody OrderDTO orderDTO){
+        orderServiceImpel.PlaceAnOrder(2,orderDTO);
         return ResponseEntity.ok("OK");
     }
 
@@ -60,7 +60,7 @@ public class OrderController {
 
     @GetMapping("/viewStartedOrderByCity")
     public ResponseEntity<List<OrderDTO>> viewStartedOrderByCity(){
-        Expert expert = expertServiceImpel.getById(1);
+        Expert expert = expertServiceImpel.getById(7);
         List<Order> orderList = orderServiceImpel.findAllStartedOrderByCity(expert.getCity(),expert.getSubServices());
         if(orderList == null || orderList.size() == 0)
             throw new OrderNotFoundException("You dont have any order until now!");
@@ -123,8 +123,9 @@ public class OrderController {
         }
         return dtoList;
     }
-    @PostMapping("/showHistory/{status}")
-    public ResponseEntity<List<OrderDTO>> showHistory(@PathVariable("status") String status) {
+
+    @PostMapping("/showHistory")
+    public ResponseEntity<List<OrderDTO>> showHistory(@RequestBody String status) {
         List<Order> orderList = new ArrayList<>();
         switch (status){
             case "suggestion" :
