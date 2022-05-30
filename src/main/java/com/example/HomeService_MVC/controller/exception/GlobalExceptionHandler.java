@@ -54,4 +54,10 @@ public class GlobalExceptionHandler {
         LOGGER.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+
+    @ExceptionHandler(InvalidDateException.class)
+    public ResponseEntity<String> dateExceptionHandler(InvalidDateException e) {
+        LOGGER.warn(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
 }
