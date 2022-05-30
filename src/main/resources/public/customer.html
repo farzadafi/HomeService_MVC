@@ -1,0 +1,88 @@
+<!doctype html>
+<html dir="rtl" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="./panelPage/customer/Customer.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg flex-column navbar-light trans ">
+    <div class="container">
+        <i class="fas fa-user-edit fa-5x text-warning" ></i>
+        <div class="row align-content-start">
+            <div >
+                <a href="http://localhost:8080/logout" class="fas fa-sign-out-alt fa-3x text-warning"></a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="tab float-right ">
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'select')" id="defaultOpen">گزینه ها</button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'placeAnOrder')"  >ثبت سفارش</button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'viewOffer')">مشاهده پیشنهادات</button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'doneOrder')">گزارش اتمام سفارش</button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'payOrder')">پرداخت هزینه سفارش</button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'placeAComment')">ثبت نظر</button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'orderHistory')">تاریخچه سفارشات</button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'changePassword')">تعویض رمز</button>
+</div>
+
+<!------>
+<div id="select" class="tabContent text-center " style="font-size: 30px">
+    <h1 class="mt-5">پنل مشتری</h1>
+    <p>به پنل مشتری خوش آمدید</p>
+</div>
+
+<!------>
+<div id="placeAnOrder" class="tabContent text-center " style="font-size: 30px">
+</div>
+<!------>
+<div id="viewOffer" class="tabContent text-center " style="font-size: 30px">
+</div>
+<!------>
+<div id="doneOrder" class="tabContent text-center " style="font-size: 30px">
+</div>
+<!------>
+<div id="payOrder" class="tabContent text-center " style="font-size: 30px">
+</div>
+<!------>
+<div id="placeAComment" class="tabContent text-center " style="font-size: 30px">
+</div>
+<!------>
+<div id="orderHistory" class="tabContent text-center " style="font-size: 30px">
+</div>
+<!------>
+<div id="changePassword" class="tabContent text-center " style="font-size: 30px">
+</div>
+<!------>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+
+    function openDiv(evt, divName) {
+        let i, tabContent, tabLinks;
+        tabContent = document.getElementsByClassName("tabContent");
+        for (i = 0; i < tabContent.length; i++) {
+            tabContent[i].style.display = "none";
+        }
+        tabLinks = document.getElementsByClassName("tabLinks");
+        for (i = 0; i < tabLinks.length; i++) {
+            tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+        }
+        document.getElementById(divName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+
+
+</script>
+</body>
+</html>
