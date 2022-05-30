@@ -163,13 +163,14 @@
                             success: function (result) {
                                 let toAppend = '';
                                 $.each(result, function (i, o) {
-                                    toAppend += '<option>' + o.id + " " + o.subServicesName + '</option>';
+                                    toAppend += '<option>' + o.id + " " + o.subServicesName + " " + o.minimalPrice + '</option>';
                                 });
                                 $('#placeAnOrderSubService').append(toAppend);
 
                                 $("#placeAnOrderSubService").change(function () {
                                     if ($(this).val() !== "لطفا زیر سرویس را انتخاب کنید") {
-                                        $("#subServicesId").val($(this).val()[0])
+                                        $("#proposedPriceForOrder").attr("placeholder", "حداقل قیمت پیشنهادی " + $(this).val().split(' ')[2]);
+                                        $("#subServicesId").val($(this).val()[0] + " " + $(this).val().split(' ')[2] )
                                     }
                                 });
                             }
@@ -181,7 +182,8 @@
     });
 
     $("#submitPlaceAnOrder").on('click',function() {
-        let subServicesId = $("#subServicesId").val();
+        let value = $("#subServicesId").val();
+        let subServicesId = value.split(' ')[0];
         if(subServicesId === ""){
             Swal.fire({
                 title: 'لطفا یک سرویس انتخاب کنید',
@@ -199,6 +201,21 @@
             "alley":$("#alleyForOrder").val() ,
             "houseNumber": $("#houseNumberForOrder").val() ,
         }
+        if(json.proposedPrice < value.split(' ')[1]){
+            Swal.fire({
+                title: 'خطا!',
+                text: 'قیمت پیشنهادی باید از حداقل مشخص شده بیشتر باشد',
+                confirmButtonText: 'Cool',
+                didOpen: function () {
+                    Swal.showLoading()
+                    setTimeout(function () {
+                        Swal.close()
+                    }, 2000)
+                }
+            })
+            return;
+        }
+
 
         $.ajax({
             url: "http://localhost:8080/order/placeAnOrder/" + subServicesId,
