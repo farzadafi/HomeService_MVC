@@ -2,7 +2,6 @@ package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.controller.exception.OrderNotFoundException;
 import com.example.HomeService_MVC.dto.order.OrderDTO;
-import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.Offer;
 import com.example.HomeService_MVC.model.Order;
@@ -12,6 +11,8 @@ import com.example.HomeService_MVC.service.impel.OfferServiceImpel;
 import com.example.HomeService_MVC.service.impel.OrderServiceImpel;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -35,10 +36,11 @@ public class OrderController {
         this.mapper = mapper;
     }
 
-    @PostMapping("/placeAnOffer")
-    public ResponseEntity<String> placeAnOffer(@RequestBody OrderDTO orderDTO){
-        orderServiceImpel.PlaceAnOrder(2,orderDTO);
-        return ResponseEntity.ok("OK");
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @PostMapping("/placeAnOrder/{subServicesId}")
+    public String placeAnOrder(@Valid @RequestBody OrderDTO orderDTO, @PathVariable("subServicesId") Integer subServicesId){
+        orderServiceImpel.PlaceAnOrder(subServicesId,orderDTO);
+        return "OK";
     }
 
     @GetMapping("/viewOrder")
