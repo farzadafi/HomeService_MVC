@@ -1,16 +1,24 @@
 package com.example.HomeService_MVC.service.impel;
 
+import com.example.HomeService_MVC.controller.exception.InvalidDateException;
 import com.example.HomeService_MVC.controller.exception.InvalidProposedPriceException;
 import com.example.HomeService_MVC.controller.exception.NotEnoughBalanceException;
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
+import com.example.HomeService_MVC.core.SecurityUtil;
 import com.example.HomeService_MVC.dto.order.OrderDTO;
 import com.example.HomeService_MVC.model.*;
 import com.example.HomeService_MVC.model.enumoration.OrderStatus;
 import com.example.HomeService_MVC.repository.OrderRepository;
 import org.dozer.DozerBeanMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.example.HomeService_MVC.service.interfaces.OrderService;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -33,12 +41,16 @@ public class OrderServiceImpel implements OrderService {
 
 
     @Override
-    public void PlaceAnOrder(Integer customerId,OrderDTO orderDTO) {
-        Customer customer = customerServiceImpel.getById(customerId);
-        SubServices subServices = subServicesServiceImpel.findById(orderDTO.getId()).orElseThrow(() -> new SubServicesNotFoundException("This subServices not found!"));
+    public void PlaceAnOrder(Integer subServicesId,OrderDTO orderDTO) {
+        Customer customer = (Customer) SecurityUtil.getCurrentUser();
+        SubServices subServices = subServicesServiceImpel.findById(subServicesId).orElseThrow(() -> new SubServicesNotFoundException("This subServices not found!"));
         if(subServices.getMinimalPrice() > orderDTO.getProposedPrice())
-            throw new InvalidProposedPriceException("You have to enter a price grater than " + subServices.getMinimalPrice());
+            throw new InvalidProposedPriceException("شما باید مبلغی بیش از " + subServices.getMinimalPrice() + "وارد کنید");
+        LocalDate localDate = LocalDate.now();
+        if(orderDTO.getDate().before(Date.from(localDate.atStartOfDay(ZoneId.of("Asia/Tehran")).toInstant())))
+            throw new InvalidDateException("لطفا تاریخی بعد از الان اتخاب کنید");
         Order order = mapper.map(orderDTO,Order.class);
+        order.setWorkDate(orderDTO.getDate());
         order.setCustomer(customer);
         order.setSubService(subServices);
         order.setOrderStatus(OrderStatus.EXPERT_SUGGESTION);
