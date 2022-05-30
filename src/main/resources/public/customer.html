@@ -42,7 +42,63 @@
 </div>
 
 <!------>
-<div id="placeAnOrder" class="tabContent text-center " style="font-size: 30px">
+<div id="placeAnOrder" class="tabContent text-center " style="font-size: 20px">
+
+    <div>
+        <label for="placeAnOrderService">
+            <select id="placeAnOrderService" name="placeAnOrder" class="form-select ml-5 w-100 ">
+                <option class="text-center ">لطفا سرویس را انتخاب کنید</option>
+            </select>
+        </label>
+        <label for="placeAnOrderSubService">
+            <select id="placeAnOrderSubService" name="placeAnOrder" class="form-select mr-5 w-100 form-select-lg  mt-5">
+                <option class="text-center ">لطفا زیر سرویس را انتخاب کنید</option>
+            </select>
+        </label>
+    </div>
+    <div>
+        <label for="proposedPriceForOrder"><br>
+            <input class="rounded-pill border-0 p-lg-5 " id="proposedPriceForOrder" pattern="^[0-9]" name="minimalPrice"
+                   title="enter positive number" type="text" placeholder="قیمت پیشنهادی" required><br>
+        </label>
+        <label for="descriptionForOrder"><br>
+            <input class="rounded-pill mr-5 border-0 p-lg-5 " id="descriptionForOrder" name="descriptionForOrder"
+                   title="enter a correct description" type="text" placeholder="توضیحات" required><br>
+        </label>
+    </div>
+    <div>
+        <label for="workDateForOrder"><br>
+            <input class="rounded-pill border-0 p-lg-5 " id="workDateForOrder" name="workDataForOrder" type="date"
+                   placeholder="تاریخ انجام کار" required><br>
+        </label>
+        <label for="cityForOrder"><br>
+            <input style="margin-left: -10px;margin-right: 200px" class="rounded-pill border-0 p-lg-5 " id="cityForOrder" name="cityForOrder"
+                   title="enter city for your order" type="text" placeholder="شهر" required><br>
+        </label>
+    </div>
+    <div>
+        <label for="streetForOrder"><br>
+            <input class="rounded-pill border-0 p-lg-5 " id="streetForOrder" name="streetForOrder"
+                   title="enter street for your order" type="text" placeholder="خیابان"><br>
+        </label>
+        <label for="alleyForOrder"><br>
+            <input class="rounded-pill mr-5 border-0 p-lg-5 " id="alleyForOrder" name="alleyForOrder"
+                   title="enter alley for your order" type="text" placeholder="کوچه" required><br>
+        </label>
+    </div>
+    <label>
+        <input type="text" id="subServicesId" hidden>
+    </label>
+    <div>
+        <label for="houseNumberForOrder"><br>
+            <input style="margin-right: -450px" class="rounded-pill border-0 p-lg-5 " id="houseNumberForOrder" pattern="^[0-9]"
+                   title="enter house number for your order" type="text" placeholder="شماره" required><br>
+        </label>
+
+        <button class=" mr-5 rounded-pill btn btn-info p-lg-5 font-italic font-weight-bold submit"
+                id="submitPlaceAnOrder">ثبت
+        </button>
+    </div>
 </div>
 <!------>
 <div id="viewOffer" class="tabContent text-center " style="font-size: 30px">
@@ -81,7 +137,111 @@
         evt.currentTarget.className += " active";
     }
 
+    $("#placeAnOrderService").one('click', function () {
+        $.ajax({
+            url: "http://localhost:8080/services/getAllServices",
+            type: "GET",
+            dataType: "json",
+            success: function (result) {
+                let toAppend = '';
+                $.each(result, function (i, o) {
+                    toAppend += '<option>' + o.id + " " + o.services + '</option>';
+                });
+                $('#placeAnOrderService').append(toAppend);
 
+                $("#placeAnOrderService").change(function () {
+                    $('#placeAnOrderSubService')
+                        .find('option')
+                        .remove()
+                        .end()
+                        .append('<option >لطفا زیر سرویس را انتخاب کنید</option>')
+                    if ($(this).val() !== "یک سرویس انتخاب کنید") {
+                        $.ajax({
+                            url: "http://localhost:8080/subServices/getAllSubServices/" + $(this).val()[0],
+                            type: "GET",
+                            dataType: "json",
+                            success: function (result) {
+                                let toAppend = '';
+                                $.each(result, function (i, o) {
+                                    toAppend += '<option>' + o.id + " " + o.subServicesName + '</option>';
+                                });
+                                $('#placeAnOrderSubService').append(toAppend);
+
+                                $("#placeAnOrderSubService").change(function () {
+                                    if ($(this).val() !== "لطفا زیر سرویس را انتخاب کنید") {
+                                        $("#subServicesId").val($(this).val()[0])
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            },
+        });
+    });
+
+    $("#submitPlaceAnOrder").on('click',function() {
+        let subServicesId = $("#subServicesId").val();
+        if(subServicesId === ""){
+            Swal.fire({
+                title: 'لطفا یک سرویس انتخاب کنید',
+                confirmButtonText: 'بستن',
+            });
+            return;
+        }
+        let json = {
+            "id":subServicesId,
+            "proposedPrice":$("#proposedPriceForOrder").val() ,
+            "description":$("#descriptionForOrder").val() ,
+            "date":$("#workDateForOrder").val() ,
+            "city":$("#cityForOrder").val() ,
+            "street":$("#streetForOrder").val() ,
+            "alley":$("#alleyForOrder").val() ,
+            "houseNumber": $("#houseNumberForOrder").val() ,
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/order/placeAnOrder/" + subServicesId,
+            data:JSON.stringify(json),
+            type: "POST",
+            dataType: 'text',
+            contentType: 'application/json',
+        }).done(function(msg) {
+            if(msg === "OK") {
+                $(':input','#placeAnOrder')
+                    .not(':button, :submit, :reset, :hidden')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
+                Swal.fire({
+                    title: 'ثبت موفق!',
+                    confirmButtonText: 'Cool',
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 3000)
+                    }
+                })
+            }
+            else
+                alert("melika")
+                alert(msg)
+        })
+            .error(function (request){
+            Swal.fire({
+                title: 'خطا!',
+                text: request.responseText,
+                confirmButtonText: 'Cool',
+                didOpen: function () {
+                    Swal.showLoading()
+                    setTimeout(function () {
+                        Swal.close()
+                    }, 2000)
+                }
+            })
+        })
+    });
 
 </script>
 </body>
