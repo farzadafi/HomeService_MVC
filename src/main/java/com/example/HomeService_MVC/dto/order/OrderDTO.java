@@ -12,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class OrderDTO {
     private Integer id;
     @Column(nullable = false)
@@ -23,7 +24,7 @@ public class OrderDTO {
     private String description;
 
     @Column(nullable = false)
-    private Date WorkDate;
+    private Date date;
 
     @Name
     @Column(nullable = false)
