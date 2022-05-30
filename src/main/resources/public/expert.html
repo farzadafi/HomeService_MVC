@@ -9,8 +9,80 @@
     <link rel="stylesheet" href="bootstrap/bootstrap.min.css" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="./panelPage/expert/Expert.css">
 </head>
 <body>
 
+<nav class="navbar navbar-expand-lg flex-column navbar-light trans ">
+    <div class="container">
+        <i class="fas fa-user-cog fa-5x text-warning"></i>
+        <div class="row align-content-start">
+            <div>
+                <a href="http://localhost:8080/logout" class="fas fa-sign-out-alt fa-3x text-warning"></a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="tab float-right ">
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'select')" id="defaultOpen">
+        گزینه ها
+    </button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'placeAnOffer')">ثبت پیشنهاد
+    </button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'startOrder')">شروع کار
+    </button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'paidOrder')">گزارش پرداخت
+        سفارش
+    </button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'orderHistory')">تاریخچه
+        سفارشات
+    </button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'changePassword')">تعویض رمز
+    </button>
+</div>
+
+<!------>
+<div id="select" class="tabContent text-center " style="font-size: 30px">
+    <h1 class="mt-5">پنل متخصص</h1>
+    <p>به پنل متخصص خوش آمدید</p>
+</div>
+
+<!------>
+<div id="placeAnOffer" class="tabContent text-center " style="font-size: 30px">
+</div>
+<!------>
+<div id="startOrder" class="tabContent text-center " style="font-size: 30px">
+</div>
+<!------>
+<div id="paidOrder" class="tabContent text-center " style="font-size: 30px">
+</div>
+<!------>
+<div id="orderHistory" class="tabContent text-center " style="font-size: 30px">
+</div>
+<!------>
+<div id="changePassword" class="tabContent text-center " style="font-size: 30px">
+</div>
+<!------>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+
+    function openDiv(evt, divName) {
+        let i, tabContent, tabLinks;
+        tabContent = document.getElementsByClassName("tabContent");
+        for (i = 0; i < tabContent.length; i++) {
+            tabContent[i].style.display = "none";
+        }
+        tabLinks = document.getElementsByClassName("tabLinks");
+        for (i = 0; i < tabLinks.length; i++) {
+            tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+        }
+        document.getElementById(divName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+
+</script>
 </body>
 </html>
