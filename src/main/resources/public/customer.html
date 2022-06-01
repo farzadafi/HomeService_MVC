@@ -403,28 +403,23 @@
         let idVal = $(this).data('id');
         let offerId = idVal.split(',')[0];
         let orderId = idVal.split(',')[1];
-        alert(offerId)
-        alert(orderId)
-        /*
         $.ajax({
-            url: "http://localhost:8080/offer/viewOffer/" + idVal,
+            url: "http://localhost:8080/offer/selectOffer/" + orderId + "/" + offerId,
             type: "GET",
             dataType: "text",
-            success: function (response)
-            {
-                if(response.length === 0){
-                    alert("متاسفانه هیچ پیشنهادی ثبت شده است!")
-                    return;
+            success: function (response) {
+                if(response === 'OK'){
+                    Swal.fire({
+                        title: 'ثبت موفق',
+                        didOpen: function () {
+                            Swal.showLoading()
+                            setTimeout(function () {
+                                Swal.close()
+                            }, 2000)
+                        }
+                    })
+                    location.reload(true);
                 }
-                $("#TableOfferRowForCustomer").find("tr:gt(0)").remove();
-                for(let i = 0; i < response.length; i++) {
-                    $('#TableOfferRowForCustomer').append('<tr><td>' + response[i]['id'] +
-                        '</td><td>' + response[i]['proposedPrice']  +
-                        '</td><td>' + response[i]['durationWork']  +
-                        '</td><td>' + response[i]['startTime'] +
-                        '</td><td>' + '<button  data-id="' + response[i]['id'] + "," + idVal + '" class="btn btn-warning btnFinalSelectAnOffer" >انتخاب</button>');
-                }
-                $("#modalSelectAnOffer").show();
             },fail:(function (request){
                 Swal.fire({
                     title: 'خطا!',
@@ -449,8 +444,6 @@
                 })
             })
         });
-
-         */
     });
 
 
