@@ -3,6 +3,7 @@ package com.example.HomeService_MVC.controller;
 import com.example.HomeService_MVC.controller.exception.OrderNotFoundException;
 import com.example.HomeService_MVC.core.SecurityUtil;
 import com.example.HomeService_MVC.dto.order.OrderDTO;
+import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.Offer;
 import com.example.HomeService_MVC.model.Order;
@@ -49,15 +50,18 @@ public class OrderController {
         return ResponseEntity.ok(dtoList);
     }
 
-    @GetMapping("/viewStartedOrder")
-    public ResponseEntity<List<OrderDTO>> viewStartedOrder(){
-        List<Order> orderList = orderServiceImpel.findAllStartOrder(1);
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @GetMapping("/viewExpertSelectionOrder")
+    public ResponseEntity<List<OrderDTO>> viewExpertSelectionOrder(){
+        Customer customer = (Customer) SecurityUtil.getCurrentUser();
+        List<Order> orderList = orderServiceImpel.findAllExpertSelectionOrder(customer.getId());
         if(orderList == null || orderList.size() == 0)
-            throw new OrderNotFoundException("You dont have any order until now!");
+            throw new OrderNotFoundException("شما هیچ سفارشی در وضعیت انتخاب پیشنهاد ندارید!");
         List<OrderDTO> dtoList = orderToOrderDTO(orderList);
         return ResponseEntity.ok(dtoList);
     }
 
+    @PreAuthorize("hasRole('EXPERT')")
     @GetMapping("/viewStartedOrderByCity")
     public ResponseEntity<List<OrderDTO>> viewStartedOrderByCity(){
         Expert expert = (Expert) SecurityUtil.getCurrentUser();
