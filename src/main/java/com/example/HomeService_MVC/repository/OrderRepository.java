@@ -14,14 +14,6 @@ public interface OrderRepository extends JpaRepository<Order,Integer> {
     List<Order> findAllByCustomerId(Integer customerId);
 
     @Query
-    ("FROM Order AS o WHERE o.customer.id = :customerId AND " +
-                        "o.orderStatus = :orderStatusOne OR " +
-                           "o.orderStatus = :orderStatusTwo ")
-    List<Order> findAllByCustomerIdAndTwoOrderStatus(@Param("customerId") Integer customerId,
-                                                   @Param("orderStatusOne") OrderStatus orderStatusOne,
-                                                   @Param("orderStatusTwo") OrderStatus orderStatusTwo);
-
-    @Query
     ("FROM Order AS o WHERE o.city = :city AND " +
             "o.subService IN (:subServices) AND " +
             "o.orderStatus = :orderStatusOne OR " +
