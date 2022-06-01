@@ -3,10 +3,13 @@ package com.example.HomeService_MVC.dto.offer;
 import lombok.*;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.time.LocalTime;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -14,12 +17,15 @@ public class OfferDTO {
 
     private Integer id;
 
-    @Min(value=1, message="must be equal or greater than 1")
+    @NotNull(message = "شما باید یک قیمت پیشنهادی وارد کنید")
+    @Min(value=1, message="قیمت پیشنهادی نباید منفی باشد")
     private Long proposedPrice;
 
-    @Min(value=1, message="must be equal or greater than 1")
+    @NotNull(message = "شما باید یک زمان صحیح وارد کنید")
+    @Min(value=1, message="زمان تقریبی انجام کار برابر یا بزرگ از ۱ باید باشد")
     private Integer durationWork;
 
+    @NotNull(message = "شما باید یک زمان صحیح وارد کنید")
     private LocalTime startTime;
 
 }
