@@ -3,6 +3,7 @@ package com.example.HomeService_MVC.controller.exception;
 import com.example.HomeService_MVC.controller.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -59,5 +60,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> dateExceptionHandler(InvalidDateException e) {
         LOGGER.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> dataIntegrityExceptionHandler(DataIntegrityViolationException e){
+        LOGGER.warn(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("شما قبلا یک پیشنهاد روی این سفارش ثبت کرده اید");
     }
 }
