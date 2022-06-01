@@ -32,18 +32,21 @@ public class OfferController {
         return "OK";
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/viewOffer/{orderId}")
     public ResponseEntity<List<OfferDTO>> viewOffer(@PathVariable("orderId") Integer orderId){
         List<Offer> offerList = offerServiceImpel.findAllByOrdersId(orderId);
         if(offerList == null || offerList.size() == 0)
-            throw new OfferNotFoundException("You dont have any offer until now!");
+            throw new OfferNotFoundException("هیچ پیشنهادی تاکنون برای این سفارش ثبت نشده است!");
         List<OfferDTO> dtoList = offerToOfferDTO(offerList);
         return ResponseEntity.ok(dtoList);
     }
 
     @GetMapping("/selectOffer/{orderId}/{offerId}")
     public ResponseEntity<String> selectOffer(@PathVariable("orderId") Integer orderId,@PathVariable("offerId") Integer offerID){
-        offerServiceImpel.selectOffer(orderId,offerID);
+        //offerServiceImpel.selectOffer(orderId,offerID);
+        System.out.println(orderId);
+        System.out.println(offerID);
         return ResponseEntity.ok("OK");
     }
 
