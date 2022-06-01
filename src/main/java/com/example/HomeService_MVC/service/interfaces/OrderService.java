@@ -12,7 +12,7 @@ import java.util.Set;
 public interface OrderService {
     void PlaceAnOrder(Integer subServicesId,OrderDTO orderDTO);
     List<Order> findAllByCustomerId(Integer customerId);
-    List<Order> findAllStartOrder(Integer customerId);
+    List<Order> findAllExpertSelectionOrder(Integer customerId);
     List<Order> findAllStartedOrderByCity(String city, Set<SubServices> subServices);
     Order getById(Integer id);
     void update(Order order);
