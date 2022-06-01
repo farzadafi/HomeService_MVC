@@ -45,7 +45,7 @@ public class OfferServiceImpel implements OfferService {
 
     @Override
     public void selectOffer(Integer orderId, Integer offerId) {
-        Order order = orderServiceImpel.getById(offerId);
+        Order order = orderServiceImpel.getById(orderId);
         Offer offer = getById(offerId);
         order.setOrderStatus(OrderStatus.WAITING_FOR_EXPERT);
         offer.setAccepted(true);
