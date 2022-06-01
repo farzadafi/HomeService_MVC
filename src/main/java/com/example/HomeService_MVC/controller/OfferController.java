@@ -42,11 +42,10 @@ public class OfferController {
         return ResponseEntity.ok(dtoList);
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/selectOffer/{orderId}/{offerId}")
     public ResponseEntity<String> selectOffer(@PathVariable("orderId") Integer orderId,@PathVariable("offerId") Integer offerID){
-        //offerServiceImpel.selectOffer(orderId,offerID);
-        System.out.println(orderId);
-        System.out.println(offerID);
+        offerServiceImpel.selectOffer(orderId,offerID);
         return ResponseEntity.ok("OK");
     }
 
