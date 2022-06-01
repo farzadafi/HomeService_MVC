@@ -1,18 +1,17 @@
 package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.controller.exception.OrderNotFoundException;
+import com.example.HomeService_MVC.core.SecurityUtil;
 import com.example.HomeService_MVC.dto.order.OrderDTO;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.Offer;
 import com.example.HomeService_MVC.model.Order;
 import com.example.HomeService_MVC.model.enumoration.OrderStatus;
-import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
 import com.example.HomeService_MVC.service.impel.OfferServiceImpel;
 import com.example.HomeService_MVC.service.impel.OrderServiceImpel;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,13 +24,11 @@ import java.util.List;
 public class OrderController {
 
     private final OrderServiceImpel orderServiceImpel;
-    private final ExpertServiceImpel expertServiceImpel;
     private final OfferServiceImpel offerServiceImpel;
     private final DozerBeanMapper mapper;
 
-    public OrderController(OrderServiceImpel orderServiceImpel, ExpertServiceImpel expertServiceImpel, OfferServiceImpel offerServiceImpel, DozerBeanMapper mapper) {
+    public OrderController(OrderServiceImpel orderServiceImpel, OfferServiceImpel offerServiceImpel, DozerBeanMapper mapper) {
         this.orderServiceImpel = orderServiceImpel;
-        this.expertServiceImpel = expertServiceImpel;
         this.offerServiceImpel = offerServiceImpel;
         this.mapper = mapper;
     }
@@ -63,10 +60,10 @@ public class OrderController {
 
     @GetMapping("/viewStartedOrderByCity")
     public ResponseEntity<List<OrderDTO>> viewStartedOrderByCity(){
-        Expert expert = expertServiceImpel.getById(7);
+        Expert expert = (Expert) SecurityUtil.getCurrentUser();
         List<Order> orderList = orderServiceImpel.findAllStartedOrderByCity(expert.getCity(),expert.getSubServices());
         if(orderList == null || orderList.size() == 0)
-            throw new OrderNotFoundException("You dont have any order until now!");
+            throw new OrderNotFoundException("هیچ سفارش قابل نمایشی برای شما وجود ندارد!");
         List<OrderDTO> dtoList = orderToOrderDTO(orderList);
             return ResponseEntity.ok(dtoList);
     }
