@@ -27,7 +27,7 @@
 <div class="tab float-right ">
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'select')" id="defaultOpen">گزینه ها</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'placeAnOrder')"  >ثبت سفارش</button>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'viewOffer')">مشاهده پیشنهادات</button>
+    <button id="showOfferButton" class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'viewOffer')">مشاهده پیشنهادات</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'doneOrder')">گزارش اتمام سفارش</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'payOrder')">پرداخت هزینه سفارش</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'placeAComment')">ثبت نظر</button>
@@ -102,6 +102,47 @@
 </div>
 <!------>
 <div id="viewOffer" class="tabContent text-center " style="font-size: 30px">
+    <table id="tableOrderForCustomer" class="table container table-bordered border-primary">
+        <thead>
+        <tr>
+            <th>شناسه</th>
+            <th>قیمت پیشنهادی</th>
+            <th>توضیح</th>
+            <th>تاریخ</th>
+            <th>آدرس</th>
+            <th >انتخاب</th>
+        </tr>
+        </thead>
+        <tbody id="TableOrderRowForCustomer">
+        </tbody>
+    </table>
+    <div class="modal" id="modalSelectAnOffer" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content ">
+                <div class="modal-header ">
+                    <h4 class="modal-title text-center " id="myModalLabel">لطفا پیشنهاد مورد قبول خود را انتخاب کنید</h4>
+                </div>
+                <div class="modal-body">
+                    <table id="tableOfferForCustomer" class="table container table-bordered border-primary">
+                        <thead>
+                        <tr>
+                            <th>شناسه</th>
+                            <th>قیمت پیشنهادی</th>
+                            <th>مدت زمان تقریبی</th>
+                            <th>ساعت شروع</th>
+                            <th >انتخاب</th>
+                        </tr>
+                        </thead>
+                        <tbody id="TableOfferRowForCustomer">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="closeModalSelectAnOffer" class="btn btn-default btn-danger" data-dismiss="modal">بستن</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!------>
 <div id="doneOrder" class="tabContent text-center " style="font-size: 30px">
@@ -258,6 +299,161 @@
             })
         })
     });
+
+    $("#showOfferButton").one('click',function() {
+        $.ajax({
+            url: "http://localhost:8080/order/viewExpertSelectionOrder",
+            type: "GET",
+            dataType: "json",
+            success: function (response)
+            {
+                if(response.length === 0){
+                    alert("شما هیچ سفارشی در وضعیت انتخاب پیشنهاد ندارید!")
+                    return;
+                }
+                $("#TableOrderRowForCustomer").find("tr:gt(0)").remove();
+                for(let i = 0; i < response.length; i++) {
+                    $('#TableOrderRowForCustomer').append('<tr><td>' + response[i]['id'] +
+                        '</td><td>' + response[i]['proposedPrice']  +
+                        '</td><td>' + response[i]['description']  +
+                        '</td><td>' + response[i]['date'].split('T')[0] +
+                        '</td><td>' + response[i]['street'] +
+                        '</td><td>' + '<button  data-id="' + response[i]['id'] + '" class="btn btn-warning btnSelectAnOffer" >انتخاب</button>');
+                }
+            },fail:(function (request){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            }),error:(function (request){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            })
+        });
+    });
+
+    $('#TableOrderRowForCustomer').on('click','.btnSelectAnOffer',function(){
+        let idVal=$(this).data('id');
+        $.ajax({
+            url: "http://localhost:8080/offer/viewOffer/" + idVal,
+            type: "GET",
+            dataType: "json",
+            success: function (response)
+            {
+                if(response.length === 0){
+                    alert("متاسفانه هیچ پیشنهادی ثبت شده است!")
+                    return;
+                }
+                $("#TableOfferRowForCustomer").find("tr:gt(0)").remove();
+                for(let i = 0; i < response.length; i++) {
+                    $('#TableOfferRowForCustomer').append('<tr><td>' + response[i]['id'] +
+                        '</td><td>' + response[i]['proposedPrice']  +
+                        '</td><td>' + response[i]['durationWork']  +
+                        '</td><td>' + response[i]['startTime'] +
+                        '</td><td>' + '<button  data-id="' + response[i]['id'] + "," + idVal + '" class="btn btn-warning btnFinalSelectAnOffer" >انتخاب</button>');
+                }
+                $("#modalSelectAnOffer").show();
+            },fail:(function (request){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            }),error:(function (request){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            })
+        });
+    });
+
+    $('#closeModalSelectAnOffer').on('click',function (){
+        $("#modalSelectAnOffer").hide();
+        $("#TableOfferRowForCustomer").reload();
+        location.reload(true);
+    })
+
+    $('#TableOfferRowForCustomer').on('click','.btnFinalSelectAnOffer',function() {
+        let idVal = $(this).data('id');
+        let offerId = idVal.split(',')[0];
+        let orderId = idVal.split(',')[1];
+        alert(offerId)
+        alert(orderId)
+        /*
+        $.ajax({
+            url: "http://localhost:8080/offer/viewOffer/" + idVal,
+            type: "GET",
+            dataType: "text",
+            success: function (response)
+            {
+                if(response.length === 0){
+                    alert("متاسفانه هیچ پیشنهادی ثبت شده است!")
+                    return;
+                }
+                $("#TableOfferRowForCustomer").find("tr:gt(0)").remove();
+                for(let i = 0; i < response.length; i++) {
+                    $('#TableOfferRowForCustomer').append('<tr><td>' + response[i]['id'] +
+                        '</td><td>' + response[i]['proposedPrice']  +
+                        '</td><td>' + response[i]['durationWork']  +
+                        '</td><td>' + response[i]['startTime'] +
+                        '</td><td>' + '<button  data-id="' + response[i]['id'] + "," + idVal + '" class="btn btn-warning btnFinalSelectAnOffer" >انتخاب</button>');
+                }
+                $("#modalSelectAnOffer").show();
+            },fail:(function (request){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            }),error:(function (request){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            })
+        });
+
+         */
+    });
+
+
 
 </script>
 </body>
