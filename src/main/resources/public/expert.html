@@ -7,10 +7,16 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="bootstrap/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="js/bootstrap.min.js">
     <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="./panelPage/expert/Expert.css">
+    <link rel="shortcut icon" href="#">
 </head>
+
+<style>
+
+</style>
 <body>
 
 <nav class="navbar navbar-expand-lg flex-column navbar-light trans ">
@@ -28,7 +34,7 @@
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'select')" id="defaultOpen">
         گزینه ها
     </button>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'placeAnOffer')">ثبت پیشنهاد
+    <button id="placeAnOfferButton" class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'placeAnOffer')">ثبت پیشنهاد
     </button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'startOrder')">شروع کار
     </button>
@@ -50,6 +56,48 @@
 
 <!------>
 <div id="placeAnOffer" class="tabContent text-center " style="font-size: 30px">
+    <table id="table" class="table container table-bordered border-primary">
+        <thead>
+            <tr>
+                <th>شناسه</th>
+                <th>قیمت پیشنهادی</th>
+                <th>توضیح</th>
+                <th>تاریخ</th>
+                <th>آدرس</th>
+                <th id="">انتخاب</th>
+            </tr>
+        </thead>
+        <tbody id="offerTableRow">
+
+        </tbody>
+    </table>
+    <div class="modal" id="modalPlaceAnOffer" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content ">
+                <div class="modal-header ">
+                    <h4 class="modal-title text-center " id="myModalLabel">لطفا اطلاعات تکمیلی را وارد کنید</h4>
+                </div>
+                <div class="modal-body">
+                    <label for="orderIdPlaceAnOffer">
+                        <input type="text" id="orderIdPlaceAnOffer" class="form-control" hidden >
+                    </label>
+                    <label for="proposedPricePlaceAnOffer" class="text-right">
+                        <input type="text" id="proposedPricePlaceAnOffer" placeholder="قیمت پیشنهادی" class="form-control text-right" >
+                    </label><br>
+                    <label for="durationWorkPlaceAnOffer">
+                        <input type="text" id="durationWorkPlaceAnOffer" placeholder="مقدار تقریبی زمان انجام کار" class="form-control" >
+                    </label><br>
+                    <label for="startTimePlaceAnOffer">
+                        <input type="time" id="startTimePlaceAnOffer" placeholder="ساعت شروع کار" class="form-control" >
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="closeModalPlaceAnOffer" class="btn btn-default btn-danger" data-dismiss="modal">بستن</button>
+                    <button type="button" id="savePlaceAnOffer" class="btn btn-primary">ذخیره</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!------>
 <div id="startOrder" class="tabContent text-center " style="font-size: 30px">
@@ -81,6 +129,114 @@
         document.getElementById(divName).style.display = "block";
         evt.currentTarget.className += " active";
     }
+
+    $("#placeAnOfferButton").one('click',function() {
+        $.ajax({
+            url: "http://localhost:8080/order/viewStartedOrderByCity",
+            type: "GET",
+            dataType: "json",
+            success: function (response)
+            {
+                if(response.length === 0){
+                    alert("شما هیچ سفارشی ندارید!")
+                    return;
+                }
+                $("#offerTableRow").find("tr:gt(0)").remove();
+                for(let i = 0; i < response.length; i++) {
+                    $('#offerTableRow').append('<tr><td>' + response[i]['id'] +
+                                              '</td><td>' + response[i]['proposedPrice']  +
+                                              '</td><td>' + response[i]['description']  +
+                                              '</td><td>' + response[i]['date'].split('T')[0] +
+                                              '</td><td>' + response[i]['street'] +
+                                              '</td><td>' + '<button  data-id="' + response[i]['id'] + '" class="btn btn-warning btnPlaceAnOffer" >انتخاب</button>');
+                }
+            },fail:(function (request){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    confirmButtonText: 'Cool',
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            })
+        });
+    });
+
+    $('#offerTableRow').on('click','.btnPlaceAnOffer',function(){
+        let idVal=$(this).data('id');
+        $("#orderIdPlaceAnOffer").val(idVal);
+        $("#modalPlaceAnOffer").show();
+    });
+
+    $('#closeModalPlaceAnOffer').on('click',function (){
+        $(':input', '#modalPlaceAnOffer')
+            .not(':button, :submit, :reset, :hidden')
+            .val('')
+            .removeAttr('checked')
+            .removeAttr('selected');
+        $("#modalPlaceAnOffer").hide();
+    })
+
+    $("#savePlaceAnOffer").on('click', function () {
+        const json = {
+            "proposedPrice": $("#proposedPricePlaceAnOffer").val(),
+            "durationWork": $("#durationWorkPlaceAnOffer").val(),
+            "startTime": $("#startTimePlaceAnOffer").val()
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/offer/placeAnOffer/" + $("#orderIdPlaceAnOffer").val(),
+            type: "POST",
+            data: JSON.stringify(json),
+            contentType: "application/json; charset=utf-8",
+            dataType: 'text',
+            success: function (response) {
+                if (response === 'OK') {
+                    $(':input', '#modalPlaceAnOffer')
+                        .not(':button, :submit, :reset, :hidden')
+                        .val('')
+                        .removeAttr('checked')
+                        .removeAttr('selected');
+                    $("#modalPlaceAnOffer").hide();
+                    Swal.fire({
+                        title: 'پیشنهاد شما با موفقیت ثبت شد!',
+                        didOpen: function () {
+                            Swal.showLoading()
+                            setTimeout(function () {
+                                Swal.close()
+                            }, 3000)
+                        }
+                    })
+                }
+            }, fail: (function (request) {
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            }),error:(function (error){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: error.responseText,
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            })
+        });
+    });
 
 
 </script>
