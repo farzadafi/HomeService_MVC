@@ -43,4 +43,9 @@ public class Expert extends User {
                 ", accepted= " + accepted +
                 '}';
     }
+
+    @Override
+    public boolean isEnabled() {
+        return isAccepted();
+    }
 }
