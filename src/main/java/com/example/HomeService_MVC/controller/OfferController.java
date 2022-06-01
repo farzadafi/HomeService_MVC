@@ -7,6 +7,7 @@ import com.example.HomeService_MVC.model.Offer;
 import com.example.HomeService_MVC.model.enumoration.OrderStatus;
 import com.example.HomeService_MVC.service.impel.OfferServiceImpel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,10 +25,11 @@ public class OfferController {
         this.offerServiceImpel = offerServiceImpel;
     }
 
+    @PreAuthorize("hasRole('EXPERT')")
     @PostMapping("/placeAnOffer/{orderId}")
-    public ResponseEntity<String> placeAnOffer(@Valid @RequestBody OfferDTO offerDTO, @PathVariable("orderId") Integer orderId){
-        offerServiceImpel.placeAnOffer(1,offerDTO,orderId);
-        return ResponseEntity.ok("OK");
+    public String placeAnOffer(@Valid @RequestBody OfferDTO offerDTO, @PathVariable("orderId") Integer orderId){
+        offerServiceImpel.placeAnOffer(offerDTO,orderId);
+        return "OK";
     }
 
     @GetMapping("/viewOffer/{orderId}")
