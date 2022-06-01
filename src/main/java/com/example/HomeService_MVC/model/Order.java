@@ -32,7 +32,7 @@ public class Order extends Base<Integer> {
     @Temporal(TemporalType.TIMESTAMP)
     private Date entryDate;
 
-    private Date WorkDate;
+    private Date date;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus ;
@@ -44,12 +44,12 @@ public class Order extends Base<Integer> {
     private Integer houseNumber;
 
     public Order(Customer customer, SubServices subService, Long proposedPrice, String description,
-                 Date workDate, String city, String street, String alley, Integer houseNumber) {
+                 Date date, String city, String street, String alley, Integer houseNumber) {
         this.customer = customer;
         this.subService = subService;
         this.proposedPrice = proposedPrice;
         this.description = description;
-        WorkDate = workDate;
+        this.date = date;
         this.city = city;
         this.street = street;
         this.alley = alley;
@@ -64,7 +64,7 @@ public class Order extends Base<Integer> {
                 ", proposedPrice=" + proposedPrice +
                 ", description='" + description + '\'' +
                 ", entryDate=" + entryDate +
-                ", WorkDate=" + WorkDate +
+                ", WorkDate=" + date +
                 ", orderStatus=" + orderStatus +
                 ", city='" + city + '\'' +
                 '}';
