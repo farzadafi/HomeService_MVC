@@ -73,10 +73,10 @@ public class OrderController {
     }
 
     @GetMapping("/startOrder/{offerId}")
-    public ResponseEntity<String> startOrder(@PathVariable("offerId") Integer offerId){
+    public String startOrder(@PathVariable("offerId") Integer offerId){
         Offer offer = offerServiceImpel.getById(offerId);
         orderServiceImpel.updateStatusToStart(offer);
-        return ResponseEntity.ok("OK");
+        return "OK";
     }
 
     @GetMapping("/viewOrderForDone")
@@ -162,5 +162,15 @@ public class OrderController {
             List<OrderDTO> dtoList = orderToOrderDTO(orderList);
             return ResponseEntity.ok(dtoList);
         }
+    }
+
+    @PreAuthorize("hasRole('EXPERT')")
+    @GetMapping("/viewOrderById/{orderId}")
+    public ResponseEntity<OrderDTO> viewOrderById(@PathVariable("orderId") Integer orderId){
+        Order order = orderServiceImpel.getById(orderId);
+        if(order == null)
+            throw new OrderNotFoundException("متأسفانه این سفارش پیدا نشد!");
+        OrderDTO orderDTO = mapper.map(order,OrderDTO.class);
+        return ResponseEntity.ok(orderDTO);
     }
 }
