@@ -13,11 +13,14 @@ import org.dozer.DozerBeanMapper;
 import org.springframework.stereotype.Service;
 import com.example.HomeService_MVC.service.interfaces.OrderService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class OrderServiceImpel implements OrderService {
@@ -92,10 +95,45 @@ public class OrderServiceImpel implements OrderService {
     }
 
     @Override
-    public void setDoneOrder(Integer orderId) {
+    public String setDoneOrder(Offer offer,Integer orderId) {
         Order order = getById(orderId);
+        String startOrderDateString = String.valueOf(order.getDate()).split(" ")[0] + " " + offer.getStartTime() + ":00";
+        startOrderDateString = startOrderDateString.replace("-","/");
+        Date startOrderDate = null;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        try {
+            startOrderDate = format.parse(startOrderDateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date date = new Date();
+        assert startOrderDate != null;
+        long duration  = date.getTime() - startOrderDate.getTime();
+        long diffInHours = TimeUnit.MILLISECONDS.toHours(duration);
+        int different = Math.toIntExact(diffInHours - offer.getDurationWork());
         order.setOrderStatus(OrderStatus.DONE);
-        orderRepository.save(order);
+        if(different > 0 ){
+            Expert expert = offer.getExpert();
+            String message;
+            int numberPercent = different * 5 ;
+            if(numberPercent > 100){
+                expert = offer.getExpert();
+                expert.setStars(0);
+                message = "برای " + different + " ساعت تأخیر " + "امتیاز آقای " + expert.getFirstName() + " " + expert.getLastName() + "برابر شد با صفر!";
+            }
+            else {
+                numberPercent = 100 - numberPercent;
+                int numberMinesStars = (numberPercent * offer.getExpert().getStars()) / 100;
+                expert.setStars(expert.getStars() - numberMinesStars);
+                message = "برای " + different + " ساعت تأخیر " + " از آقای " + expert.getFirstName() + " " + expert.getLastName() + "تعداد  " + numberMinesStars + " امتیاز کم شد!";
+            }
+            expertServiceImpel.updateStars(expert);
+            orderRepository.save(order);
+            return message;
+        }else{
+            orderRepository.save(order);
+            return "OK";
+        }
     }
 
     @Override

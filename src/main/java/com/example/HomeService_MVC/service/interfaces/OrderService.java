@@ -18,6 +18,6 @@ public interface OrderService {
     void update(Order order);
     void updateStatusToStart(Offer offer);
     List<Order> findAllByCustomerIdAndOrderStatus(Integer customerId, OrderStatus orderStatus);
-    void setDoneOrder(Integer orderId);
+    String setDoneOrder(Offer offer,Integer orderId);
     void paidOrder(Integer customerId,Integer orderId,Offer offer);
 }
