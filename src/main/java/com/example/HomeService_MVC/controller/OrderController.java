@@ -79,19 +79,22 @@ public class OrderController {
         return "OK";
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/viewOrderForDone")
     public ResponseEntity<List<OrderDTO>> viewOrderForDone(){
-        List<Order> orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(1, OrderStatus.STARTED);
+        List<Order> orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(SecurityUtil.getCurrentUser().getId(), OrderStatus.STARTED);
         if(orderList == null || orderList.size() == 0)
-            throw new OrderNotFoundException("You dont have any order until now!");
+            throw new OrderNotFoundException("شما هیچ سفارشی در وضعیت شروع شده ندارید!");
         List<OrderDTO> dtoList = orderToOrderDTO(orderList);
         return ResponseEntity.ok(dtoList);
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/doneOrder/{orderId}")
     public ResponseEntity<String> doneOrder(@PathVariable("orderId") Integer orderId){
-        orderServiceImpel.setDoneOrder(orderId);
-        return ResponseEntity.ok("OK");
+        Offer offer = offerServiceImpel.findByOrderIdAndAcceptedTrue(orderId);
+        String result = orderServiceImpel.setDoneOrder(offer,orderId);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/viewOrderForPaid")
