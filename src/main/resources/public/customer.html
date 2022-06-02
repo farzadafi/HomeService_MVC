@@ -28,7 +28,7 @@
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'select')" id="defaultOpen">گزینه ها</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'placeAnOrder')"  >ثبت سفارش</button>
     <button id="showOfferButton" class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'viewOffer')">مشاهده پیشنهادات</button>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'doneOrder')">گزارش اتمام سفارش</button>
+    <button id="showStartedOrderButton" class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'doneOrder')">گزارش اتمام سفارش</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'payOrder')">پرداخت هزینه سفارش</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'placeAComment')">ثبت نظر</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'orderHistory')">تاریخچه سفارشات</button>
@@ -146,6 +146,20 @@
 </div>
 <!------>
 <div id="doneOrder" class="tabContent text-center " style="font-size: 30px">
+    <table id="tableStartedOrderForCustomer" class="table container table-bordered border-primary">
+        <thead>
+        <tr>
+            <th>شناسه</th>
+            <th>قیمت پیشنهادی</th>
+            <th>توضیح</th>
+            <th>تاریخ</th>
+            <th>آدرس</th>
+            <th >انتخاب</th>
+        </tr>
+        </thead>
+        <tbody id="TableStartedOrderRowForCustomer">
+        </tbody>
+    </table>
 </div>
 <!------>
 <div id="payOrder" class="tabContent text-center " style="font-size: 30px">
@@ -429,6 +443,106 @@
                         setTimeout(function () {
                             Swal.close()
                         }, 2000)
+                    }
+                })
+            }),error:(function (request){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            })
+        });
+    });
+
+    $("#showStartedOrderButton").one('click',function() {
+        $.ajax({
+            url: "http://localhost:8080/order/viewOrderForDone",
+            type: "GET",
+            dataType: "json",
+            success: function (response)
+            {
+                if(response.length === 0){
+                    alert("شما هیچ سفارشی در وضعیت شروع شده ندارید!")
+                    return;
+                }
+                $("#TableStartedOrderRowForCustomer").find("tr:gt(0)").remove();
+                for(let i = 0; i < response.length; i++) {
+                    $('#TableStartedOrderRowForCustomer').append('<tr><td>' + response[i]['id'] +
+                        '</td><td>' + response[i]['proposedPrice']  +
+                        '</td><td>' + response[i]['description']  +
+                        '</td><td>' + response[i]['date'].split('T')[0] +
+                        '</td><td>' + response[i]['street'] +
+                        '</td><td>' + '<button  data-id="' + response[i]['id'] + '" class="btn btn-warning btnSelectAnOrderForPaid" >انتخاب</button>');
+                }
+            },fail:(function (request){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            }),error:(function (request){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            })
+        });
+    });
+
+    $('#TableStartedOrderRowForCustomer').on('click','.btnSelectAnOrderForPaid',function() {
+        let idVal = $(this).data('id');
+        $.ajax({
+            url: "http://localhost:8080/order/doneOrder/" + idVal,
+            type: "GET",
+            dataType: "text",
+            success: function (response) {
+                if(response === 'OK'){
+                    Swal.fire({
+                        title: 'ثبت موفق',
+                        didOpen: function () {
+                            Swal.showLoading()
+                            setTimeout(function () {
+                                Swal.close()
+                            }, 2000)
+                        }
+                    })
+                    location.reload(true);
+                }else{
+                    Swal.fire({
+                        title:"ثبت موفق!",
+                        text: response,
+                        confirmButtonText:'بستن'
+                    })
+                    setInterval(function() {
+                        location.reload();
+                    },10000);
+                }
+            },fail:(function (request){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request,
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 5000)
                     }
                 })
             }),error:(function (request){
