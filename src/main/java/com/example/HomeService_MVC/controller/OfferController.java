@@ -2,6 +2,7 @@ package com.example.HomeService_MVC.controller;
 
 
 import com.example.HomeService_MVC.controller.exception.OfferNotFoundException;
+import com.example.HomeService_MVC.core.SecurityUtil;
 import com.example.HomeService_MVC.dto.offer.OfferDTO;
 import com.example.HomeService_MVC.model.Offer;
 import com.example.HomeService_MVC.model.enumoration.OrderStatus;
@@ -49,11 +50,12 @@ public class OfferController {
         return ResponseEntity.ok("OK");
     }
 
+    @PreAuthorize("hasRole('EXPERT')")
     @GetMapping("/viewAcceptedOffer")
     public ResponseEntity<List<OfferDTO>> viewAcceptedOffer(){
-        List<Offer> offerList = offerServiceImpel.findAllByExpertIdAndStatus(1, OrderStatus.WAITING_FOR_EXPERT);
+        List<Offer> offerList = offerServiceImpel.findAllByExpertIdAndStatus(SecurityUtil.getCurrentUser().getId(), OrderStatus.WAITING_FOR_EXPERT);
         if(offerList == null || offerList.size() == 0)
-            throw new OfferNotFoundException("You dont have any Accepted offer until now!");
+            throw new OfferNotFoundException("شما هیچ پیشنهاد تأیید شده ای ندارید!");
         List<OfferDTO> dtoList = offerToOfferDTO(offerList);
         return ResponseEntity.ok(dtoList);
     }
@@ -62,7 +64,7 @@ public class OfferController {
         List<OfferDTO> dtoList = new ArrayList<>();
         for (Offer o:offerList
         ) {
-            dtoList.add(new OfferDTO(o.getId(),o.getProposedPrice(),o.getDurationWork(),o.getStartTime()));
+            dtoList.add(new OfferDTO(o.getId(),o.getProposedPrice(),o.getDurationWork(),o.getStartTime(),o.getOrders().getId()));
         }
         return dtoList;
     }
