@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import java.time.LocalTime;
 
 @Getter
@@ -27,5 +26,7 @@ public class OfferDTO {
 
     @NotNull(message = "شما باید یک زمان صحیح وارد کنید")
     private LocalTime startTime;
+
+    private Integer orderId;
 
 }
