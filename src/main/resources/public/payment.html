@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="js/bootstrap.min.js">
+    <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.14/sweetalert2.min.js"></script>
+
+    <style>
+
+        body {
+            background-image: linear-gradient(150deg, #e0a800 5%, deeppink 100%, #c69500 100%);
+            min-height: 93vh;
+            height: 1000px;
+            width: 1820px;
+        }
+
+        .mainDiv {
+            height: 90%;
+            transform: translate(-50%, -50%);
+            border-radius: 15px 15px;
+            padding: 0 0 0 15%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        @font-face {
+            font-family: farzad;
+            src: url('Entezar/EntezarB4_v2.0.1_.ttf');
+        }
+
+        input {
+            font: 40px 'farzad';
+            background-color: rgba(0, 0, 0, 0.1);
+            height: 30px;
+        }
+
+        button {
+            font: 40px 'farzad';
+            margin: -40% 0 0 -40%;
+        }
+
+        p {
+            margin: 5% 0 0 -45%;
+            text-align: center;
+            font: 40px 'farzad';
+        }
+
+        input::placeholder {
+            color: white;
+        }
+
+        .creditCardDiv {
+            margin-top: 10px;
+            margin-right: 80px;
+            margin-left: -150px;
+            padding-right: 50px;
+        }
+
+        .expireDiv {
+            margin-right: 110px;
+            margin-left: -120px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="mainDiv w-50">
+    <p>مبلغ قابل پرداخت</p>
+    <p>لطفا اطلاعات کارت خود را وارد کنید</p>
+    <form>
+        <div class="form-check-inline creditCardDiv">
+            <label for="creditCardNumber1">
+                <input id="creditCardNumber1" class="rounded-pill border-0 p-lg-5 w-100 " type="text" required>
+            </label>
+            <label for="creditCardNumber2">
+                <input id="creditCardNumber2" class=" rounded-pill border-0 p-lg-5 w-100 " type="text" required>
+            </label>
+            <label for="creditCardNumber3">
+                <input id="creditCardNumber3" class="rounded-pill border-0 p-lg-5 w-100 " type="text" required>
+            </label>
+            <label for="creditCardNumber4">
+                <input id="creditCardNumber4" class="rounded-pill border-0 p-lg-5 w-100 " type="text" required>
+            </label>
+        </div>
+        <div class="form-check-inline expireDiv ">
+            <label for="expireYear">
+                <input id="expireYear" class=" rounded-pill text-center ml-4 border-0 p-lg-5 w-75" required
+                       placeholder="سال"
+                       type="text">
+            </label>
+            <label for="expireMonth">
+                <input id="expireMonth" class=" rounded-pill border-0 p-lg-5 w-75 text-center" required
+                       placeholder="ماه"
+                       type="text">
+            </label>
+        </div>
+        <label for="cvv2">
+            <input id="cvv2" class="rounded-pill border-0 ml-5 p-lg-5 w-50 text-center " required placeholder="cvv2"
+                   type="text">
+        </label>
+        <label for="2password">
+            <input id="2password" class="rounded-pill ml-5 border-0 text-center p-lg-5  w-50 " required
+                   placeholder="رمز دوم"
+                   type="password">
+        </label>
+        <div class="mt-3">
+            <div class="g-recaptcha ml-4 btn btn-" id="captcha" data-sitekey="CLIENT_KEY"></div>
+        </div>
+        <br><br>
+        <div class="text-center mt-3">
+            <button id="submitPayment" class="btn-warning rounded-pill p-lg-3 submit">پرداخت</button>
+        </div>
+    </form>
+</div>
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+<script>
+
+    $("#creditCardNumber1,#creditCardNumber2,#creditCardNumber3,#creditCardNumber4").blur(function () {
+        const number = $(this).val();
+        if (number.length > 4 || number.length < 4) {
+            Swal.fire({
+                text: 'شما باید چهار عدد وارد کنید',
+                confirmButtonText: 'بستن'
+            });
+            $(this).val('')
+        }
+        for (let i = 0; i < number.length; i++) {
+            if (!$.isNumeric(number[i])) {
+                Swal.fire({
+                    text: 'فقط عدد مجاز می باشد',
+                    confirmButtonText: 'بستن',
+                })
+                $(this).val('')
+            }
+        }
+    });
+
+    $("#expireYear").blur(function () {
+        const number = $(this).val();
+        if (number.length > 2 || number.length < 2) {
+            Swal.fire({
+                text: 'شما باید دو عدد وارد کنید',
+                confirmButtonText: 'بستن'
+            });
+            $(this).val('')
+        }
+        for (let i = 0; i < number.length; i++) {
+            if (!$.isNumeric(number[i])) {
+                Swal.fire({
+                    text: 'فقط عدد مجاز می باشد',
+                    confirmButtonText: 'بستن',
+                })
+                $(this).val('')
+            }
+        }
+    });
+
+    $("#expireMonth").blur(function () {
+        const number = $(this).val();
+        if (number.length > 2 || number.length < 1) {
+            Swal.fire({
+                text: 'شما باید عددی بین ۱ تا دوازده وارد کنید',
+                confirmButtonText: 'بستن'
+            });
+            $(this).val('')
+        }
+        for (let i = 0; i < number.length; i++) {
+            if (!$.isNumeric(number[i])) {
+                Swal.fire({
+                    text: 'فقط عدد مجاز می باشد',
+                    confirmButtonText: 'بستن',
+                })
+                $(this).val('')
+            }
+        }
+        if (number > 12 || number < 1) {
+            Swal.fire({
+                text: 'لطفا عددی بین ۱ تا ۱۲ وارد کنید',
+                confirmButtonText: 'بستن'
+            });
+            $(this).val('')
+        }
+    });
+
+    $("#cvv2").blur(function () {
+        const number = $(this).val();
+        if (number.length > 4 || number.length < 3) {
+            Swal.fire({
+                text: 'عدد سه رقمی یا چهار رقمی مجاز می باشد',
+                confirmButtonText: 'بستن'
+            });
+            $(this).val('')
+        }
+        for (let i = 0; i < number.length; i++) {
+            if (!$.isNumeric(number[i])) {
+                Swal.fire({
+                    text: 'فقط عدد مجاز می باشد',
+                    confirmButtonText: 'بستن',
+                })
+                $(this).val('')
+            }
+        }
+    });
+
+    $("#2password").blur(function () {
+        const number = $(this).val();
+        if (number.length < 4) {
+            Swal.fire({
+                text: 'رمز دوم باید بزرگ تر از ۴ رقم باشد',
+                confirmButtonText: 'بستن'
+            });
+            $(this).val('')
+        }
+        for (let i = 0; i < number.length; i++) {
+            if (!$.isNumeric(number[i])) {
+                Swal.fire({
+                    text: 'فقط عدد مجاز می باشد',
+                    confirmButtonText: 'بستن',
+                })
+                $(this).val('')
+            }
+        }
+    });
+
+    $("#submitPayment").on(('click'),function (){
+        let creditCard = $("#creditCardNumber1").val() ;
+        creditCard += $("#creditCardNumber2").val();
+        creditCard += $("#creditCardNumber3").val();
+        creditCard += $("#creditCardNumber4").val();
+        let json = {
+            "creditCardNumber" : creditCard,
+            "monthExpire" : $("#expireMonth").val(),
+            "yearExpire" :  $("#expireYear").val(),
+            "cvv2" : $("#cvv2").val(),
+            "secondPassword" : $("#2password")
+        }
+        if(grecaptcha.getResponse() === ''){
+            event.preventDefault();
+            alert("farzad")
+        }
+    });
+
+</script>
+
+</body>
+</html>
