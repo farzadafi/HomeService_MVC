@@ -6,68 +6,31 @@
     <link rel="stylesheet" href="./bootstrap/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://unpkg.com/tachyons@4.9.1/css/tachyons.min.css"/>
+    <link rel="stylesheet" href="./payment/Payment.css">
 
-    <style>
-
-        body {
-            background-image: linear-gradient(150deg, #e0a800 5%, deeppink 100%, #c69500 100%);
-            min-height: 93vh;
-            height: 1000px;
-            width: 1820px;
-        }
-
-        .mainDiv {
-            height: 90%;
-            transform: translate(-50%, -50%);
-            border-radius: 15px 15px;
-            padding: 0 0 0 15%;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            background-color: rgba(0, 0, 0, 0.3);
-        }
-
-        @font-face {
-            font-family: farzad;
-            src: url('Entezar/EntezarB4_v2.0.1_.ttf');
-        }
-
-        input {
-            font: 40px 'farzad';
-            background-color: rgba(0, 0, 0, 0.1);
-            height: 30px;
-        }
-
-        button {
-            font: 40px 'farzad';
-            margin: -40% 0 0 -40%;
-        }
-
-        p {
-            margin: 5% 0 0 -45%;
-            text-align: center;
-            font: 40px 'farzad';
-        }
-
-        input::placeholder {
-            color: white;
-        }
-
-        .creditCardDiv {
-            margin-top: 10px;
-            margin-right: 80px;
-            margin-left: -150px;
-            padding-right: 50px;
-        }
-
-        .expireDiv {
-            margin-right: 110px;
-            margin-left: -120px;
-        }
-
-    </style>
 </head>
 <body>
+
+<div class="f2 near-white " id="clockDiv" style="margin-left: 100px">
+    <div class="dib" hidden>
+        <span class="pa3 br3 bg-warning dib days"></span>
+        <div class="pt1 f5 fw1">Days</div>
+    </div>
+    <div class="pa2 br3 bg-dark dib" hidden>
+        <span class="pa3 br3 bg-secondary dib hours"></span>
+        <div class="pt1 f5 fw1">Hours</div>
+    </div>
+    <div class="pa2 br3 bg-dark dib">
+        <span class="pa3 br3 bg-secondary dib minutes"></span>
+        <div class="pt1 f5 fw1 text-center">دقیقه</div>
+    </div>
+    <div class="pa2 br3 bg-dark dib">
+        <span class="pa3 br3 bg-secondary dib seconds"></span>
+        <div class="pt1 f5 fw1 text-center">ثانیه</div>
+    </div>
+</div>
+
 <div class="mainDiv w-50">
     <p id="priceForPay"></p>
     <p>لطفا اطلاعات کارت خود را وارد کنید</p>
@@ -123,221 +86,10 @@
 
 <script src='https://www.google.com/recaptcha/api.js'></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
-
 <script>
 
-    window.onload = function onLoadPage() {
-        const url = location.search.substring(1);
-        const farReplace = url.replace(/[^&0-9 ]/g, '');
-        const orderId = farReplace.split('&&')[0]
-        const price = farReplace.split('&&')[1]
-        $("#priceOrder").val(price);
-        $("#orderId").val(orderId);
-        $("#priceForPay").html("مبلغ قابل پرداخت " + price);
-    }
 
-    $("#creditCardNumber1,#creditCardNumber2,#creditCardNumber3,#creditCardNumber4").blur(function () {
-        const number = $(this).val();
-        if (number.length > 4 || number.length < 4) {
-            Swal.fire({
-                text: 'شما باید چهار عدد وارد کنید',
-                confirmButtonText: 'بستن'
-            });
-            $(this).val('')
-        }
-        for (let i = 0; i < number.length; i++) {
-            if (!$.isNumeric(number[i])) {
-                Swal.fire({
-                    text: 'فقط عدد مجاز می باشد',
-                    confirmButtonText: 'بستن',
-                })
-                $(this).val('')
-            }
-        }
-    });
-
-    $("#expireYear").blur(function () {
-        const number = $(this).val();
-        if (number.length > 2 || number.length < 2) {
-            Swal.fire({
-                text: 'شما باید دو عدد وارد کنید',
-                confirmButtonText: 'بستن'
-            });
-            $(this).val('')
-        }
-        for (let i = 0; i < number.length; i++) {
-            if (!$.isNumeric(number[i])) {
-                Swal.fire({
-                    text: 'فقط عدد مجاز می باشد',
-                    confirmButtonText: 'بستن',
-                })
-                $(this).val('')
-            }
-        }
-    });
-
-    $("#expireMonth").blur(function () {
-        const number = $(this).val();
-        if (number.length > 2 || number.length < 1) {
-            Swal.fire({
-                text: 'شما باید عددی بین ۱ تا دوازده وارد کنید',
-                confirmButtonText: 'بستن'
-            });
-            $(this).val('')
-        }
-        for (let i = 0; i < number.length; i++) {
-            if (!$.isNumeric(number[i])) {
-                Swal.fire({
-                    text: 'فقط عدد مجاز می باشد',
-                    confirmButtonText: 'بستن',
-                })
-                $(this).val('')
-            }
-        }
-        if (number > 12 || number < 1) {
-            Swal.fire({
-                text: 'لطفا عددی بین ۱ تا ۱۲ وارد کنید',
-                confirmButtonText: 'بستن'
-            });
-            $(this).val('')
-        }
-    });
-
-    $("#cvv2").blur(function () {
-        const number = $(this).val();
-        if (number.length > 4 || number.length < 3) {
-            Swal.fire({
-                text: 'عدد سه رقمی یا چهار رقمی مجاز می باشد',
-                confirmButtonText: 'بستن'
-            });
-            $(this).val('')
-        }
-        for (let i = 0; i < number.length; i++) {
-            if (!$.isNumeric(number[i])) {
-                Swal.fire({
-                    text: 'فقط عدد مجاز می باشد',
-                    confirmButtonText: 'بستن',
-                })
-                $(this).val('')
-            }
-        }
-    });
-
-    $("#2password").blur(function () {
-        const number = $(this).val();
-        if (number.length < 4) {
-            Swal.fire({
-                text: 'رمز دوم باید بزرگ تر از ۴ رقم باشد',
-                confirmButtonText: 'بستن'
-            });
-            $(this).val('')
-        }
-        for (let i = 0; i < number.length; i++) {
-            if (!$.isNumeric(number[i])) {
-                Swal.fire({
-                    text: 'فقط عدد مجاز می باشد',
-                    confirmButtonText: 'بستن',
-                })
-                $(this).val('')
-            }
-        }
-    });
-
-    $("#submitPayment").on('click',function() {
-        const captchaResponse = grecaptcha.getResponse();
-        if(captchaResponse === null || captchaResponse === ""){
-            Swal.fire({
-                title:"خطا!",
-                text:"لطفا الگو کپچا را به درستی وارد کنید",
-                didOpen: function () {
-                    Swal.showLoading()
-                    setTimeout(function () {
-                        Swal.close()
-                    }, 3000)
-                }
-            })
-            return;
-        }
-        let form = new FormData();
-        let creditCard = $("#creditCardNumber1").val() ;
-        creditCard += $("#creditCardNumber2").val();
-        creditCard += $("#creditCardNumber3").val();
-        creditCard += $("#creditCardNumber4").val();
-
-        form.append("price", $("#priceOrder").val());
-        form.append("creditCardNumber" , creditCard);
-        form.append("monthExpire" , $("#expireMonth").val());
-        form.append("yearExpire" ,  $("#expireYear").val());
-        form.append("cvv2" , $("#cvv2").val());
-        form.append("secondPassword" , $("#2password").val());
-        if(form.get("price"). length === 0 || form.get("creditCardNumber").length === 0 || form.get("monthExpire").length === 0 ||
-           form.get("yearExpire").length === 0 || form.get("cvv2").length === 0 || form.get("secondPassword").length === 0){
-            Swal.fire({
-                title:"خطا!",
-                text:"لطفا تمامی اطلاعات را وارد کنید",
-                didOpen: function () {
-                    Swal.showLoading()
-                    setTimeout(function () {
-                        Swal.close()
-                    }, 3000)
-                }
-            })
-            return;
-        }
-
-        $.ajax({
-            url: "http://localhost:8080/order/onlinePayment/" + $("#orderId").val(),
-            data: form,
-            type: "POST",
-            contentType: false,
-            dataType: 'text',
-            headers: {
-                "captcha-response": captchaResponse
-            },
-            processData: false,
-            cache: false,
-            success: function (msg) {
-                if (msg === "OK") {
-                    Swal.fire({
-                        title: 'پرداخت موفق',
-                        didOpen: function () {
-                            Swal.showLoading()
-                            setTimeout(function () {
-                                Swal.close()
-                            }, 3000)
-                        }
-                    })
-                    setInterval(function () {
-                        location.reload();
-                    }, 3000);
-                }
-            }, fail: function (request) {
-                Swal.fire({
-                    title: 'خطا!',
-                    text: request.responseText,
-                    confirmButtonText: 'Cool',
-                    didOpen: function () {
-                        Swal.showLoading()
-                        setTimeout(function () {
-                            Swal.close()
-                        }, 2000)
-                    }
-                })
-            }, error: function (request) {
-                Swal.fire({
-                    title: 'خطا!',
-                    text: request.responseText,
-                    confirmButtonText: 'Cool',
-                    didOpen: function () {
-                        Swal.showLoading()
-                        setTimeout(function () {
-                            Swal.close()
-                        }, 2000)
-                    }
-                });
-            }
-        });
+    $.getScript('payment/Payment.js', function() {
     });
 
 </script>
