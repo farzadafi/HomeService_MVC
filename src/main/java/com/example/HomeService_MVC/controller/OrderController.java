@@ -113,14 +113,16 @@ public class OrderController {
     @GetMapping("/PaidOrder/{orderId}")
     public String paidOrder(@PathVariable("orderId") Integer orderId){
         Offer offer = offerServiceImpel.findByOrderIdAndAcceptedTrue(orderId);
-        orderServiceImpel.paidOrder(orderId,offer);
+        orderServiceImpel.paidOrder(offer);
         return "OK";
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
     @RequiresCaptcha
-    @PostMapping(value = "/onlinePayment")
-    public String onlinePayment(@Valid @ModelAttribute @RequestBody PaymentDto paymentDto){
-        System.out.println(paymentDto);
+    @PostMapping(value = "/onlinePayment/{orderId}")
+    public String onlinePayment(@Valid @ModelAttribute @RequestBody PaymentDto paymentDto,@PathVariable("orderId") Integer orderId){
+        Offer offer = offerServiceImpel.findByOrderIdAndAcceptedTrue(orderId);
+        orderServiceImpel.paidOnlineOrder(offer);
         return "OK";
     }
 
