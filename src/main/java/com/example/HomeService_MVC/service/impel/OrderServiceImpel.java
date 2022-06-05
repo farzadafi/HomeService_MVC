@@ -137,17 +137,27 @@ public class OrderServiceImpel implements OrderService {
     }
 
     @Override
-    public void paidOrder( Integer orderId,Offer offer) {
+    public void paidOrder(Offer offer) {
         Customer customer = (Customer) SecurityUtil.getCurrentUser();
         Expert expert = offer.getExpert();
         if(customer.getBalance() < offer.getProposedPrice())
             throw new NotEnoughBalanceException("متأسفانه اعتبار شما برای پرداخت کافی نیست!");
-        Order order = getById(orderId);
+        Order order = offer.getOrders();
         order.setOrderStatus(OrderStatus.PAID);
         customer.setBalance(customer.getBalance() - offer.getProposedPrice());
         expert.setBalance(expert.getBalance() + offer.getProposedPrice());
         expertServiceImpel.updateBalance(expert);
         customerServiceImpel.updateBalance(customer);
+        orderRepository.save(order);
+    }
+
+    @Override
+    public void paidOnlineOrder(Offer offer) {
+        Expert expert = offer.getExpert();
+        Order order = offer.getOrders();
+        order.setOrderStatus(OrderStatus.PAID);
+        expert.setBalance(expert.getBalance() + offer.getProposedPrice());
+        expertServiceImpel.updateBalance(expert);
         orderRepository.save(order);
     }
 }
