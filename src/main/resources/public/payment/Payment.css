@@ -1,0 +1,55 @@
+body {
+    background-image: linear-gradient(150deg, #e0a800 5%, deeppink 100%, #c69500 100%);
+    min-height: 93vh;
+    height: 1000px;
+    width: 1820px;
+}
+
+.mainDiv {
+    height: 90%;
+    transform: translate(-50%, -50%);
+    border-radius: 15px 15px;
+    padding: 0 0 0 15%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+@font-face {
+    font-family: farzad;
+    src: url('./../Entezar/EntezarB4_v2.0.1_.ttf');
+}
+
+input {
+    font: 40px 'farzad';
+    background-color: rgba(0, 0, 0, 0.1);
+    height: 30px;
+}
+
+button {
+    font: 40px 'farzad';
+    margin: -40% 0 0 -40%;
+}
+
+p {
+    margin: 5% 0 0 -45%;
+    text-align: center;
+    font: 40px 'farzad';
+}
+
+input::placeholder {
+    color: white;
+}
+
+.creditCardDiv {
+    margin-top: 10px;
+    margin-right: 80px;
+    margin-left: -150px;
+    padding-right: 50px;
+}
+
+.expireDiv {
+    margin-right: 110px;
+    margin-left: -120px;
+}
