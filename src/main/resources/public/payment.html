@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="js/bootstrap.min.js">
+    <link rel="stylesheet" href="./bootstrap/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.14/sweetalert2.min.js"></script>
 
     <style>
 
@@ -73,7 +71,6 @@
 <div class="mainDiv w-50">
     <p>مبلغ قابل پرداخت</p>
     <p>لطفا اطلاعات کارت خود را وارد کنید</p>
-    <form>
         <div class="form-check-inline creditCardDiv">
             <label for="creditCardNumber1">
                 <input id="creditCardNumber1" class="rounded-pill border-0 p-lg-5 w-100 " type="text" required>
@@ -116,10 +113,9 @@
         <div class="text-center mt-3">
             <button id="submitPayment" class="btn-warning rounded-pill p-lg-3 submit">پرداخت</button>
         </div>
-    </form>
 </div>
 
-<script src='https://www.google.com/recaptcha/api.js'></script>
+<!-- <script src='https://www.google.com/recaptcha/api.js'></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 
@@ -232,22 +228,69 @@
         }
     });
 
-    $("#submitPayment").on(('click'),function (){
+    $("#submitPayment").on('click',function() {
+        let form = new FormData();
         let creditCard = $("#creditCardNumber1").val() ;
         creditCard += $("#creditCardNumber2").val();
         creditCard += $("#creditCardNumber3").val();
         creditCard += $("#creditCardNumber4").val();
-        let json = {
-            "creditCardNumber" : creditCard,
-            "monthExpire" : $("#expireMonth").val(),
-            "yearExpire" :  $("#expireYear").val(),
-            "cvv2" : $("#cvv2").val(),
-            "secondPassword" : $("#2password")
-        }
-        if(grecaptcha.getResponse() === ''){
-            event.preventDefault();
-            alert("farzad")
-        }
+
+        form.append("price", 100);
+        form.append("creditCardNumber" , creditCard);
+        form.append("monthExpire" , $("#expireMonth").val());
+        form.append("yearExpire" ,  $("#expireYear").val());
+        form.append("cvv2" , $("#cvv2").val());
+        form.append("secondPassword" , $("#2password").val());
+
+        $.ajax({
+            url: "http://localhost:8080/customer/onlinePayment",
+            data: form,
+            type: "POST",
+            contentType: false,
+            dataType: 'text',
+            processData: false,
+            cache: false,
+            success: function (msg) {
+                if (msg === "OK") {
+                    Swal.fire({
+                        title: 'پرداخت موفق',
+                        didOpen: function () {
+                            Swal.showLoading()
+                            setTimeout(function () {
+                                Swal.close()
+                            }, 3000)
+                        }
+                    })
+                    setInterval(function () {
+                        location.reload();
+                    }, 3000);
+                }
+            }, fail: function (request) {
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    confirmButtonText: 'Cool',
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            }, error: function (request) {
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    confirmButtonText: 'Cool',
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                });
+            }
+        });
     });
 
 </script>
