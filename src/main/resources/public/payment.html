@@ -107,7 +107,7 @@
                    type="password">
         </label>
         <div class="mt-3">
-            <div class="g-recaptcha ml-4 btn btn-" id="captcha" data-sitekey="CLIENT_KEY"></div>
+            <div class="g-recaptcha ml-4 btn btn-" id="captcha" data-sitekey="6LdgdkIgAAAAANiLA-zpqC9SJPPBlA2wVR80DqPO"></div>
         </div>
         <br><br>
         <div class="text-center mt-3">
@@ -115,7 +115,7 @@
         </div>
 </div>
 
-<!-- <script src='https://www.google.com/recaptcha/api.js'></script> -->
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
 
@@ -229,6 +229,20 @@
     });
 
     $("#submitPayment").on('click',function() {
+        const captchaResponse = grecaptcha.getResponse();
+        if(captchaResponse === null || captchaResponse === ""){
+            Swal.fire({
+                title:"خطا!",
+                text:"لطفا الگو کپچا را به درستی وارد کنید",
+                didOpen: function () {
+                    Swal.showLoading()
+                    setTimeout(function () {
+                        Swal.close()
+                    }, 3000)
+                }
+            })
+            return;
+        }
         let form = new FormData();
         let creditCard = $("#creditCardNumber1").val() ;
         creditCard += $("#creditCardNumber2").val();
@@ -241,13 +255,30 @@
         form.append("yearExpire" ,  $("#expireYear").val());
         form.append("cvv2" , $("#cvv2").val());
         form.append("secondPassword" , $("#2password").val());
+        if(form.get("price"). length === 0 || form.get("creditCardNumber").length === 0 || form.get("monthExpire").length === 0 ||
+           form.get("yearExpire").length === 0 || form.get("cvv2").length === 0 || form.get("secondPassword").length === 0){
+            Swal.fire({
+                title:"خطا!",
+                text:"لطفا تمامی اطلاعات را وارد کنید",
+                didOpen: function () {
+                    Swal.showLoading()
+                    setTimeout(function () {
+                        Swal.close()
+                    }, 3000)
+                }
+            })
+            return;
+        }
 
         $.ajax({
-            url: "http://localhost:8080/customer/onlinePayment",
+            url: "http://localhost:8080/order/onlinePayment",
             data: form,
             type: "POST",
             contentType: false,
             dataType: 'text',
+            headers: {
+                "captcha-response": captchaResponse
+            },
             processData: false,
             cache: false,
             success: function (msg) {
