@@ -69,7 +69,7 @@
 </head>
 <body>
 <div class="mainDiv w-50">
-    <p>مبلغ قابل پرداخت</p>
+    <p id="priceForPay"></p>
     <p>لطفا اطلاعات کارت خود را وارد کنید</p>
         <div class="form-check-inline creditCardDiv">
             <label for="creditCardNumber1">
@@ -101,7 +101,13 @@
             <input id="cvv2" class="rounded-pill border-0 ml-5 p-lg-5 w-50 text-center " required placeholder="cvv2"
                    type="text">
         </label>
-        <label for="2password">
+    <label>
+        <input hidden id="priceOrder" type="text">
+    </label>
+    <label>
+        <input hidden id="orderId" type="text">
+    </label>
+    <label for="2password">
             <input id="2password" class="rounded-pill ml-5 border-0 text-center p-lg-5  w-50 " required
                    placeholder="رمز دوم"
                    type="password">
@@ -120,6 +126,16 @@
 
 
 <script>
+
+    window.onload = function onLoadPage() {
+        const url = location.search.substring(1);
+        const farReplace = url.replace(/[^&0-9 ]/g, '');
+        const orderId = farReplace.split('&&')[0]
+        const price = farReplace.split('&&')[1]
+        $("#priceOrder").val(price);
+        $("#orderId").val(orderId);
+        $("#priceForPay").html("مبلغ قابل پرداخت " + price);
+    }
 
     $("#creditCardNumber1,#creditCardNumber2,#creditCardNumber3,#creditCardNumber4").blur(function () {
         const number = $(this).val();
@@ -249,7 +265,7 @@
         creditCard += $("#creditCardNumber3").val();
         creditCard += $("#creditCardNumber4").val();
 
-        form.append("price", 100);
+        form.append("price", $("#priceOrder").val());
         form.append("creditCardNumber" , creditCard);
         form.append("monthExpire" , $("#expireMonth").val());
         form.append("yearExpire" ,  $("#expireYear").val());
@@ -271,7 +287,7 @@
         }
 
         $.ajax({
-            url: "http://localhost:8080/order/onlinePayment",
+            url: "http://localhost:8080/order/onlinePayment/" + $("#orderId").val(),
             data: form,
             type: "POST",
             contentType: false,
