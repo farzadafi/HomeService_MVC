@@ -68,4 +68,12 @@ public class OfferController {
         }
         return dtoList;
     }
+
+
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @GetMapping("/priceWithOrderId/{orderId}")
+    public String priceWithOrderId(@PathVariable("orderId") Integer orderId){
+        Offer offer = offerServiceImpel.findByOrderIdAndAcceptedTrue(orderId);
+        return String.valueOf(offer.getProposedPrice());
+    }
 }
