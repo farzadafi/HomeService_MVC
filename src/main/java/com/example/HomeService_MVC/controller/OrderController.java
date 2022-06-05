@@ -1,7 +1,9 @@
 package com.example.HomeService_MVC.controller;
 
+import com.example.HomeService_MVC.aspect.RequiresCaptcha;
 import com.example.HomeService_MVC.controller.exception.OrderNotFoundException;
 import com.example.HomeService_MVC.core.SecurityUtil;
+import com.example.HomeService_MVC.dto.PaymentDto;
 import com.example.HomeService_MVC.dto.order.OrderDTO;
 import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.Expert;
@@ -97,20 +99,29 @@ public class OrderController {
         return ResponseEntity.ok(result);
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/viewOrderForPaid")
     public ResponseEntity<List<OrderDTO>> viewOrderForPaid(){
-        List<Order> orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(1, OrderStatus.DONE);
+        List<Order> orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(SecurityUtil.getCurrentUser().getId(), OrderStatus.DONE);
         if(orderList == null || orderList.size() == 0)
-            throw new OrderNotFoundException("You dont have any order until now!");
+            throw new OrderNotFoundException("شما هیچ سفارشی در وضعیت قابل پرداخت ندارید!");
         List<OrderDTO> dtoList = orderToOrderDTO(orderList);
         return ResponseEntity.ok(dtoList);
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/PaidOrder/{orderId}")
-    public ResponseEntity<String> paidOrder(@PathVariable("orderId") Integer orderId){
+    public String paidOrder(@PathVariable("orderId") Integer orderId){
         Offer offer = offerServiceImpel.findByOrderIdAndAcceptedTrue(orderId);
-        orderServiceImpel.paidOrder(1,orderId,offer);
-        return ResponseEntity.ok("OK");
+        orderServiceImpel.paidOrder(orderId,offer);
+        return "OK";
+    }
+
+    @RequiresCaptcha
+    @PostMapping(value = "/onlinePayment")
+    public String onlinePayment(@Valid @ModelAttribute @RequestBody PaymentDto paymentDto){
+        System.out.println(paymentDto);
+        return "OK";
     }
 
     @GetMapping("/viewPaidOrder")
