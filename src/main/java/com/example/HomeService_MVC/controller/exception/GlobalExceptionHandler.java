@@ -67,4 +67,16 @@ public class GlobalExceptionHandler {
         LOGGER.warn(e.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("شما قبلا یک پیشنهاد روی این سفارش ثبت کرده اید");
     }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<String> badRequestExceptionHandler(BadRequestException e){
+        LOGGER.warn(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<String> ForbiddenExceptionHandler(ForbiddenException e){
+        LOGGER.warn(e.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+    }
 }
