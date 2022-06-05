@@ -167,7 +167,7 @@
         <thead>
         <tr>
             <th>شناسه</th>
-            <th>قیمت پیشنهادی</th>
+            <th>قیمت پیشنهادی متخصص</th>
             <th>توضیح</th>
             <th>تاریخ</th>
             <th>آدرس</th>
@@ -178,6 +178,9 @@
         <tbody id="TableOrderRowForPay">
         </tbody>
     </table>
+    <label>
+        <input hidden class="rounded-pill mr-5 border-0 p-lg-5 " type="text" id="price">
+    </label>
 </div>
 <!------>
 <div id="placeAComment" class="tabContent text-center " style="font-size: 30px">
@@ -576,6 +579,7 @@
     });
 
     $("#OrderForPayButton").one('click',function() {
+        let price ;
         $.ajax({
             url: "http://localhost:8080/order/viewOrderForPaid",
             type: "GET",
@@ -588,13 +592,25 @@
                 }
                 $("#TableOrderRowForPay").find("tr:gt(0)").remove();
                 for(let i = 0; i < response.length; i++) {
+                    $.ajax({
+                        url:"http://localhost:8080/offer/priceWithOrderId/" + response[i]['id'],
+                        type:'GET',
+                        dataType:'text',
+                        success:function (orderResponse){
+                            $("#price").val(orderResponse);
+                        }
+                    })
+                    alert(price)
+                    $("#price").val(function(index, curValue){
+                        price = curValue;
+                    })
                     $('#TableOrderRowForPay').append('<tr><td>' + response[i]['id'] +
-                        '</td><td>' + response[i]['proposedPrice']  +
+                        '</td><td>' + price +
                         '</td><td>' + response[i]['description']  +
                         '</td><td>' + response[i]['date'].split('T')[0] +
                         '</td><td>' + response[i]['street'] +
                         '</td><td>' + '<button  data-id="' + response[i]['id'] + '" class="btn btn-success btnSelectAnOrderForAccountPaid" >انتخاب</button>' +
-                        '</td><td>' + '<button  data-id="' + response[i]['id'] + "," + response[i]['proposedPrice'] + '" class="btn btn-info btnSelectAnOrderForOnlinePaid" >انتخاب</button>');
+                        '</td><td>' + '<button  data-id="' + response[i]['id'] + "," + price + '" class="btn btn-info btnSelectAnOrderForOnlinePaid" >انتخاب</button>');
                 }
             },fail:(function (request){
                 Swal.fire({
@@ -669,59 +685,12 @@
         });
     });
 
-    $('#TableOrderRowForPay').on('click','.btnSelectAnOrderForOnlinePaid',function() {
+    $('#TableOrderRowForPay').on('click', '.btnSelectAnOrderForOnlinePaid', function () {
         let idVal = $(this).data('id');
-        alert(idVal)
-        $.ajax({
-            url: "",
-            type: "GET",
-            dataType: "text",
-            success: function (response) {
-                if(response === 'OK'){
-                    Swal.fire({
-                        title: 'ثبت موفق',
-                        didOpen: function () {
-                            Swal.showLoading()
-                            setTimeout(function () {
-                                Swal.close()
-                            }, 2000)
-                        }
-                    })
-                    location.reload(true);
-                }else{
-                    Swal.fire({
-                        title:"ثبت موفق!",
-                        text: response,
-                        confirmButtonText:'بستن'
-                    })
-                    setInterval(function() {
-                        location.reload();
-                    },10000);
-                }
-            },fail:(function (request){
-                Swal.fire({
-                    title: 'خطا!',
-                    text: request,
-                    didOpen: function () {
-                        Swal.showLoading()
-                        setTimeout(function () {
-                            Swal.close()
-                        }, 5000)
-                    }
-                })
-            }),error:(function (request){
-                Swal.fire({
-                    title: 'خطا!',
-                    text: request.responseText,
-                    didOpen: function () {
-                        Swal.showLoading()
-                        setTimeout(function () {
-                            Swal.close()
-                        }, 2000)
-                    }
-                })
-            })
-        });
+        let orderId = idVal.split(',')[0];
+        let price = idVal.split(',')[1];
+        window.open('payment.html?orderId='+orderId+'&&price='+price);
+        location.reload(true);
     });
 
 
