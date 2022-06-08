@@ -10,6 +10,16 @@
     <script src="https://kit.fontawesome.com/7c906e4b4a.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="./panelPage/customer/Customer.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" crossorigin=""></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+
+
+
+
 </head>
 <body>
 
@@ -95,10 +105,13 @@
                    title="enter house number for your order" type="text" placeholder="شماره" required><br>
         </label>
 
+        <a href="#viewMap" class='fas btn fa-search-location fa-3x'></a>
         <button class=" mr-5 rounded-pill btn btn-info p-lg-5 font-italic font-weight-bold submit"
                 id="submitPlaceAnOrder">ثبت
         </button>
     </div>
+    <div id="mapDiv" style="width: 600px; height: 400px" class=" mt-5  bg-secondary"></div>
+    <footer id="viewMap"></footer>
 </div>
 <!------>
 <div id="viewOffer" class="tabContent text-center " style="font-size: 30px">
@@ -195,6 +208,63 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
+
+    let map = L.map('mapDiv').setView([30, 56], 8);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+
+    map.on('click', function(e) {
+        doStuff(e);
+    });
+
+
+    function doStuff(e) {
+        const far = e.latlng;
+        const x = e.layerPoint.x;
+        const y = e.layerPoint.y;
+        $("#lat").val(x);
+        $("#tal").val(y);
+        console.log([x, y]);
+
+        const pointXY = L.point(x, y);
+        console.log("Point in x,y space: " + pointXY);
+
+        const pointLatLng = map.layerPointToLatLng(pointXY);
+        console.log("Point in lat,lng space: " + pointLatLng);
+        let location = pointLatLng;
+
+        location = location.toString().replace(/[a-zA-Z() ]+/g,"");
+
+        let latLocation = location.toString().split(',')[0];
+        let lonLocation = location.toString().split(',')[1];
+
+        obtainAddress(latLocation,lonLocation);
+
+    }
+
+    function obtainAddress(latLocation,lonLocation){
+        $.ajax({
+            url:`https://map.ir/reverse/fast-reverse/?lat=${latLocation}&lon=${lonLocation}`,
+            beforeSend: function(request) {
+                request.setRequestHeader('x-api-key', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjcwMmMyMGMzZTk4MzZjMzQzYTk4NjNmYzcwMDNlOWE1ZDhjZDQyOTczYjU0MTJhNjFkMTcxMDRlMTNlZmZkMWI2OTk5NTEyZDY4MWIwMmQ4In0.eyJhdWQiOiIxODIzOSIsImp0aSI6IjcwMmMyMGMzZTk4MzZjMzQzYTk4NjNmYzcwMDNlOWE1ZDhjZDQyOTczYjU0MTJhNjFkMTcxMDRlMTNlZmZkMWI2OTk5NTEyZDY4MWIwMmQ4IiwiaWF0IjoxNjU0NjIwNjk2LCJuYmYiOjE2NTQ2MjA2OTYsImV4cCI6MTY1NzEyNjI5Niwic3ViIjoiIiwic2NvcGVzIjpbImJhc2ljIl19.tNI6qo9c6bK8kjdIgbInX7k2p2wBX9JrOyRs2idEVMcVpI0ltvJhoaLC4SQSUzqssyoYSUtDjcIDy3ANN4W__0MVvyIAryqJE5dRiCxCpuTIoi8elBvbUbsptF5-GDdZczmgcUHB1uaDW9doFYDHBtEFZR_7Ir-VTSwQc-sZ84GRhcYnlAKNinV-bh0fbmnKJnRra8DpyXHYYp-IkUEFiJQCz0BXWwcwuvdx76dBphBQwQjcW51mtNKfqL0n3ubqkqJdPL8-YuGRx0Sw3CzaCvhk5sHPyyWVb5Zl5FehGwgurnQJWvdNY7gWUT9sOB-Js4GbLaQJuKafA0eIt6FGQw');
+                request.setRequestHeader('content-type', 'application/json');
+            },
+            type:'GET',
+            success:function (data){
+                alert(data.address)
+                $("#cityForOrder").val(data.address.split('، ')[2])
+                $("#streetForOrder").val(data.address.split('، ')[6])
+            },error:function (result){
+                Swal.fire({
+                    title:"Error",
+                    text:result.responseText,
+                    confirmButtonText: 'close',
+                })
+            }
+        })
+    }
 
     function openDiv(evt, divName) {
         let i, tabContent, tabLinks;
