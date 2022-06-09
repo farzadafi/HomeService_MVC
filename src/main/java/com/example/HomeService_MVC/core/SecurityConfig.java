@@ -19,12 +19,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserRepository userRepository;
-    private final JwtFilter jwtFilter;
     private final CustomSuccessHandler customSuccessHandler;
 
-    public SecurityConfig(UserRepository userRepository, JwtFilter jwtFilter, CustomSuccessHandler customSuccessHandler) {
+    public SecurityConfig(UserRepository userRepository, CustomSuccessHandler customSuccessHandler) {
         this.userRepository = userRepository;
-        this.jwtFilter = jwtFilter;
         this.customSuccessHandler = customSuccessHandler;
     }
 
