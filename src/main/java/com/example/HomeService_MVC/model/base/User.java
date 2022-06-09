@@ -44,6 +44,8 @@ public class User extends Base<Integer> implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    private boolean isEnabled = false;
+
     public User(String firstName, String lastName, String email, String password, Long balance, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -80,6 +82,6 @@ public class User extends Base<Integer> implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return isEnabled;
     }
 }
