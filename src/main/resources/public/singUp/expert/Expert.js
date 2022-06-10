@@ -84,17 +84,19 @@ $("#submit").on('click',function() {
                 .removeAttr('selected');
             Swal.fire({
                 title: 'ثبت موفق!',
-                text: 'در حال منتقل شدن به صفحه ورود',
+                text: 'لطفا پس از تایید ایمیل خود که به ایمیل شما ارسال شد وارد سیستم شوید',
                 type: 'success',
                 confirmButtonText: 'Cool',
                 didOpen: function () {
                     Swal.showLoading()
                     setTimeout(function () {
                         Swal.close()
-                    }, 3000)
+                    }, 5000)
                 }
             })
-            window.location = "https://www.aspsnippets.com/";
+            setInterval(function () {
+                window.location = "http://localhost:8080/";
+            }, 5000);
         }
         else
             alert(msg)
