@@ -17,6 +17,41 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
 
+    <style>
+
+        .star-rating-container {
+            font-family: icomoon,serif;
+            font-size: 50px;
+            color: #ffbe00;
+            position: relative;
+            display: inline-block;
+        }
+
+        .star-rating-container.result {
+            color: #ff4d30;
+        }
+
+        .star-rating-on {
+            cursor: pointer;
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .star-rating-off {
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: #eee;
+        }
+
+        .star-rating-container.result .star-rating-off {
+            color: dimgrey;
+        }
+
+    </style>
 
 
 
@@ -40,7 +75,7 @@
     <button id="showOfferButton" class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'viewOffer')">مشاهده پیشنهادات</button>
     <button id="showStartedOrderButton" class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'doneOrder')">گزارش اتمام سفارش</button>
     <button id="OrderForPayButton" class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'payOrder')">پرداخت هزینه سفارش</button>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'placeAComment')">ثبت نظر</button>
+    <button id="placeACommentButton" class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'placeAComment')">ثبت نظر</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'orderHistory')">تاریخچه سفارشات</button>
     <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'changePassword')">تعویض رمز</button>
 </div>
@@ -197,6 +232,49 @@
 </div>
 <!------>
 <div id="placeAComment" class="tabContent text-center " style="font-size: 30px">
+    <table id="tableOrderForComment" class="table container table-bordered border-primary">
+        <thead>
+        <tr>
+            <th>شناسه</th>
+            <th>قیمت</th>
+            <th>توضیح</th>
+            <th>تاریخ</th>
+            <th>آدرس</th>
+            <th >ثبت نظر</th>
+        </tr>
+        </thead>
+        <tbody id="TableOrderRowForComment">
+        </tbody>
+    </table>
+    <div class="modal" id="modalPlaceAComment" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content ">
+                <div class="modal-header ">
+                    <h4 class="modal-title text-center " >لطفا امتیاز و نظر خود را در صورت تمایل اضافه نمایید</h4>
+                </div>
+                <div class="modal-body">
+                    <label hidden  for="orderIdInputComment">
+                        <input hidden id="orderIdInputComment" class="form-control d-lg-block" type="text">
+                    </label>
+                    <label hidden for="stars">
+                        <input hidden id="stars" class="form-control" type="text">
+                    </label>
+                    <div dir="ltr" class="star-rating-container enter">
+                        <div class="star-rating star-rating-on" style="width:0;">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <div class="star-rating star-rating-off">&#9734;&#9734;&#9734;&#9734;&#9734;</div>
+                    </div>
+                    <br>
+                    <label for="textCommentInput">
+                        <textarea class="form-control d-block" id="textCommentInput" placeholder="در صورت تمایل نظر خود را وارد کنید" cols="30" rows="5"></textarea>
+                    </label>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" id="submitPlaceACommentButton" class="btn btn-default btn-lg btn-info" >ثبت</button>
+                    <button type="button" id="closeModalPlaceAComment" class="btn btn-default btn-lg btn-danger" data-dismiss="modal">بستن</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <!------>
 <div id="orderHistory" class="tabContent text-center " style="font-size: 30px">
@@ -244,7 +322,37 @@
 
     }
 
-    function obtainAddress(latLocation,lonLocation){
+    $(".enter").mousemove(function () {
+        const elWidth = 250;
+
+        const position = event.pageX - $(this).offset().left;
+        let percent = Math.round((position / elWidth) * 100);
+        while (true) {
+            if (percent % 20 !== 0)
+                percent++;
+            else
+                break;
+        }
+        $(".enter .star-rating-on").css({width: percent + "%"})
+    })
+
+    $(".enter").click(function() {
+        const elWidth = 250;
+        let position = event.pageX - $(this).offset().left;
+        if(position > 0 && position < 45 )
+            position = 1;
+        if(position > 45 && position < 90 )
+            position = 2;
+        if(position > 90 && position < 135 )
+            position = 3;
+        if(position > 135 && position < 180 )
+            position = 4;
+        if(position > 180 && position < 225 )
+            position = 5;
+        $("#stars").val(position)
+    })
+
+        function obtainAddress(latLocation,lonLocation){
         $.ajax({
             url:`https://map.ir/reverse/fast-reverse/?lat=${latLocation}&lon=${lonLocation}`,
             beforeSend: function(request) {
@@ -762,6 +870,112 @@
         window.open('payment.html?orderId='+orderId+'&&price='+price);
         location.reload(true);
     });
+
+    $("#placeACommentButton").one('click',function() {
+        let price ;
+        $.ajax({
+            url: "http://localhost:8080/order/viewPaidOrder",
+            type: "GET",
+            dataType: "json",
+            success: function (response)
+            {
+                $("#TableOrderRowForComment").find("tr:gt(0)").remove();
+                for(let i = 0; i < response.length; i++) {
+                    $('#TableOrderRowForComment').append('<tr><td>' + response[i]['id'] +
+                        '</td><td>' + response[i]['proposedPrice'] +
+                        '</td><td>' + response[i]['description'] +
+                        '</td><td>' + response[i]['date'].split('T')[0] +
+                        '</td><td>' + response[i]['street'] +
+                        '</td><td>' + '<button  data-id="' + response[i]['id'] + '" class="btn btn-info btnSelectAnOrderForComment" >انتخاب</button>');
+                }
+            },fail:(function (request){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            }),error:(function (request){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            })
+        });
+    });
+
+    $('#TableOrderRowForComment').on('click', '.btnSelectAnOrderForComment', function () {
+        let idVal = $(this).data('id');
+        $("#orderIdInputComment").val(idVal);
+        $("#modalPlaceAComment").show();
+    });
+
+    $('#closeModalPlaceAComment').on('click',function (){
+        $(':input', '#modalPlaceAComment')
+            .not(':button, :submit, :reset, :hidden ')
+            .val('')
+            .removeAttr('checked')
+            .removeAttr('selected');
+        $("#modalPlaceAComment").hide();
+    })
+
+    $("#submitPlaceACommentButton").on('click',function (){
+        const orderId = $("#orderIdInputComment").val();
+        const stars = $("#stars").val();
+        const comment = $("#textCommentInput").val();
+        let json = {
+            "stars":stars,
+            "comment":comment
+        }
+        $.ajax({
+            url: "http://localhost:8080/comment/save/" + orderId,
+            data:JSON.stringify(json),
+            type: "POST",
+            dataType: 'text',
+            contentType: 'application/json',
+        }).done(function(msg) {
+            if(msg === "OK") {
+                $(':input', '#modalPlaceAComment')
+                    .not(':button, :submit, :reset, :hidden ')
+                    .val('')
+                    .removeAttr('checked')
+                    .removeAttr('selected');
+                Swal.fire({
+                    title: 'ثبت موفق!',
+                    confirmButtonText: 'Cool',
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 3000)
+                    }
+                })
+            }
+        })
+            .error(function (request){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    confirmButtonText: 'Cool',
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            })
+    })
 
 
 
