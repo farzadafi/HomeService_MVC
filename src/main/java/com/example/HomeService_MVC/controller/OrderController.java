@@ -128,9 +128,9 @@ public class OrderController {
 
     @GetMapping("/viewPaidOrder")
     public ResponseEntity<List<OrderDTO>> viewPaidOrder(){
-        List<Order> orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(1, OrderStatus.PAID);
+        List<Order> orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(SecurityUtil.getCurrentUser().getId(), OrderStatus.PAID);
         if(orderList == null || orderList.size() == 0)
-            throw new OrderNotFoundException("You dont have any order until now!");
+            throw new OrderNotFoundException("شما هیچ سفارشی در حالت پرداخت شده ندارید!");
         List<OrderDTO> dtoList = orderToOrderDTO(orderList);
         return ResponseEntity.ok(dtoList);
     }
