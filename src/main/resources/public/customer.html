@@ -51,6 +51,43 @@
             color: dimgrey;
         }
 
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 10px;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+            border-radius: 50%;
+        }
+
+        .check:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+
+        .check input:checked ~ .checkmark {
+            background-color: #2196F3;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .check input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .check .checkmark:after {
+            top: 9px;
+            left: 9px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+        }
+
     </style>
 
 
@@ -278,6 +315,47 @@
 </div>
 <!------>
 <div id="orderHistory" class="tabContent text-center " style="font-size: 30px">
+    <label class="check ml-5 ml-5" >در انتظار پیشنهاد
+        <input value="suggestion"  type="radio" checked="checked" name="radio">
+    </label>
+    <label class="check ml-5 ml-5" >انتخاب پیشنهاد
+        <input type="radio" value="selection" name="radio">
+        <span class="checkmark"></span>
+    </label>
+    <label class="check ml-5 ml-5" >در انتظار متخصص
+        <input value="waiting" type="radio" name="radio">
+        <span class="checkmark"></span>
+    </label>
+    <label class="check ml-5 ml-5" >شروع شده
+        <input value="started" type="radio" name="radio">
+        <span class="checkmark"></span>
+    </label>
+    <label class="check ml-5 ml-5" >انجام شده
+        <input value="done" type="radio" name="radio">
+        <span class="checkmark"></span>
+    </label>
+    <label class="check ml-5 ml-5" >پرداخت شده
+        <input value="paid" type="radio" name="radio">
+        <span class="checkmark"></span>
+    </label>
+    <div>
+        <button id="searchCustomerButton" class="btn btn-info">جستجو</button>
+    </div>
+
+    <table id="tableOrderForSearch" class="table container table-bordered border-primary">
+        <thead>
+        <tr>
+            <th>شناسه</th>
+            <th>قیمت</th>
+            <th>توضیح</th>
+            <th>تاریخ</th>
+            <th>آدرس</th>
+        </tr>
+        </thead>
+        <tbody id="TableOrderRowForSearch">
+        </tbody>
+    </table>
+
 </div>
 <!------>
 <div id="changePassword" class="tabContent text-center " style="font-size: 30px">
@@ -373,6 +451,49 @@
             }
         })
     }
+
+    $("#searchCustomerButton").on('click',function (){
+        $("#TableOrderRowForSearch").empty();
+        const value = $('input[name="radio"]:checked').val();
+        $.ajax({
+            url: "http://localhost:8080/order/showHistory/" + value,
+            type: "GET",
+            dataType: "json",
+            success: function (response)
+            {
+                $("#TableOrderRowForSearch").find("tr:gt(0)").remove();
+                for(let i = 0; i < response.length; i++) {
+                    $('#TableOrderRowForSearch').append('<tr><td>' + response[i]['id'] +
+                        '</td><td>' + response[i]['proposedPrice']  +
+                        '</td><td>' + response[i]['description']  +
+                        '</td><td>' + response[i]['date'].split('T')[0] +
+                        '</td><td>' + response[i]['street'] );
+                }
+            },fail:(function (request){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            }),error:(function (request){
+                Swal.fire({
+                    title: 'خطا!',
+                    text: request.responseText,
+                    didOpen: function () {
+                        Swal.showLoading()
+                        setTimeout(function () {
+                            Swal.close()
+                        }, 2000)
+                    }
+                })
+            })
+        });
+    });
 
     function openDiv(evt, divName) {
         let i, tabContent, tabLinks;
