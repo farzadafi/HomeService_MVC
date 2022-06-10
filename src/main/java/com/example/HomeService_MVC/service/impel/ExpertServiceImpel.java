@@ -7,6 +7,7 @@ import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.model.enumoration.Role;
+import com.example.HomeService_MVC.model.enumoration.UserStatus;
 import com.example.HomeService_MVC.repository.ExpertRepository;
 import com.example.HomeService_MVC.service.interfaces.ExpertService;
 import org.springframework.data.jpa.domain.Specification;
@@ -37,12 +38,13 @@ public class ExpertServiceImpel implements ExpertService {
     @Override
     public void save(Expert expert) {
         expert.setPassword(bCryptPasswordEncoder.encode(expert.getPassword()));
+        expert.setUserStatus(UserStatus.NEW);
         expertRepository.save(expert);
     }
 
     @Override
     public List<Expert> findAllByAcceptedFalse() {
-        return expertRepository.findAllByAcceptedFalse();
+        return expertRepository.findAllByUserStatusIs(UserStatus.WAITING_FOR_ACCEPT);
     }
 
     @Override
@@ -58,7 +60,7 @@ public class ExpertServiceImpel implements ExpertService {
     @Override
     public void ExpertAccept(Integer id) {
         Expert expert = findById(id).orElseThrow(() -> new ExpertNotFoundException("This Expert is not found!"));
-        expert.setAccepted(true);
+        expert.setUserStatus(UserStatus.ACCEPT);
         expertRepository.save(expert);
     }
 
