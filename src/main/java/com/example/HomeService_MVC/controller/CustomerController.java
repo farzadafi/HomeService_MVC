@@ -1,7 +1,6 @@
 package com.example.HomeService_MVC.controller;
 
 
-import com.example.HomeService_MVC.controller.exception.ConfirmationTokenNotFoundException;
 import com.example.HomeService_MVC.dto.user.CustomerDTO;
 import com.example.HomeService_MVC.dto.user.DynamicSearchDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
@@ -25,7 +24,6 @@ import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
