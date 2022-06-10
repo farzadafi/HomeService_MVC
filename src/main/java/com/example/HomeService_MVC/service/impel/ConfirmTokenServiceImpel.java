@@ -7,7 +7,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class ConfirmTokenServiceImpel implements ConfirmTokenService {
@@ -31,7 +30,7 @@ public class ConfirmTokenServiceImpel implements ConfirmTokenService {
     }
 
     @Override
-    public Optional<ConfirmationToken> findByConfirmToken(String confirmationToken) {
+    public ConfirmationToken findByConfirmToken(String confirmationToken) {
         return confirmationTokenRepository.findByConfirmToken(confirmationToken);
     }
 
