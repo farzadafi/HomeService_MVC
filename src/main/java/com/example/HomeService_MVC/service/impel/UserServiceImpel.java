@@ -36,7 +36,7 @@ public class UserServiceImpel implements UserService {
                 return "CUSTOMER";
             else if(user.getRole().equals(Role.ROLE_EXPERT)){
                 Expert expert = (Expert) user;
-                if(expert.isAccepted())
+                if(expert.isEnabled())
                     return "EXPERT";
                 else
                     return "EXPERT_FALSE";
