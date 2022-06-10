@@ -25,6 +25,7 @@ import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -52,21 +53,23 @@ public class CustomerController {
         ConfirmationToken confirmationToken = new ConfirmationToken(customer);
         confirmTokenServiceImpel.save(confirmationToken);
         String verifyCode = ("please click on link for confirm your email!"
-                +"http://localhost:8080/customer/confirm_account?token="+confirmationToken.getConfirmToken());
+                +"http://localhost:8080/customer/confirmAccount/"+confirmationToken.getConfirmToken());
         sendVerificationMessage(customer.getEmail(),verifyCode);
         return "OK";
     }
 
-    @GetMapping(value="/confirm_account/{token}")
-    public String confirmUserAccount(@PathVariable("token")String confirmationToken) {
-        ConfirmationToken token = confirmTokenServiceImpel.findByConfirmToken(confirmationToken).orElseThrow(() -> new ConfirmationTokenNotFoundException("متاسفانه توکن مورد نظر وجود ندارد!"));
+    @GetMapping("/confirmAccount/{token}")
+    public String confirmUserAccount(@PathVariable("token") String confirmationToken ) {
+        ConfirmationToken token = confirmTokenServiceImpel.findByConfirmToken(confirmationToken);
+        if(token == null )
+            return "شما قبلا ایمیل خود را تایید کرده اید!";
         Customer customer = (Customer) userServiceImpel.findByEmail(token.getUser().getEmail()).orElseThrow(() -> new UsernameNotFoundException("متاسفانه شما پیدا نشدید!"));
         if(customer.isEnabled())
-            throw new ConfirmationTokenNotFoundException("شما قبلا ایمیل خود را تایید کرده اید!");
+            return "شما قبلا ایمیل خود را تایید کرده اید!";
         customer.setEnabled(true);
-        customerServiceImpel.save(customer);
+        customerServiceImpel.updateEnable(customer);
         confirmTokenServiceImpel.deleteToken(token);
-        return "OK";
+        return "ایمیل شما با موفقیت تایید شد!";
     }
 
     public void sendVerificationMessage(
