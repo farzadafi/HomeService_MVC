@@ -145,7 +145,8 @@ public class OrderServiceImpel implements OrderService {
         Order order = offer.getOrders();
         order.setOrderStatus(OrderStatus.PAID);
         customer.setBalance(customer.getBalance() - offer.getProposedPrice());
-        expert.setBalance(expert.getBalance() + offer.getProposedPrice());
+        Long price = (offer.getProposedPrice() * 70 ) / 100;
+        expert.setBalance(expert.getBalance() + price);
         expertServiceImpel.updateBalance(expert);
         customerServiceImpel.updateBalance(customer);
         orderRepository.save(order);
@@ -156,7 +157,8 @@ public class OrderServiceImpel implements OrderService {
         Expert expert = offer.getExpert();
         Order order = offer.getOrders();
         order.setOrderStatus(OrderStatus.PAID);
-        expert.setBalance(expert.getBalance() + offer.getProposedPrice());
+        Long price = (offer.getProposedPrice() * 70 ) / 100;
+        expert.setBalance(expert.getBalance() + price);
         expertServiceImpel.updateBalance(expert);
         orderRepository.save(order);
     }
