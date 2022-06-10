@@ -1,5 +1,6 @@
 package com.example.HomeService_MVC.model;
 
+import com.example.HomeService_MVC.model.enumoration.UserStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +18,8 @@ public class Expert extends User {
     private String city;
     private byte[] image;
     private Integer stars ;
-    private boolean accepted ;
+    @Enumerated(EnumType.STRING)
+    private UserStatus userStatus;
 
     @JoinTable(name = "expert_subServices",
             joinColumns = {@JoinColumn(name = "expert_id")},
@@ -40,12 +42,7 @@ public class Expert extends User {
                 "lastName= " + super.getLastName() +
                 "city= '" + city + '\'' +
                 ", stars= " + stars +
-                ", accepted= " + accepted +
                 '}';
     }
 
-    @Override
-    public boolean isEnabled() {
-        return isAccepted();
-    }
 }
