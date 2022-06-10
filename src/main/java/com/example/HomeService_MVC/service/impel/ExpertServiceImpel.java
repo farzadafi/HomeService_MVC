@@ -106,6 +106,11 @@ public class ExpertServiceImpel implements ExpertService {
         expertRepository.save(expert);
     }
 
+    @Override
+    public void updateEnable(Expert expert) {
+        expertRepository.save(expert);
+    }
+
     public List<Expert> filterExpert(DynamicSearchDTO dynamicSearch){
         Expert expert = new Expert(dynamicSearch.getFirstName(),
                 dynamicSearch.getLastName(),
