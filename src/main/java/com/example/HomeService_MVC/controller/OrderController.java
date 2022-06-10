@@ -144,36 +144,37 @@ public class OrderController {
         return dtoList;
     }
 
-    @PostMapping("/showHistory")
-    public ResponseEntity<List<OrderDTO>> showHistory(@RequestBody String status) {
+    @GetMapping("/showHistory/{status}")
+    public ResponseEntity<List<OrderDTO>> showHistory(@PathVariable("status") String status) {
         List<Order> orderList = new ArrayList<>();
+        Integer customerId = SecurityUtil.getCurrentUser().getId();
         switch (status){
             case "suggestion" :
-                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(2,OrderStatus.EXPERT_SUGGESTION);
+                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(customerId,OrderStatus.EXPERT_SUGGESTION);
                 break;
 
             case "selection" :
-                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(2,OrderStatus.EXPERT_SELECTION);
+                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(customerId,OrderStatus.EXPERT_SELECTION);
                 break;
 
             case "waiting" :
-                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(2,OrderStatus.WAITING_FOR_EXPERT);
+                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(customerId,OrderStatus.WAITING_FOR_EXPERT);
                 break;
 
             case "started" :
-                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(2,OrderStatus.STARTED);
+                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(customerId,OrderStatus.STARTED);
                 break;
 
             case "done" :
-                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(2,OrderStatus.DONE);
+                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(customerId,OrderStatus.DONE);
                 break;
 
             case "paid" :
-                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(2,OrderStatus.PAID);
+                orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(customerId,OrderStatus.PAID);
                 break;
         }
-        if(orderList == null )
-            return null;
+        if(orderList == null || orderList.isEmpty() )
+            throw new OrderNotFoundException("هیچ سفارشی در وضعیت انتخابی شما وجود ندارد");
         else {
             List<OrderDTO> dtoList = orderToOrderDTO(orderList);
             return ResponseEntity.ok(dtoList);
