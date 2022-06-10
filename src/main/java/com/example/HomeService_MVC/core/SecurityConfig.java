@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService((email) -> userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("This " + email +" notFound!")));
+        auth.userDetailsService((email) -> userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("This " + email +" notFound!"))).passwordEncoder(bCryptPasswordEncoder());
     }
 
     @Override
