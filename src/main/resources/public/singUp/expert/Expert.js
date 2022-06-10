@@ -120,6 +120,11 @@ $("#submit").on('click',function() {
 
 function OnFileValidation() {
     const image = document.getElementById("image");
+    let name = document.getElementById("image").files[0].name;
+    if(name.split('.')[1] !== "jpg" && name.split('.')[1] !== 'jpeg'){
+        alert("just jpg or jpeg format is correct")
+        $('#image').val('');
+    }
     if (typeof (image.files) != "undefined") {
         const size = parseFloat(image.files[0].size / (1024 * 1024)).toFixed(2);
         if (size > 0.300) {
