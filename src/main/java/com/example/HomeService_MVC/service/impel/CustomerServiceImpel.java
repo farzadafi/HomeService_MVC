@@ -54,6 +54,11 @@ public class CustomerServiceImpel implements CustomerService {
         customerRepository.save(customer);
     }
 
+    @Override
+    public void updateEnable(Customer customer) {
+        customerRepository.save(customer);
+    }
+
     public List<Customer> filterCustomer(DynamicSearchDTO dynamicSearch){
         Customer customer = mapper.map(dynamicSearch,Customer.class);
         return customerRepository.findAll(userSpecification(customer));
