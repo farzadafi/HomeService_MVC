@@ -17,7 +17,7 @@ import java.util.Set;
 public class Expert extends User {
     private String city;
     private byte[] image;
-    private Integer stars ;
+    private Integer stars = 0 ;
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
