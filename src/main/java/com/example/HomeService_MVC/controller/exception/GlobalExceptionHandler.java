@@ -59,7 +59,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidDateException.class)
     public ResponseEntity<String> dateExceptionHandler(InvalidDateException e) {
         LOGGER.warn(e.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
