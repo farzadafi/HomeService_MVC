@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotEnoughBalanceException.class)
     public ResponseEntity<String> balanceExceptionHandler(NotEnoughBalanceException e) {
         LOGGER.warn(e.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
     @ExceptionHandler(InvalidDateException.class)
