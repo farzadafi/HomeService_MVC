@@ -13,7 +13,7 @@ import javax.validation.constraints.Min;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SubServicesDTO {
+public class SubServicesDto {
     @Column(nullable = false)
     private Integer id;
 

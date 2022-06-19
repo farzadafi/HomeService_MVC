@@ -2,7 +2,7 @@ package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
-import com.example.HomeService_MVC.dto.services.SubServicesDTO;
+import com.example.HomeService_MVC.dto.services.SubServicesDto;
 import com.example.HomeService_MVC.dto.user.ExpertDTO;
 import com.example.HomeService_MVC.dto.user.ExpertSubServicesDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
@@ -62,16 +62,16 @@ public class AdminController {
     }
 
     @GetMapping("/showExpertSubServices/{expertEmail}")
-    public ResponseEntity<List<SubServicesDTO>> showExpertSubServices(@PathVariable("expertEmail") String expertEmail) {
+    public ResponseEntity<List<SubServicesDto>> showExpertSubServices(@PathVariable("expertEmail") String expertEmail) {
         Expert expert = expertServiceImpel.findByEmail(expertEmail).orElseThrow(() -> new ExpertNotFoundException("This Expert is not found!"));
         Set<SubServices> subServicesSet = expert.getSubServices();
         if (subServicesSet == null || subServicesSet.size() == 0)
             throw new SubServicesNotFoundException("This Expert doesn't have any SubServices until yet");
         else {
-            List<SubServicesDTO> dtoList = new ArrayList<>();
+            List<SubServicesDto> dtoList = new ArrayList<>();
             for (SubServices s : subServicesSet
             ) {
-                dtoList.add(mapper.map(s, SubServicesDTO.class));
+                dtoList.add(mapper.map(s, SubServicesDto.class));
             }
             return ResponseEntity.ok(dtoList);
         }
