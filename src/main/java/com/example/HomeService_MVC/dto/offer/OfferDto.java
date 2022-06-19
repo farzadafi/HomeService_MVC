@@ -12,7 +12,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OfferDTO {
+public class OfferDto {
 
     private Integer id;
 

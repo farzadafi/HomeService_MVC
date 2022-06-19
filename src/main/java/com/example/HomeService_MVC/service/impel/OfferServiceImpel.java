@@ -2,7 +2,7 @@ package com.example.HomeService_MVC.service.impel;
 
 import com.example.HomeService_MVC.controller.exception.InvalidProposedPriceException;
 import com.example.HomeService_MVC.core.SecurityUtil;
-import com.example.HomeService_MVC.dto.offer.OfferDTO;
+import com.example.HomeService_MVC.dto.offer.OfferDto;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.Offer;
 import com.example.HomeService_MVC.model.Order;
@@ -27,7 +27,7 @@ public class OfferServiceImpel implements OfferService {
 
 
     @Override
-    public void placeAnOffer(OfferDTO offerDTO, Integer orderId) {
+    public void placeAnOffer(OfferDto offerDTO, Integer orderId) {
         Order order = orderServiceImpel.getById(orderId);
         if(order.getProposedPrice() > offerDTO.getProposedPrice())
             throw new InvalidProposedPriceException("شما باید یک قیمت بزرگ تر از " + order.getProposedPrice() + " وارد کنید");

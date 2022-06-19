@@ -3,7 +3,7 @@ package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.controller.exception.OfferNotFoundException;
 import com.example.HomeService_MVC.core.SecurityUtil;
-import com.example.HomeService_MVC.dto.offer.OfferDTO;
+import com.example.HomeService_MVC.dto.offer.OfferDto;
 import com.example.HomeService_MVC.model.Offer;
 import com.example.HomeService_MVC.model.enumoration.OrderStatus;
 import com.example.HomeService_MVC.service.impel.OfferServiceImpel;
@@ -28,18 +28,18 @@ public class OfferController {
 
     @PreAuthorize("hasRole('EXPERT')")
     @PostMapping("/placeAnOffer/{orderId}")
-    public String placeAnOffer(@Valid @RequestBody OfferDTO offerDTO, @PathVariable("orderId") Integer orderId){
+    public String placeAnOffer(@Valid @RequestBody OfferDto offerDTO, @PathVariable("orderId") Integer orderId){
         offerServiceImpel.placeAnOffer(offerDTO,orderId);
         return "OK";
     }
 
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/viewOffer/{orderId}")
-    public ResponseEntity<List<OfferDTO>> viewOffer(@PathVariable("orderId") Integer orderId){
+    public ResponseEntity<List<OfferDto>> viewOffer(@PathVariable("orderId") Integer orderId){
         List<Offer> offerList = offerServiceImpel.findAllByOrdersId(orderId);
         if(offerList == null || offerList.size() == 0)
             throw new OfferNotFoundException("هیچ پیشنهادی تاکنون برای این سفارش ثبت نشده است!");
-        List<OfferDTO> dtoList = offerToOfferDTO(offerList);
+        List<OfferDto> dtoList = offerToOfferDTO(offerList);
         return ResponseEntity.ok(dtoList);
     }
 
@@ -52,19 +52,19 @@ public class OfferController {
 
     @PreAuthorize("hasRole('EXPERT')")
     @GetMapping("/viewAcceptedOffer")
-    public ResponseEntity<List<OfferDTO>> viewAcceptedOffer(){
+    public ResponseEntity<List<OfferDto>> viewAcceptedOffer(){
         List<Offer> offerList = offerServiceImpel.findAllByExpertIdAndStatus(SecurityUtil.getCurrentUser().getId(), OrderStatus.WAITING_FOR_EXPERT);
         if(offerList == null || offerList.size() == 0)
             throw new OfferNotFoundException("شما هیچ پیشنهاد تأیید شده ای ندارید!");
-        List<OfferDTO> dtoList = offerToOfferDTO(offerList);
+        List<OfferDto> dtoList = offerToOfferDTO(offerList);
         return ResponseEntity.ok(dtoList);
     }
 
-    public List<OfferDTO> offerToOfferDTO(List<Offer> offerList){
-        List<OfferDTO> dtoList = new ArrayList<>();
+    public List<OfferDto> offerToOfferDTO(List<Offer> offerList){
+        List<OfferDto> dtoList = new ArrayList<>();
         for (Offer o:offerList
         ) {
-            dtoList.add(new OfferDTO(o.getId(),o.getProposedPrice(),o.getDurationWork(),o.getStartTime(),o.getOrders().getId()));
+            dtoList.add(new OfferDto(o.getId(),o.getProposedPrice(),o.getDurationWork(),o.getStartTime(),o.getOrders().getId()));
         }
         return dtoList;
     }
