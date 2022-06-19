@@ -4,7 +4,7 @@ import com.example.HomeService_MVC.aspect.RequiresCaptcha;
 import com.example.HomeService_MVC.controller.exception.OrderNotFoundException;
 import com.example.HomeService_MVC.core.SecurityUtil;
 import com.example.HomeService_MVC.dto.PaymentDto;
-import com.example.HomeService_MVC.dto.order.OrderDTO;
+import com.example.HomeService_MVC.dto.order.OrderDto;
 import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.Offer;
@@ -38,39 +38,39 @@ public class OrderController {
 
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/placeAnOrder/{subServicesId}")
-    public String placeAnOrder(@Valid @RequestBody OrderDTO orderDTO, @PathVariable("subServicesId") Integer subServicesId){
+    public String placeAnOrder(@Valid @RequestBody OrderDto orderDTO, @PathVariable("subServicesId") Integer subServicesId){
         orderServiceImpel.PlaceAnOrder(subServicesId,orderDTO);
         return "OK";
     }
 
     @GetMapping("/viewOrder")
-    public ResponseEntity<List<OrderDTO>> viewOrder(){
+    public ResponseEntity<List<OrderDto>> viewOrder(){
         List<Order> orderList = orderServiceImpel.findAllByCustomerId(1);
         if(orderList == null || orderList.size() == 0)
             throw new OrderNotFoundException("You dont have any order until now!");
-        List<OrderDTO> dtoList = orderToOrderDTO(orderList);
+        List<OrderDto> dtoList = orderToOrderDTO(orderList);
         return ResponseEntity.ok(dtoList);
     }
 
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/viewExpertSelectionOrder")
-    public ResponseEntity<List<OrderDTO>> viewExpertSelectionOrder(){
+    public ResponseEntity<List<OrderDto>> viewExpertSelectionOrder(){
         Customer customer = (Customer) SecurityUtil.getCurrentUser();
         List<Order> orderList = orderServiceImpel.findAllExpertSelectionOrder(customer.getId());
         if(orderList == null || orderList.size() == 0)
             throw new OrderNotFoundException("شما هیچ سفارشی در وضعیت انتخاب پیشنهاد ندارید!");
-        List<OrderDTO> dtoList = orderToOrderDTO(orderList);
+        List<OrderDto> dtoList = orderToOrderDTO(orderList);
         return ResponseEntity.ok(dtoList);
     }
 
     @PreAuthorize("hasRole('EXPERT')")
     @GetMapping("/viewStartedOrderByCity")
-    public ResponseEntity<List<OrderDTO>> viewStartedOrderByCity(){
+    public ResponseEntity<List<OrderDto>> viewStartedOrderByCity(){
         Expert expert = (Expert) SecurityUtil.getCurrentUser();
         List<Order> orderList = orderServiceImpel.findAllStartedOrderByCity(expert.getCity(),expert.getSubServices());
         if(orderList == null || orderList.size() == 0)
             throw new OrderNotFoundException("هیچ سفارش قابل نمایشی برای شما وجود ندارد!");
-        List<OrderDTO> dtoList = orderToOrderDTO(orderList);
+        List<OrderDto> dtoList = orderToOrderDTO(orderList);
             return ResponseEntity.ok(dtoList);
     }
 
@@ -83,11 +83,11 @@ public class OrderController {
 
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/viewOrderForDone")
-    public ResponseEntity<List<OrderDTO>> viewOrderForDone(){
+    public ResponseEntity<List<OrderDto>> viewOrderForDone(){
         List<Order> orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(SecurityUtil.getCurrentUser().getId(), OrderStatus.STARTED);
         if(orderList == null || orderList.size() == 0)
             throw new OrderNotFoundException("شما هیچ سفارشی در وضعیت شروع شده ندارید!");
-        List<OrderDTO> dtoList = orderToOrderDTO(orderList);
+        List<OrderDto> dtoList = orderToOrderDTO(orderList);
         return ResponseEntity.ok(dtoList);
     }
 
@@ -101,11 +101,11 @@ public class OrderController {
 
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/viewOrderForPaid")
-    public ResponseEntity<List<OrderDTO>> viewOrderForPaid(){
+    public ResponseEntity<List<OrderDto>> viewOrderForPaid(){
         List<Order> orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(SecurityUtil.getCurrentUser().getId(), OrderStatus.DONE);
         if(orderList == null || orderList.size() == 0)
             throw new OrderNotFoundException("شما هیچ سفارشی در وضعیت قابل پرداخت ندارید!");
-        List<OrderDTO> dtoList = orderToOrderDTO(orderList);
+        List<OrderDto> dtoList = orderToOrderDTO(orderList);
         return ResponseEntity.ok(dtoList);
     }
 
@@ -127,25 +127,25 @@ public class OrderController {
     }
 
     @GetMapping("/viewPaidOrder")
-    public ResponseEntity<List<OrderDTO>> viewPaidOrder(){
+    public ResponseEntity<List<OrderDto>> viewPaidOrder(){
         List<Order> orderList = orderServiceImpel.findAllByCustomerIdAndOrderStatus(SecurityUtil.getCurrentUser().getId(), OrderStatus.PAID);
         if(orderList == null || orderList.size() == 0)
             throw new OrderNotFoundException("شما هیچ سفارشی در حالت پرداخت شده ندارید!");
-        List<OrderDTO> dtoList = orderToOrderDTO(orderList);
+        List<OrderDto> dtoList = orderToOrderDTO(orderList);
         return ResponseEntity.ok(dtoList);
     }
 
-    public List<OrderDTO> orderToOrderDTO(List<Order> orderList){
-        List<OrderDTO> dtoList = new ArrayList<>();
+    public List<OrderDto> orderToOrderDTO(List<Order> orderList){
+        List<OrderDto> dtoList = new ArrayList<>();
         for (Order o:orderList
         ) {
-            dtoList.add(mapper.map(o,OrderDTO.class));
+            dtoList.add(mapper.map(o, OrderDto.class));
         }
         return dtoList;
     }
 
     @GetMapping("/showHistory/{status}")
-    public ResponseEntity<List<OrderDTO>> showHistory(@PathVariable("status") String status) {
+    public ResponseEntity<List<OrderDto>> showHistory(@PathVariable("status") String status) {
         List<Order> orderList = new ArrayList<>();
         Integer customerId = SecurityUtil.getCurrentUser().getId();
         switch (status){
@@ -176,18 +176,18 @@ public class OrderController {
         if(orderList == null || orderList.isEmpty() )
             throw new OrderNotFoundException("هیچ سفارشی در وضعیت انتخابی شما وجود ندارد");
         else {
-            List<OrderDTO> dtoList = orderToOrderDTO(orderList);
+            List<OrderDto> dtoList = orderToOrderDTO(orderList);
             return ResponseEntity.ok(dtoList);
         }
     }
 
     @PreAuthorize("hasRole('EXPERT')")
     @GetMapping("/viewOrderById/{orderId}")
-    public ResponseEntity<OrderDTO> viewOrderById(@PathVariable("orderId") Integer orderId){
+    public ResponseEntity<OrderDto> viewOrderById(@PathVariable("orderId") Integer orderId){
         Order order = orderServiceImpel.getById(orderId);
         if(order == null)
             throw new OrderNotFoundException("متأسفانه این سفارش پیدا نشد!");
-        OrderDTO orderDTO = mapper.map(order,OrderDTO.class);
+        OrderDto orderDTO = mapper.map(order, OrderDto.class);
         return ResponseEntity.ok(orderDTO);
     }
 }

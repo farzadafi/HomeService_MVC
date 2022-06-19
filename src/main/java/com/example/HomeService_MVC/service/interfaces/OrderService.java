@@ -1,6 +1,6 @@
 package com.example.HomeService_MVC.service.interfaces;
 
-import com.example.HomeService_MVC.dto.order.OrderDTO;
+import com.example.HomeService_MVC.dto.order.OrderDto;
 import com.example.HomeService_MVC.model.Offer;
 import com.example.HomeService_MVC.model.Order;
 import com.example.HomeService_MVC.model.SubServices;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface OrderService {
-    void PlaceAnOrder(Integer subServicesId,OrderDTO orderDTO);
+    void PlaceAnOrder(Integer subServicesId, OrderDto orderDTO);
     List<Order> findAllByCustomerId(Integer customerId);
     List<Order> findAllExpertSelectionOrder(Integer customerId);
     List<Order> findAllStartedOrderByCity(String city, Set<SubServices> subServices);

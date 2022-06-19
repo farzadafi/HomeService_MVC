@@ -5,7 +5,7 @@ import com.example.HomeService_MVC.controller.exception.InvalidProposedPriceExce
 import com.example.HomeService_MVC.controller.exception.NotEnoughBalanceException;
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
 import com.example.HomeService_MVC.core.SecurityUtil;
-import com.example.HomeService_MVC.dto.order.OrderDTO;
+import com.example.HomeService_MVC.dto.order.OrderDto;
 import com.example.HomeService_MVC.model.*;
 import com.example.HomeService_MVC.model.enumoration.OrderStatus;
 import com.example.HomeService_MVC.repository.OrderRepository;
@@ -41,7 +41,7 @@ public class OrderServiceImpel implements OrderService {
 
 
     @Override
-    public void PlaceAnOrder(Integer subServicesId,OrderDTO orderDTO) {
+    public void PlaceAnOrder(Integer subServicesId, OrderDto orderDTO) {
         Customer customer = (Customer) SecurityUtil.getCurrentUser();
         SubServices subServices = subServicesServiceImpel.findById(subServicesId).orElseThrow(() -> new SubServicesNotFoundException("This subServices not found!"));
         if(subServices.getMinimalPrice() > orderDTO.getProposedPrice())

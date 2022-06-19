@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @ToString
-public class OrderDTO {
+public class OrderDto {
     private Integer id;
     @Column(nullable = false)
     @Min(value=1, message="must be equal or greater than 1")
