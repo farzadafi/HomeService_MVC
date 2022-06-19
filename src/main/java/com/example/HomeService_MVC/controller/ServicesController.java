@@ -1,7 +1,7 @@
 package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.controller.exception.ServicesNotFoundException;
-import com.example.HomeService_MVC.dto.services.ServicesDTO;
+import com.example.HomeService_MVC.dto.services.ServicesDto;
 import com.example.HomeService_MVC.model.Services;
 import com.example.HomeService_MVC.service.impel.ServicesServiceImpel;
 import org.dozer.DozerBeanMapper;
@@ -28,20 +28,20 @@ public class ServicesController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/save")
-    public String save(@Valid @ModelAttribute @RequestBody ServicesDTO servicesDTO){
+    public String save(@Valid @ModelAttribute @RequestBody ServicesDto servicesDTO){
         servicesServiceImpel.save(servicesDTO);
         return "OK";
     }
 
     @GetMapping("/getAllServices")
-    public ResponseEntity<List<ServicesDTO>> getAllServices(){
+    public ResponseEntity<List<ServicesDto>> getAllServices(){
         List<Services> servicesList = servicesServiceImpel.findAll();
         if(servicesList.size() == 0)
             throw  new ServicesNotFoundException("not services defined until now");
-        List<ServicesDTO> dtoList = new ArrayList<>();
+        List<ServicesDto> dtoList = new ArrayList<>();
         for (Services s:servicesList
         ) {
-            dtoList.add(mapper.map(s,ServicesDTO.class));
+            dtoList.add(mapper.map(s, ServicesDto.class));
         }
         return ResponseEntity.ok(dtoList);
     }
