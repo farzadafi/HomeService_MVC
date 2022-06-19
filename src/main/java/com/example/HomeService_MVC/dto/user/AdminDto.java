@@ -10,7 +10,7 @@ import javax.persistence.Column;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AdminDTO {
+public class AdminDto {
     @Column(unique = true,nullable = false)
     @Email
     private String email;
