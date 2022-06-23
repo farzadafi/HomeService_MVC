@@ -1,7 +1,7 @@
 package com.example.HomeService_MVC.controller;
 
 
-import com.example.HomeService_MVC.dto.user.CustomerDTO;
+import com.example.HomeService_MVC.dto.user.CustomerDto;
 import com.example.HomeService_MVC.dto.user.DynamicSearchDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.ConfirmationToken;
@@ -45,7 +45,7 @@ public class CustomerController {
     }
 
     @PostMapping("/save")
-    public String save(@Valid @ModelAttribute @RequestBody CustomerDTO customerSave) throws MessagingException {
+    public String save(@Valid @ModelAttribute @RequestBody CustomerDto customerSave) throws MessagingException {
         Customer customer = mapper.map(customerSave,Customer.class);
         customerServiceImpel.save(customer);
         ConfirmationToken confirmationToken = new ConfirmationToken(customer);
@@ -101,12 +101,12 @@ public class CustomerController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/gridSearch")
-    public ResponseEntity<List<CustomerDTO>> gridSearch(@ModelAttribute @RequestBody DynamicSearchDTO dynamicSearch) {
+    public ResponseEntity<List<CustomerDto>> gridSearch(@ModelAttribute @RequestBody DynamicSearchDTO dynamicSearch) {
         List<Customer> customerList = customerServiceImpel.filterCustomer(dynamicSearch);
-        List<CustomerDTO> dtoList = new ArrayList<>();
+        List<CustomerDto> dtoList = new ArrayList<>();
         for (Customer s:customerList
         ) {
-            dtoList.add(mapper.map(s,CustomerDTO.class));
+            dtoList.add(mapper.map(s, CustomerDto.class));
         }
         return ResponseEntity.ok(dtoList);
     }
