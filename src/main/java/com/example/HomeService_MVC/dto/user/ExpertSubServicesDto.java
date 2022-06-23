@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ExpertSubServicesDTO {
+public class ExpertSubServicesDto {
     private Integer id;
     private String email;
 }
