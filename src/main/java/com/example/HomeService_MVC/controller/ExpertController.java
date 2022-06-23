@@ -1,6 +1,6 @@
 package com.example.HomeService_MVC.controller;
 
-import com.example.HomeService_MVC.dto.user.DynamicSearchDTO;
+import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
 import com.example.HomeService_MVC.dto.user.ExpertDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.ConfirmationToken;
@@ -110,7 +110,7 @@ public class ExpertController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/gridSearch")
-    public ResponseEntity<List<ExpertDTO>> gridSearch(@ModelAttribute @RequestBody DynamicSearchDTO dynamicSearch) {
+    public ResponseEntity<List<ExpertDTO>> gridSearch(@ModelAttribute @RequestBody DynamicSearchDto dynamicSearch) {
         List<Expert> expertList = expertServiceImpel.filterExpert(dynamicSearch);
         List<ExpertDTO> dtoList = new ArrayList<>();
         if(expertList.isEmpty())

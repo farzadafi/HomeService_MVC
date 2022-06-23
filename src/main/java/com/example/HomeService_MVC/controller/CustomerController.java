@@ -2,7 +2,7 @@ package com.example.HomeService_MVC.controller;
 
 
 import com.example.HomeService_MVC.dto.user.CustomerDto;
-import com.example.HomeService_MVC.dto.user.DynamicSearchDTO;
+import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.ConfirmationToken;
 import com.example.HomeService_MVC.model.Customer;
@@ -101,7 +101,7 @@ public class CustomerController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/gridSearch")
-    public ResponseEntity<List<CustomerDto>> gridSearch(@ModelAttribute @RequestBody DynamicSearchDTO dynamicSearch) {
+    public ResponseEntity<List<CustomerDto>> gridSearch(@ModelAttribute @RequestBody DynamicSearchDto dynamicSearch) {
         List<Customer> customerList = customerServiceImpel.filterCustomer(dynamicSearch);
         List<CustomerDto> dtoList = new ArrayList<>();
         for (Customer s:customerList

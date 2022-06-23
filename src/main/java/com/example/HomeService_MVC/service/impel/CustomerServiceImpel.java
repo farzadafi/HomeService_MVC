@@ -1,6 +1,6 @@
 package com.example.HomeService_MVC.service.impel;
 
-import com.example.HomeService_MVC.dto.user.DynamicSearchDTO;
+import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.enumoration.Role;
@@ -59,7 +59,7 @@ public class CustomerServiceImpel implements CustomerService {
         customerRepository.save(customer);
     }
 
-    public List<Customer> filterCustomer(DynamicSearchDTO dynamicSearch){
+    public List<Customer> filterCustomer(DynamicSearchDto dynamicSearch){
         Customer customer = mapper.map(dynamicSearch,Customer.class);
         return customerRepository.findAll(userSpecification(customer));
     }

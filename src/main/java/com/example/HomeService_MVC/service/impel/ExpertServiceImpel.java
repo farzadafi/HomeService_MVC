@@ -2,7 +2,7 @@ package com.example.HomeService_MVC.service.impel;
 
 import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
-import com.example.HomeService_MVC.dto.user.DynamicSearchDTO;
+import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
@@ -111,7 +111,7 @@ public class ExpertServiceImpel implements ExpertService {
         expertRepository.save(expert);
     }
 
-    public List<Expert> filterExpert(DynamicSearchDTO dynamicSearch){
+    public List<Expert> filterExpert(DynamicSearchDto dynamicSearch){
         Expert expert = new Expert(dynamicSearch.getFirstName(),
                 dynamicSearch.getLastName(),
                 dynamicSearch.getEmail(),null,null,
