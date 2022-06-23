@@ -1,7 +1,7 @@
 package com.example.HomeService_MVC.service.impel;
 
 import com.example.HomeService_MVC.core.SecurityUtil;
-import com.example.HomeService_MVC.dto.user.PasswordDTO;
+import com.example.HomeService_MVC.dto.user.PasswordDto;
 import com.example.HomeService_MVC.model.base.User;
 import com.example.HomeService_MVC.repository.UserRepository;
 import com.example.HomeService_MVC.service.interfaces.AdminService;
@@ -21,7 +21,7 @@ public class AdminServiceImpel implements AdminService {
 
 
     @Override
-    public void updateAdmin(PasswordDTO passwordDTO) {
+    public void updateAdmin(PasswordDto passwordDTO) {
         User user = SecurityUtil.getCurrentUser();
         user.setPassword(bCryptPasswordEncoder.encode(passwordDTO.getSinglePassword()));
         userRepository.save(user);

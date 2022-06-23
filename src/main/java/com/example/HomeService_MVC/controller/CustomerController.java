@@ -3,7 +3,7 @@ package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.dto.user.CustomerDto;
 import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
-import com.example.HomeService_MVC.dto.user.PasswordDTO;
+import com.example.HomeService_MVC.dto.user.PasswordDto;
 import com.example.HomeService_MVC.model.ConfirmationToken;
 import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.base.User;
@@ -87,7 +87,7 @@ public class CustomerController {
     }
 
     @PutMapping("/updatePassword")
-    public ResponseEntity<String> updatePassword(@Valid @RequestBody PasswordDTO passwordDTO){
+    public ResponseEntity<String> updatePassword(@Valid @RequestBody PasswordDto passwordDTO){
         customerServiceImpel.updatePassword(new Customer(),passwordDTO);
         return ResponseEntity.ok("OK");
     }

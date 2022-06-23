@@ -5,7 +5,7 @@ import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundExcep
 import com.example.HomeService_MVC.dto.services.SubServicesDto;
 import com.example.HomeService_MVC.dto.user.ExpertDto;
 import com.example.HomeService_MVC.dto.user.ExpertSubServicesDto;
-import com.example.HomeService_MVC.dto.user.PasswordDTO;
+import com.example.HomeService_MVC.dto.user.PasswordDto;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.service.impel.AdminServiceImpel;
@@ -84,7 +84,7 @@ public class AdminController {
     }
 
     @PostMapping("/updateAdmin")
-    public String updateAdmin(@Valid @ModelAttribute @RequestBody PasswordDTO passwordDTO){
+    public String updateAdmin(@Valid @ModelAttribute @RequestBody PasswordDto passwordDTO){
         adminServiceImpel.updateAdmin(passwordDTO);
         return "OK";
     }
