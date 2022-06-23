@@ -1,7 +1,7 @@
 package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
-import com.example.HomeService_MVC.dto.user.ExpertDTO;
+import com.example.HomeService_MVC.dto.user.ExpertDto;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.ConfirmationToken;
 import com.example.HomeService_MVC.model.Expert;
@@ -47,7 +47,7 @@ public class ExpertController {
     }
 
     @PostMapping(value = "/save",consumes = { MediaType.MULTIPART_FORM_DATA_VALUE} )
-    public String save(@Valid @ModelAttribute @RequestBody ExpertDTO expertSave) {
+    public String save(@Valid @ModelAttribute @RequestBody ExpertDto expertSave) {
         expertServiceImpel.save(convertExpertDTO(expertSave));
         ConfirmationToken confirmationToken = new ConfirmationToken(convertExpertDTO(expertSave));
         confirmTokenServiceImpel.save(confirmationToken);
@@ -94,7 +94,7 @@ public class ExpertController {
         return ResponseEntity.ok("OK");
     }
 
-    private Expert convertExpertDTO(ExpertDTO expertSave){
+    private Expert convertExpertDTO(ExpertDto expertSave){
         Expert expert = new Expert(expertSave.getFirstName(),expertSave.getLastName(),
                 expertSave.getEmail(),expertSave.getConfPassword(),
                 5000L, Role.ROLE_EXPERT,expertSave.getCity()
@@ -110,9 +110,9 @@ public class ExpertController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/gridSearch")
-    public ResponseEntity<List<ExpertDTO>> gridSearch(@ModelAttribute @RequestBody DynamicSearchDto dynamicSearch) {
+    public ResponseEntity<List<ExpertDto>> gridSearch(@ModelAttribute @RequestBody DynamicSearchDto dynamicSearch) {
         List<Expert> expertList = expertServiceImpel.filterExpert(dynamicSearch);
-        List<ExpertDTO> dtoList = new ArrayList<>();
+        List<ExpertDto> dtoList = new ArrayList<>();
         if(expertList.isEmpty())
             return ResponseEntity.ok(dtoList);
         for (Expert e:expertList
@@ -128,8 +128,8 @@ public class ExpertController {
         return String.valueOf(expert.getBalance());
     }
 
-    public ExpertDTO convertExpertToExpertDTO(Expert expert){
-        return new ExpertDTO(expert.getId(),expert.getFirstName(),expert.getLastName(),expert.getEmail()
+    public ExpertDto convertExpertToExpertDTO(Expert expert){
+        return new ExpertDto(expert.getId(),expert.getFirstName(),expert.getLastName(),expert.getEmail()
                             ,expert.getPassword(),expert.getConfPassword(),expert.getCity(),null);
     }
 }

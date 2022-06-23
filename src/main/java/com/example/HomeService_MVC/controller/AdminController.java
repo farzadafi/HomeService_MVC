@@ -3,7 +3,7 @@ package com.example.HomeService_MVC.controller;
 import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
 import com.example.HomeService_MVC.dto.services.SubServicesDto;
-import com.example.HomeService_MVC.dto.user.ExpertDTO;
+import com.example.HomeService_MVC.dto.user.ExpertDto;
 import com.example.HomeService_MVC.dto.user.ExpertSubServicesDTO;
 import com.example.HomeService_MVC.dto.user.PasswordDTO;
 import com.example.HomeService_MVC.model.Expert;
@@ -37,11 +37,11 @@ public class AdminController {
     }
 
     @GetMapping("/getAllExpertFalse")
-    public ResponseEntity<List<ExpertDTO>> getAllExpertFalse(){
+    public ResponseEntity<List<ExpertDto>> getAllExpertFalse(){
         List<Expert> expertList = expertServiceImpel.findAllByAcceptedFalse();
         if(expertList == null || expertList.size() == 0)
             throw new ExpertNotFoundException("unfortunately any expert doesn't register until now!");
-        List<ExpertDTO> dtoList = new ArrayList<>();
+        List<ExpertDto> dtoList = new ArrayList<>();
         for (Expert e:expertList
         ) {
             dtoList.add(expertController.convertExpertToExpertDTO(e));
