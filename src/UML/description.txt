@@ -1,1 +1,1 @@
-please use "from https://app.diagrams.net/" for open drawio file
+please use from "https://app.diagrams.net/" for open drawio file
