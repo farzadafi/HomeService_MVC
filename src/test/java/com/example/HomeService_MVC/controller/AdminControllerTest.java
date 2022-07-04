@@ -1,5 +1,9 @@
 package com.example.HomeService_MVC.controller;
 
+import com.example.HomeService_MVC.model.Expert;
+import com.example.HomeService_MVC.model.enumoration.Role;
+import com.example.HomeService_MVC.model.enumoration.UserStatus;
+import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +19,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -24,4 +27,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @WithMockUser(username="admin",roles={"ADMIN","PRE_VERIFICATION_USER"})
 class AdminControllerTest {
 
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ExpertServiceImpel expertServiceImpel;
+    static Expert expert = new Expert("farzad","farzad","f@gamil.com",
+                               "farzad",100L, Role.ROLE_EXPERT,
+                                   "kerman",null,0);
+
+    @Test
+    public void getAllExpertFalse() throws Exception {
+        expertServiceImpel.save(expert);
+        expert.setUserStatus(UserStatus.WAITING_FOR_ACCEPT);
+        expertServiceImpel.updateEnable(expert);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/admin/getAllExpertFalse")
+                .contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
+    }
 }
