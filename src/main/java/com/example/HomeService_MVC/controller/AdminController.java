@@ -10,6 +10,7 @@ import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.service.impel.AdminServiceImpel;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
+import lombok.AllArgsConstructor;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,19 +23,13 @@ import java.util.Set;
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/admin")
+@AllArgsConstructor
 public class AdminController {
 
     private final ExpertServiceImpel expertServiceImpel;
     private final AdminServiceImpel adminServiceImpel;
     private final DozerBeanMapper mapper;
     private final ExpertController expertController;
-
-    public AdminController(ExpertServiceImpel expertServiceImpel, AdminServiceImpel adminServiceImpel, DozerBeanMapper mapper, ExpertController expertController) {
-        this.expertServiceImpel = expertServiceImpel;
-        this.adminServiceImpel = adminServiceImpel;
-        this.mapper = mapper;
-        this.expertController = expertController;
-    }
 
     @GetMapping("/getAllExpertFalse")
     public ResponseEntity<List<ExpertDto>> getAllExpertFalse(){
@@ -88,5 +83,4 @@ public class AdminController {
         adminServiceImpel.updateAdmin(passwordDTO);
         return "OK";
     }
-
 }
