@@ -235,6 +235,7 @@ $("#addExpertService").one('click',function() {
                                     let form = new FormData();
                                     form.append("id",$(this).val()[0]);
                                     form.append("email",$("#emailExpertForAdd").val());
+                                    //todo get method instead of post method
                                     $.ajax({
                                         url: "http://localhost:8080/admin/addExpertToSubServices",
                                         type: "POST",
