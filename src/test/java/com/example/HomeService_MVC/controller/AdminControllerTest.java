@@ -1,10 +1,8 @@
 package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
-import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +20,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Sql("AdminControllerData.sql")
-//@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -46,5 +43,15 @@ class AdminControllerTest {
         assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
 
+    @Test
+    public void ConfirmExpert() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/admin/confirmExpert/" + 2)
+                .contentType(MediaType.APPLICATION_JSON);
 
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
+    }
 }
