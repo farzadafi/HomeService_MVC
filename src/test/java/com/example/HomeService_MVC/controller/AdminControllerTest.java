@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Sql("AdminControllerData.sql")
 @RunWith(SpringRunner.class)
+@Sql(scripts = "adminControllerClean.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @AutoConfigureMockMvc
 @SpringBootTest
 @WithMockUser(username="admin",roles={"ADMIN","PRE_VERIFICATION_USER"})
