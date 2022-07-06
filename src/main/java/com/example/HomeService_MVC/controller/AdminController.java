@@ -50,9 +50,10 @@ public class AdminController {
         return "OK";
     }
 
-    @PostMapping("/addExpertToSubServices")
-    public String addExpertToSubServices(@ModelAttribute @RequestBody ExpertSubServicesDto dto){
-        expertServiceImpel.addExpertToSubService(dto.getEmail(),dto.getId());
+    @GetMapping("/addExpertToSubServices/{expertEmail}/{subServiceId}")
+    public String addExpertToSubServices(@PathVariable("expertEmail") String expertEmail,
+                                         @PathVariable("subServiceId") Integer subServiceId ){
+        expertServiceImpel.addExpertToSubService(expertEmail,subServiceId);
         return "OK";
     }
 
