@@ -1,1 +1,0 @@
-insert into users(dtype,first_name,last_name,email,is_enabled,password) VALUES ('Customer','farzad','afshar','f@gmail.com',false,'aA1!aaa')
