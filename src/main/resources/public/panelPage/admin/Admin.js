@@ -300,6 +300,7 @@ $("#emailExpertForRemove").blur('click',function() {
                         let form = new FormData();
                         form.append("id", $(this).val()[0]);
                         form.append("email", $("#emailExpertForRemove").val());
+                        //todo get method instead of post method
                         $.ajax({
                             url: "http://localhost:8080/admin/removeExpertSubServices",
                             type: "POST",
