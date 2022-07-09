@@ -4,7 +4,6 @@ import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
 import com.example.HomeService_MVC.dto.services.SubServicesDto;
 import com.example.HomeService_MVC.dto.user.ExpertDto;
-import com.example.HomeService_MVC.dto.user.ExpertSubServicesDto;
 import com.example.HomeService_MVC.dto.user.PasswordDto;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
@@ -73,9 +72,10 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/removeExpertSubServices")
-    public String removeExpertSubServices(@ModelAttribute @RequestBody ExpertSubServicesDto dto){
-        expertServiceImpel.removeExpertSubServices(dto.getEmail(),dto.getId());
+    @GetMapping("/removeExpertSubServices/{expertEmail}/{subServiceId}")
+    public String removeExpertFromSubServices(@PathVariable("expertEmail") String expertEmail,
+                                          @PathVariable("subServiceId") Integer subServiceId){
+        expertServiceImpel.removeExpertSubServices(expertEmail,subServiceId);
         return "OK";
     }
 
