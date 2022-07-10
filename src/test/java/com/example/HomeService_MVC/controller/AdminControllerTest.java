@@ -1,8 +1,7 @@
 package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @WithMockUser(username="admin",roles={"ADMIN","PRE_VERIFICATION_USER"})
 class AdminControllerTest {
 
@@ -48,6 +48,7 @@ class AdminControllerTest {
     }
 
     @Test
+    @Order(1)
     public void GetAllExpertFalse() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/admin/getAllExpertFalse")
@@ -59,6 +60,7 @@ class AdminControllerTest {
     }
 
     @Test
+    @Order(2)
     public void ConfirmExpert() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/admin/confirmExpert/" + 1)
@@ -71,6 +73,7 @@ class AdminControllerTest {
     }
 
     @Test
+    @Order(3)
     public void addExpertToSubServices() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/admin/addExpertToSubServices/" + "f@gmail.com/" + 1 )
@@ -80,5 +83,17 @@ class AdminControllerTest {
         MockHttpServletResponse response = result.getResponse();
 
         assertEquals(HttpStatus.OK.value(),response.getStatus());
+    }
+
+    @Test
+    @Order(4)
+    public void showExpertSubServices() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/admin/showExpertSubServices/" + "f@gmail.com")
+                .contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
 }
