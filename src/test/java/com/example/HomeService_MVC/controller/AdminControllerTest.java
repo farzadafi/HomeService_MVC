@@ -1,6 +1,8 @@
 package com.example.HomeService_MVC.controller;
 
+import com.example.HomeService_MVC.model.base.User;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
+import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureMockMvc
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@WithMockUser(username="admin",roles={"ADMIN","PRE_VERIFICATION_USER"})
+@WithMockUser(username="admin@gmail.com",password = "aA 1!aaa",roles={"ADMIN"})
 class AdminControllerTest {
 
     @Autowired
@@ -96,4 +98,18 @@ class AdminControllerTest {
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
+
+    @Test
+    @Order(5)
+    public void removeExpertFromSubServices() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/admin/removeExpertSubServices/" + "f@gmail.com/" + 1 )
+                .contentType(MediaType.APPLICATION_JSON);
+
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        assertEquals(HttpStatus.OK.value(),response.getStatus());
+    }
+
 }
