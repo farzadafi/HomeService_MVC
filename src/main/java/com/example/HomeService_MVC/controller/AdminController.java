@@ -31,9 +31,9 @@ public class AdminController {
     private final ExpertController expertController;
 
     @GetMapping("/getAllExpertFalse")
-    public ResponseEntity<List<ExpertDto>> getAllExpertFalse(){
+    public ResponseEntity<List<ExpertDto>> getAllExpertFalse() {
         List<Expert> expertList = expertServiceImpel.findAllByAcceptedFalse();
-        if(expertList == null || expertList.size() == 0)
+        if (expertList == null || expertList.size() == 0)
             throw new ExpertNotFoundException("متخصصی برای تایید وجود ندارد");
         return ResponseEntity.ok(expertToExpertDto(expertList));
     }
@@ -46,8 +46,8 @@ public class AdminController {
 
     @GetMapping("/addExpertToSubServices/{expertEmail}/{subServiceId}")
     public String addExpertToSubServices(@PathVariable("expertEmail") String expertEmail,
-                                         @PathVariable("subServiceId") Integer subServiceId ){
-        expertServiceImpel.addExpertToSubService(expertEmail,subServiceId);
+                                         @PathVariable("subServiceId") Integer subServiceId) {
+        expertServiceImpel.addExpertToSubService(expertEmail, subServiceId);
         return "OK";
     }
 
@@ -64,27 +64,27 @@ public class AdminController {
 
     @GetMapping("/removeExpertSubServices/{expertEmail}/{subServiceId}")
     public String removeExpertFromSubServices(@PathVariable("expertEmail") String expertEmail,
-                                          @PathVariable("subServiceId") Integer subServiceId){
-        expertServiceImpel.removeExpertSubServices(expertEmail,subServiceId);
+                                              @PathVariable("subServiceId") Integer subServiceId) {
+        expertServiceImpel.removeExpertSubServices(expertEmail, subServiceId);
         return "OK";
     }
 
     @PostMapping("/updateAdminPassword")
-    public String updateAdminPassword(@Valid @RequestBody PasswordDto passwordDTO){
+    public String updateAdminPassword(@Valid @RequestBody PasswordDto passwordDTO) {
         adminServiceImpel.updateAdmin(passwordDTO);
         return "OK";
     }
 
-    private List<ExpertDto> expertToExpertDto(List<Expert> expertList){
+    private List<ExpertDto> expertToExpertDto(List<Expert> expertList) {
         List<ExpertDto> expertDtoList = new ArrayList<>();
-        for (Expert e:expertList
+        for (Expert e : expertList
         ) {
             expertDtoList.add(expertController.convertExpertToExpertDTO(e));
         }
         return expertDtoList;
     }
 
-    private List<SubServicesDto> subServiceToSubServiceDto(Set<SubServices> subServicesList){
+    private List<SubServicesDto> subServiceToSubServiceDto(Set<SubServices> subServicesList) {
         List<SubServicesDto> subServicesDtoList = new ArrayList<>();
         for (SubServices s : subServicesList
         ) {
