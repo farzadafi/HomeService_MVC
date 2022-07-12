@@ -1,6 +1,8 @@
 package com.example.HomeService_MVC.controller;
 
+import com.example.HomeService_MVC.model.Admin;
 import com.example.HomeService_MVC.model.base.User;
+import com.example.HomeService_MVC.model.enumoration.Role;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.*;
@@ -14,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -39,6 +42,7 @@ class AdminControllerTest {
 
     @Autowired
     private ExpertServiceImpel expertServiceImpel;
+    Admin admin = new Admin("admin","admin","admin@gmail.com","aA 1!aaa",0L,Role.ROLE_ADMIN);
 
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) {
@@ -112,4 +116,23 @@ class AdminControllerTest {
         assertEquals(HttpStatus.OK.value(),response.getStatus());
     }
 
+    @Test
+    @Order(6)
+    public void updateAdminPassword() throws Exception {
+        admin.setId(2);
+        JSONObject obj=new JSONObject();
+        obj.put("password","aA 1!aaa111");
+        obj.put("confPassword","aA 1!aaa111");
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/admin/updateAdminPassword")
+                .with(SecurityMockMvcRequestPostProcessors.user(admin))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(obj.toJSONString());
+
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        assertEquals(HttpStatus.OK.value(),response.getStatus());
+    }
 }
