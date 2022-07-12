@@ -1,9 +1,7 @@
 package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.model.Admin;
-import com.example.HomeService_MVC.model.base.User;
 import com.example.HomeService_MVC.model.enumoration.Role;
-import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.*;
 import org.junit.runner.RunWith;
@@ -34,15 +32,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureMockMvc
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@WithMockUser(username="admin@gmail.com",password = "aA 1!aaa",roles={"ADMIN"})
+@WithMockUser(username = "admin@gmail.com", password = "aA 1!aaa", roles = {"ADMIN"})
 class AdminControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ExpertServiceImpel expertServiceImpel;
-    Admin admin = new Admin("admin","admin","admin@gmail.com","aA 1!aaa",0L,Role.ROLE_ADMIN);
+    Admin admin = new Admin("admin", "admin", "admin@gmail.com", "aA 1!aaa", 0L, Role.ROLE_ADMIN);
 
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) {
@@ -82,13 +78,13 @@ class AdminControllerTest {
     @Order(3)
     public void addExpertToSubServices() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/admin/addExpertToSubServices/" + "f@gmail.com/" + 1 )
+                .get("/admin/addExpertToSubServices/" + "f@gmail.com/" + 1)
                 .contentType(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
 
-        assertEquals(HttpStatus.OK.value(),response.getStatus());
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
 
     @Test
@@ -107,22 +103,22 @@ class AdminControllerTest {
     @Order(5)
     public void removeExpertFromSubServices() throws Exception {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/admin/removeExpertSubServices/" + "f@gmail.com/" + 1 )
+                .get("/admin/removeExpertSubServices/" + "f@gmail.com/" + 1)
                 .contentType(MediaType.APPLICATION_JSON);
 
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
 
-        assertEquals(HttpStatus.OK.value(),response.getStatus());
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
 
     @Test
     @Order(6)
     public void updateAdminPassword() throws Exception {
         admin.setId(2);
-        JSONObject obj=new JSONObject();
-        obj.put("password","aA 1!aaa111");
-        obj.put("confPassword","aA 1!aaa111");
+        JSONObject obj = new JSONObject();
+        obj.put("password", "aA 1!aaa111");
+        obj.put("confPassword", "aA 1!aaa111");
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/admin/updateAdminPassword")
@@ -133,6 +129,6 @@ class AdminControllerTest {
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
 
-        assertEquals(HttpStatus.OK.value(),response.getStatus());
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
 }
