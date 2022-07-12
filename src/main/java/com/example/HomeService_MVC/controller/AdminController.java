@@ -34,13 +34,8 @@ public class AdminController {
     public ResponseEntity<List<ExpertDto>> getAllExpertFalse(){
         List<Expert> expertList = expertServiceImpel.findAllByAcceptedFalse();
         if(expertList == null || expertList.size() == 0)
-            throw new ExpertNotFoundException("unfortunately any expert doesn't register until now!");
-        List<ExpertDto> dtoList = new ArrayList<>();
-        for (Expert e:expertList
-        ) {
-            dtoList.add(expertController.convertExpertToExpertDTO(e));
-        }
-        return ResponseEntity.ok(dtoList);
+            throw new ExpertNotFoundException("متخصصی برای تایید وجود ندارد");
+        return ResponseEntity.ok(expertToExpertDto(expertList));
     }
 
     @GetMapping("/confirmExpert/{expertId}")
@@ -83,5 +78,14 @@ public class AdminController {
     public String updateAdminPassword(@Valid @RequestBody PasswordDto passwordDTO){
         adminServiceImpel.updateAdmin(passwordDTO);
         return "OK";
+    }
+
+    private List<ExpertDto> expertToExpertDto(List<Expert> expertList){
+        List<ExpertDto> expertDtoList = new ArrayList<>();
+        for (Expert e:expertList
+        ) {
+            expertDtoList.add(expertController.convertExpertToExpertDTO(e));
+        }
+        return expertDtoList;
     }
 }
