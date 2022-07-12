@@ -38,12 +38,13 @@ class AdminControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    Admin admin = new Admin("admin", "admin", "admin@gmail.com", "aA 1!aaa", 0L, Role.ROLE_ADMIN);
+    Admin admin = new Admin("admin", "admin", "admin@gmail.com",
+            "aA 1!aaa", 0L, Role.ROLE_ADMIN);
 
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) {
-        try (Connection conn = dataSource.getConnection()) {
-            ScriptUtils.executeSqlScript(conn, new ClassPathResource("AdminControllerData.sql"));
+        try (Connection connection = dataSource.getConnection()) {
+            ScriptUtils.executeSqlScript(connection, new ClassPathResource("AdminControllerData.sql"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -67,7 +68,6 @@ class AdminControllerTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/admin/confirmExpert/" + 1)
                 .contentType(MediaType.APPLICATION_JSON);
-
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
 
@@ -80,7 +80,6 @@ class AdminControllerTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/admin/addExpertToSubServices/" + "f@gmail.com/" + 1)
                 .contentType(MediaType.APPLICATION_JSON);
-
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
 
@@ -105,7 +104,6 @@ class AdminControllerTest {
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .get("/admin/removeExpertSubServices/" + "f@gmail.com/" + 1)
                 .contentType(MediaType.APPLICATION_JSON);
-
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
 
@@ -116,16 +114,14 @@ class AdminControllerTest {
     @Order(6)
     public void updateAdminPassword() throws Exception {
         admin.setId(2);
-        JSONObject obj = new JSONObject();
-        obj.put("password", "aA 1!aaa111");
-        obj.put("confPassword", "aA 1!aaa111");
-
+        JSONObject passwordJson = new JSONObject();
+        passwordJson.put("password", "aA 1!aaa111");
+        passwordJson.put("confPassword", "aA 1!aaa111");
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/admin/updateAdminPassword")
                 .with(SecurityMockMvcRequestPostProcessors.user(admin))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(obj.toJSONString());
-
+                .content(passwordJson.toJSONString());
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
 
