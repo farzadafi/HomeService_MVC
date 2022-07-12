@@ -5,20 +5,16 @@ import com.example.HomeService_MVC.dto.user.PasswordDto;
 import com.example.HomeService_MVC.model.base.User;
 import com.example.HomeService_MVC.repository.UserRepository;
 import com.example.HomeService_MVC.service.interfaces.AdminService;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class AdminServiceImpel implements AdminService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-    public AdminServiceImpel(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
-
 
     @Override
     public void updateAdmin(PasswordDto passwordDTO) {
