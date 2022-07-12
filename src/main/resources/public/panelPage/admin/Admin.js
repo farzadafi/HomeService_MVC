@@ -371,6 +371,7 @@ $("#submitChangePassword").on('click',function() {
     let formPassword = new FormData();
     formPassword.append("password", password);
     formPassword.append("confPassword", confPass);
+    //todo use json instead of model attribute
 
     $.ajax({
         url: "http://localhost:8080/admin/updateAdmin",
