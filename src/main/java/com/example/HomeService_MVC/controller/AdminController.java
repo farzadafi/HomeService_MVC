@@ -53,18 +53,13 @@ public class AdminController {
 
     @GetMapping("/showExpertSubServices/{expertEmail}")
     public ResponseEntity<List<SubServicesDto>> showExpertSubServices(@PathVariable("expertEmail") String expertEmail) {
-        Expert expert = expertServiceImpel.findByEmail(expertEmail).orElseThrow(() -> new ExpertNotFoundException("This Expert is not found!"));
+        Expert expert = expertServiceImpel.findByEmail(expertEmail)
+                .orElseThrow(() -> new ExpertNotFoundException("متخصص مورد نظر پیدا نشد"));
         Set<SubServices> subServicesSet = expert.getSubServices();
         if (subServicesSet == null || subServicesSet.size() == 0)
-            throw new SubServicesNotFoundException("This Expert doesn't have any SubServices until yet");
-        else {
-            List<SubServicesDto> dtoList = new ArrayList<>();
-            for (SubServices s : subServicesSet
-            ) {
-                dtoList.add(mapper.map(s, SubServicesDto.class));
-            }
-            return ResponseEntity.ok(dtoList);
-        }
+            throw new SubServicesNotFoundException("این متخصص دارای هیچ تخصصی نمی باشد");
+        else
+            return ResponseEntity.ok(subServiceToSubServiceDto(subServicesSet));
     }
 
     @GetMapping("/removeExpertSubServices/{expertEmail}/{subServiceId}")
@@ -87,5 +82,14 @@ public class AdminController {
             expertDtoList.add(expertController.convertExpertToExpertDTO(e));
         }
         return expertDtoList;
+    }
+
+    private List<SubServicesDto> subServiceToSubServiceDto(Set<SubServices> subServicesList){
+        List<SubServicesDto> subServicesDtoList = new ArrayList<>();
+        for (SubServices s : subServicesList
+        ) {
+            subServicesDtoList.add(mapper.map(s, SubServicesDto.class));
+        }
+        return subServicesDtoList;
     }
 }
