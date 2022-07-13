@@ -23,7 +23,8 @@ public class ConfirmationTokenController {
         ConfirmationToken token = confirmTokenServiceImpel.findByConfirmToken(confirmationToken);
         if(token == null )
             return "شما قبلا ایمیل خود را تایید کرده اید!";
-        Customer customer = (Customer) userServiceImpel.findByEmail(token.getUser().getEmail()).orElseThrow(() -> new UsernameNotFoundException("متاسفانه شما پیدا نشدید!"));
+        Customer customer = (Customer) userServiceImpel.findByEmail(token.getUser().getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("متاسفانه ایمیل شما پیدا نشد"));
         if(customer.isEnabled())
             return "شما قبلا ایمیل خود را تایید کرده اید!";
         customer.setEnabled(true);
