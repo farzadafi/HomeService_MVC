@@ -5,7 +5,7 @@ $("#submit").on('click',function() {
     formData.append("email", $("#email").val());
     formData.append("password", $("#password").val());
     formData.append("confPassword", $("#confPassword").val());
-
+    //todo send json String instead of formData
     $.ajax({
         url: "http://localhost:8080/customer/save",
         data: formData,
