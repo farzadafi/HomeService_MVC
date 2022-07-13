@@ -1,5 +1,6 @@
 package com.example.HomeService_MVC.controller;
 
+import com.example.HomeService_MVC.core.SecurityUtil;
 import com.example.HomeService_MVC.dto.user.CustomerDto;
 import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
 import com.example.HomeService_MVC.dto.user.PasswordDto;
@@ -80,7 +81,6 @@ public class CustomerController {
 
     @GetMapping("/showBalance")
     public String showBalance(){
-        Customer customer = customerServiceImpel.getById(3);
-        return String.valueOf(customer.getBalance());
+        return String.valueOf(SecurityUtil.getCurrentUser().getBalance());
     }
 }
