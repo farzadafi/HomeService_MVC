@@ -6,7 +6,6 @@ import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
 import com.example.HomeService_MVC.dto.user.PasswordDto;
 import com.example.HomeService_MVC.model.ConfirmationToken;
 import com.example.HomeService_MVC.model.Customer;
-import com.example.HomeService_MVC.model.base.User;
 import com.example.HomeService_MVC.service.impel.ConfirmTokenServiceImpel;
 import com.example.HomeService_MVC.service.impel.UserServiceImpel;
 import lombok.AllArgsConstructor;
@@ -15,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import com.example.HomeService_MVC.service.impel.CustomerServiceImpel;
@@ -84,13 +82,6 @@ public class CustomerController {
     public ResponseEntity<String> updatePassword(@Valid @RequestBody PasswordDto passwordDTO){
         customerServiceImpel.updatePassword(new Customer(),passwordDTO);
         return ResponseEntity.ok("OK");
-    }
-
-    //@PreAuthorize("hasAnyRole('EXPERT','ADMIN')")
-    @GetMapping("/security")
-    public String security(Authentication authentication){
-        User user = (User) authentication.getPrincipal();
-        return user.toString();
     }
 
     @PreAuthorize("hasRole('ADMIN')")
