@@ -1,6 +1,5 @@
 package com.example.HomeService_MVC.controller;
 
-
 import com.example.HomeService_MVC.dto.user.CustomerDto;
 import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
 import com.example.HomeService_MVC.dto.user.PasswordDto;
@@ -37,29 +36,15 @@ public class CustomerController {
     private final JavaMailSender mailSender;
 
     @PostMapping("/save")
-    public String save(@Valid @ModelAttribute @RequestBody CustomerDto customerSave) throws MessagingException {
-        Customer customer = mapper.map(customerSave,Customer.class);
+    public String save(@Valid @RequestBody CustomerDto customerDto) throws MessagingException {
+        Customer customer = mapper.map(customerDto,Customer.class);
         customerServiceImpel.save(customer);
         ConfirmationToken confirmationToken = new ConfirmationToken(customer);
         confirmTokenServiceImpel.save(confirmationToken);
         String verifyCode = ("please click on link for confirm your email!"
-                +"http://localhost:8080/customer/confirmAccount/"+confirmationToken.getConfirmToken());
+                +"http://localhost:8080/token/confirmAccount/"+confirmationToken.getConfirmToken());
         sendVerificationMessage(customer.getEmail(),verifyCode);
         return "OK";
-    }
-
-    @GetMapping("/confirmAccount/{token}")
-    public String confirmUserAccount(@PathVariable("token") String confirmationToken ) {
-        ConfirmationToken token = confirmTokenServiceImpel.findByConfirmToken(confirmationToken);
-        if(token == null )
-            return "شما قبلا ایمیل خود را تایید کرده اید!";
-        Customer customer = (Customer) userServiceImpel.findByEmail(token.getUser().getEmail()).orElseThrow(() -> new UsernameNotFoundException("متاسفانه شما پیدا نشدید!"));
-        if(customer.isEnabled())
-            return "شما قبلا ایمیل خود را تایید کرده اید!";
-        customer.setEnabled(true);
-        customerServiceImpel.updateEnable(customer);
-        confirmTokenServiceImpel.deleteToken(token);
-        return "ایمیل شما با موفقیت تایید شد!";
     }
 
     public void sendVerificationMessage(
