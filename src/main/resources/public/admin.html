@@ -27,14 +27,14 @@
 </nav>
 
 <div class="tab float-end ">
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'select')" id="defaultOpen">گزینه ها</button><br>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'addService')"  >افزودن سرویس</button><br>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'subService')">افزودن زیر سرویس</button><br>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'confirmExpertTab')">تایید متخصص</button><br>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'addExpertToSubServices')">افزودن متخصص به زیر سرویس</button><br>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'removeExpertToSubServices')">حذف متخصص از زیر سرویس</button><br>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'search')">فیلتر کردن کاربران</button><br>
-    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openCity(event, 'changePassword')">تعویض رمز</button>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'select')" id="defaultOpen">گزینه ها</button><br>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'addService')"  >افزودن سرویس</button><br>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'subService')">افزودن زیر سرویس</button><br>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'confirmExpertTab')">تایید متخصص</button><br>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'addExpertToSubServices')">افزودن متخصص به زیر سرویس</button><br>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'removeExpertToSubServices')">حذف متخصص از زیر سرویس</button><br>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'search')">فیلتر کردن کاربران</button><br>
+    <button class="tabLinks btn btn-block py-4 text-center w-100" onclick="openDiv(event, 'changePassword')">تعویض رمز</button>
 </div>
 
 <!------>
@@ -47,8 +47,8 @@
 <div id="addService" class="tabContent text-center">
     <p class="text-center font-weight-bold text-justify text-white"></p>
     <div >
-        <label for="serviceName"><br>
-            <input class="rounded-pill border-0 p-lg-5 " id="serviceName" type="text" name="serviceName" pattern=".{3,}" title="at least 3 word!" placeholder="لطفا نام سرویس را وارد کنید" required><br>
+        <label class="w-25" for="serviceName"><br>
+            <input class="rounded-pill border-0 w-100 p-lg-5 " id="serviceName" type="text" name="serviceName" pattern=".{3,}" title="at least 3 word!" placeholder="لطفا نام سرویس را وارد کنید" required><br>
         </label>
         <div class="text-center">
             <button class="rounded-pill btn btn-info text-justify p-lg-5 font-italic mt-5 font-weight-bold submit"  id="submitServiceName" >ثبت</button>
