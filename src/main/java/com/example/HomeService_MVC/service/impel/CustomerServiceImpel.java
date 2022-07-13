@@ -29,7 +29,6 @@ public class CustomerServiceImpel implements CustomerService {
         this.mapper = mapper;
     }
 
-
     @Override
     public void save(Customer customer) {
         customer.setBalance(50000L);
@@ -42,11 +41,6 @@ public class CustomerServiceImpel implements CustomerService {
     public void updatePassword(Customer customer, PasswordDto passwordDTO) {
         customer.setPassword(passwordDTO.getSinglePassword());
         customerRepository.save(customer);
-    }
-
-    @Override
-    public Customer getById(Integer id) {
-        return customerRepository.getById(id);
     }
 
     @Override
