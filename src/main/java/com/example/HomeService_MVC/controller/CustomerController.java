@@ -7,6 +7,7 @@ import com.example.HomeService_MVC.model.ConfirmationToken;
 import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.service.impel.ConfirmTokenServiceImpel;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -21,6 +22,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RestController
 @CrossOrigin
 @RequestMapping("/customer")
@@ -53,7 +55,7 @@ public class CustomerController {
             message.setSubject("تایید ایمیل");
             message.setText(text, true);
         } catch (MessagingException e) {
-            System.out.println(e.getMessage());
+            log.warn(e.getMessage());
         }
         mailSender.send(msg);
     }
