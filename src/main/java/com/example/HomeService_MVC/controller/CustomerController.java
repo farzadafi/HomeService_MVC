@@ -6,14 +6,12 @@ import com.example.HomeService_MVC.dto.user.PasswordDto;
 import com.example.HomeService_MVC.model.ConfirmationToken;
 import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.service.impel.ConfirmTokenServiceImpel;
-import com.example.HomeService_MVC.service.impel.UserServiceImpel;
 import lombok.AllArgsConstructor;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import com.example.HomeService_MVC.service.impel.CustomerServiceImpel;
 
@@ -32,7 +30,6 @@ public class CustomerController {
     private final CustomerServiceImpel customerServiceImpel;
     private final DozerBeanMapper mapper;
     private final ConfirmTokenServiceImpel confirmTokenServiceImpel;
-    private final UserServiceImpel userServiceImpel;
     private final JavaMailSender mailSender;
 
     @PostMapping("/save")
@@ -41,20 +38,18 @@ public class CustomerController {
         customerServiceImpel.save(customer);
         ConfirmationToken confirmationToken = new ConfirmationToken(customer);
         confirmTokenServiceImpel.save(confirmationToken);
-        String verifyCode = ("please click on link for confirm your email!"
-                +"http://localhost:8080/token/confirmAccount/"+confirmationToken.getConfirmToken());
-        sendVerificationMessage(customer.getEmail(),verifyCode);
+        sendVerificationMessage(confirmationToken);
         return "OK";
     }
 
-    public void sendVerificationMessage(
-            String mail, String text) {
+    public void sendVerificationMessage(ConfirmationToken confirmationToken) {
+        String text = ("please click on link for confirm your Account " +
+                "http://localhost:8080/token/confirmAccount/"+confirmationToken.getConfirmToken());
         MimeMessage msg = mailSender.createMimeMessage();
-
         MimeMessageHelper message;
         try {
             message = new MimeMessageHelper(msg, true);
-            message.setTo(mail);
+            message.setTo(confirmationToken.getUser().getEmail());
             message.setSubject("تایید ایمیل");
             message.setText(text, true);
         } catch (MessagingException e) {
