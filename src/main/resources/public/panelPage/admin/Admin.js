@@ -1,4 +1,4 @@
-function openCity(evt, cityName) {
+function openDiv(evt, cityName) {
     let i, tabContent, tabLinks;
     tabContent = document.getElementsByClassName("tabContent");
     for (i = 0; i < tabContent.length; i++) {
