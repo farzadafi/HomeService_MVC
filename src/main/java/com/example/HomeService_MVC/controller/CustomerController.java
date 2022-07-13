@@ -9,6 +9,7 @@ import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.base.User;
 import com.example.HomeService_MVC.service.impel.ConfirmTokenServiceImpel;
 import com.example.HomeService_MVC.service.impel.UserServiceImpel;
+import lombok.AllArgsConstructor;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -28,6 +29,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @RequestMapping("/customer")
+@AllArgsConstructor
 public class CustomerController {
 
     private final CustomerServiceImpel customerServiceImpel;
@@ -35,14 +37,6 @@ public class CustomerController {
     private final ConfirmTokenServiceImpel confirmTokenServiceImpel;
     private final UserServiceImpel userServiceImpel;
     private final JavaMailSender mailSender;
-
-    public CustomerController(CustomerServiceImpel customerServiceImpel, DozerBeanMapper mapper, ConfirmTokenServiceImpel confirmTokenServiceImpel, UserServiceImpel userServiceImpel, JavaMailSender mailSender) {
-        this.customerServiceImpel = customerServiceImpel;
-        this.mapper = mapper;
-        this.confirmTokenServiceImpel = confirmTokenServiceImpel;
-        this.userServiceImpel = userServiceImpel;
-        this.mailSender = mailSender;
-    }
 
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute @RequestBody CustomerDto customerSave) throws MessagingException {
