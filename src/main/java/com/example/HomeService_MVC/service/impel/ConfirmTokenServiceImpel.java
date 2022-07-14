@@ -51,6 +51,7 @@ public class ConfirmTokenServiceImpel implements ConfirmTokenService {
         return confirmationTokenRepository.findConfirmationTokensByUserId(userId);
     }
 
+    @Override
     public void sendVerificationMessage(ConfirmationToken confirmationToken) {
         String text = ("please click on link for confirm your Account " +
                 "http://localhost:8080/token/confirmAccount/"+confirmationToken.getConfirmToken());
