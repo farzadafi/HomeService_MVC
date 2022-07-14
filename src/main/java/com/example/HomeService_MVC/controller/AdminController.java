@@ -4,7 +4,7 @@ import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
 import com.example.HomeService_MVC.dto.services.SubServicesDto;
 import com.example.HomeService_MVC.dto.user.ExpertDto;
-import com.example.HomeService_MVC.dto.user.PasswordDto;
+import com.example.HomeService_MVC.dto.user.passwordChangeRequest;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.service.impel.AdminServiceImpel;
@@ -70,7 +70,7 @@ public class AdminController {
     }
 
     @PostMapping("/updateAdminPassword")
-    public String updateAdminPassword(@Valid @RequestBody PasswordDto passwordDTO) {
+    public String updateAdminPassword(@Valid @RequestBody passwordChangeRequest passwordDTO) {
         adminServiceImpel.updateAdmin(passwordDTO);
         return "OK";
     }

@@ -1,7 +1,7 @@
 package com.example.HomeService_MVC.service.interfaces;
 
-import com.example.HomeService_MVC.dto.user.PasswordDto;
+import com.example.HomeService_MVC.dto.user.passwordChangeRequest;
 
 public interface AdminService {
-    void updateAdmin(PasswordDto passwordDTO);
+    void updateAdmin(passwordChangeRequest passwordDTO);
 }

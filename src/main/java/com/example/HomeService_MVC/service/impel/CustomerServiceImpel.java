@@ -1,7 +1,7 @@
 package com.example.HomeService_MVC.service.impel;
 
 import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
-import com.example.HomeService_MVC.dto.user.PasswordDto;
+import com.example.HomeService_MVC.dto.user.passwordChangeRequest;
 import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.enumoration.Role;
 import org.dozer.DozerBeanMapper;
@@ -38,7 +38,7 @@ public class CustomerServiceImpel implements CustomerService {
     }
 
     @Override
-    public void updatePassword(Customer customer, PasswordDto passwordDTO) {
+    public void updatePassword(Customer customer, passwordChangeRequest passwordDTO) {
         customer.setPassword(passwordDTO.getSinglePassword());
         customerRepository.save(customer);
     }

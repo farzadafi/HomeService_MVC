@@ -9,7 +9,7 @@ import javax.persistence.Column;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PasswordDto {
+public class passwordChangeRequest {
     @Column(nullable = false)
     private String password;
 

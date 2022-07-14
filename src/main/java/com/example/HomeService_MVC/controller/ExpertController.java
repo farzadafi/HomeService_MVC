@@ -2,7 +2,7 @@ package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
 import com.example.HomeService_MVC.dto.user.ExpertDto;
-import com.example.HomeService_MVC.dto.user.PasswordDto;
+import com.example.HomeService_MVC.dto.user.passwordChangeRequest;
 import com.example.HomeService_MVC.model.ConfirmationToken;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.enumoration.Role;
@@ -89,7 +89,7 @@ public class ExpertController {
     }
 
     @PutMapping("/updatePassword")
-    public ResponseEntity<String> updatePassword(@Valid @RequestBody PasswordDto passwordDTO){
+    public ResponseEntity<String> updatePassword(@Valid @RequestBody passwordChangeRequest passwordDTO){
         expertServiceImpel.updatePassword(1,passwordDTO);
         return ResponseEntity.ok("OK");
     }
