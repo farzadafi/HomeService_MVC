@@ -1,5 +1,6 @@
 package com.example.HomeService_MVC.service.impel;
 
+import com.example.HomeService_MVC.core.SecurityUtil;
 import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
 import com.example.HomeService_MVC.dto.user.passwordChangeRequest;
 import com.example.HomeService_MVC.model.Customer;
@@ -38,8 +39,9 @@ public class CustomerServiceImpel implements CustomerService {
     }
 
     @Override
-    public void updatePassword(Customer customer, passwordChangeRequest passwordDTO) {
-        customer.setPassword(passwordDTO.getSinglePassword());
+    public void updatePassword(passwordChangeRequest passwordChangeRequest) {
+        Customer customer = (Customer) SecurityUtil.getCurrentUser();
+        customer.setPassword(bCryptPasswordEncoder.encode(passwordChangeRequest.getSinglePassword()));
         customerRepository.save(customer);
     }
 
