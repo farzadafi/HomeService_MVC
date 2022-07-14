@@ -33,7 +33,6 @@ public class CustomerController {
     private final CustomerServiceImpel customerServiceImpel;
     private final DozerBeanMapper mapper;
     private final ConfirmTokenServiceImpel confirmTokenServiceImpel;
-    private final JavaMailSender mailSender;
 
     @PostMapping("/save")
     public String save(@Valid @RequestBody CustomerDto customerDto) throws MessagingException {
@@ -41,24 +40,8 @@ public class CustomerController {
         customerServiceImpel.save(customer);
         ConfirmationToken confirmationToken = new ConfirmationToken(customer);
         confirmTokenServiceImpel.save(confirmationToken);
-        sendVerificationMessage(confirmationToken);
+        confirmTokenServiceImpel.sendVerificationMessage(confirmationToken);
         return "OK";
-    }
-
-    public void sendVerificationMessage(ConfirmationToken confirmationToken) {
-        String text = ("please click on link for confirm your Account " +
-                "http://localhost:8080/token/confirmAccount/"+confirmationToken.getConfirmToken());
-        MimeMessage msg = mailSender.createMimeMessage();
-        MimeMessageHelper message;
-        try {
-            message = new MimeMessageHelper(msg, true);
-            message.setTo(confirmationToken.getUser().getEmail());
-            message.setSubject("تایید ایمیل");
-            message.setText(text, true);
-        } catch (MessagingException e) {
-            log.warn(e.getMessage());
-        }
-        mailSender.send(msg);
     }
 
     @PutMapping("/updatePassword")
