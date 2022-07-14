@@ -1,6 +1,8 @@
 package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.model.ConfirmationToken;
+import com.example.HomeService_MVC.model.Customer;
+import com.example.HomeService_MVC.model.enumoration.Role;
 import com.example.HomeService_MVC.service.impel.ConfirmTokenServiceImpel;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.MethodOrderer;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -32,6 +35,9 @@ class CustomerControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private ConfirmTokenServiceImpel confirmTokenServiceImpel;
+
+    Customer customer = new Customer("farzad", "afshar", "farzadafi50@gmail.com",
+            "aA 1!aaa", 0L, Role.ROLE_CUSTOMER);
 
     @Test
     @Order(1)
@@ -64,5 +70,23 @@ class CustomerControllerTest {
 
         if(!response.getContentAsString().equals("ایمیل شما با موفقیت تایید شد!"))
             fail();
+    }
+
+    @Test
+    @Order(3)
+    public void updateCustomerPassword() throws Exception {
+        customer.setId(1);
+        JSONObject passwordJson = new JSONObject();
+        passwordJson.put("password", "aA 1!aaa111");
+        passwordJson.put("confPassword", "aA 1!aaa111");
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/customer/updatePassword")
+                .with(SecurityMockMvcRequestPostProcessors.user(customer))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(passwordJson.toJSONString());
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
 }
