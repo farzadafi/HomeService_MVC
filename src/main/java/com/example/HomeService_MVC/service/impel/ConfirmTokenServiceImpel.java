@@ -39,5 +39,10 @@ public class ConfirmTokenServiceImpel implements ConfirmTokenService {
         confirmationTokenRepository.delete(confirmationToken);
     }
 
+    @Override
+    public ConfirmationToken findConfirmationTokensByUserId(Integer userId) {
+        return confirmationTokenRepository.findConfirmationTokensByUserId(userId);
+    }
+
 
 }
