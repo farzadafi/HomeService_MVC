@@ -10,4 +10,5 @@ public interface ConfirmTokenService {
     ConfirmationToken findByConfirmToken(String confirmationToken);
     void deleteToken(ConfirmationToken confirmationToken);
     ConfirmationToken findConfirmationTokensByUserId(Integer userId);
+    void sendVerificationMessage(ConfirmationToken confirmationToken);
 }
