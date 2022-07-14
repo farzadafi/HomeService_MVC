@@ -37,7 +37,7 @@ class CustomerControllerTest {
     private ConfirmTokenServiceImpel confirmTokenServiceImpel;
 
     Customer customer = new Customer("farzad", "afshar", "farzadafi50@gmail.com",
-            "aA 1!aaa", 0L, Role.ROLE_CUSTOMER);
+            "aA 1!aaa", 50000L, Role.ROLE_CUSTOMER);
 
     @Test
     @Order(1)
@@ -88,5 +88,20 @@ class CustomerControllerTest {
         MockHttpServletResponse response = result.getResponse();
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
+    }
+
+    @Test
+    @Order(4)
+    public void showBalance() throws Exception {
+        customer.setId(1);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/customer/showBalance/")
+                .with(SecurityMockMvcRequestPostProcessors.user(customer))
+                .contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        if(!response.getContentAsString().equals("50000"))
+            fail();
     }
 }
