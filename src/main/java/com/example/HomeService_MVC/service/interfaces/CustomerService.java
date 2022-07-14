@@ -6,7 +6,7 @@ import com.example.HomeService_MVC.model.Customer;
 
 public interface CustomerService  {
     void save(Customer customer);
-    void updatePassword(Customer customer, passwordChangeRequest passwordDTO);
+    void updatePassword(passwordChangeRequest passwordChangeRequest);
     void updateBalance(Customer customer);
     void updateEnable(Customer customer);
 }
