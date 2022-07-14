@@ -52,4 +52,17 @@ class CustomerControllerTest {
         assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
 
+    @Test
+    @Order(2)
+    public void ConfirmAccount() throws Exception {
+        ConfirmationToken confirmationToken = confirmTokenServiceImpel.findConfirmationTokensByUserId(1);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/token/confirm/" + confirmationToken.getConfirmToken())
+                .contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        if(!response.getContentAsString().equals("ایمیل شما با موفقیت تایید شد!"))
+            fail();
+    }
 }
