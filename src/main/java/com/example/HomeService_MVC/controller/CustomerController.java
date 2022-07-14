@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.example.HomeService_MVC.service.impel.CustomerServiceImpel;
 
@@ -41,9 +42,9 @@ public class CustomerController {
         return "OK";
     }
 
-    @PutMapping("/updatePassword")
-    public ResponseEntity<String> updatePassword(@Valid @RequestBody passwordChangeRequest passwordDTO){
-        customerServiceImpel.updatePassword(new Customer(),passwordDTO);
+    @PostMapping("/updatePassword")
+    public ResponseEntity<String> updatePassword(@Valid @RequestBody passwordChangeRequest passwordChangeRequest){
+        customerServiceImpel.updatePassword(passwordChangeRequest);
         return ResponseEntity.ok("OK");
     }
 
