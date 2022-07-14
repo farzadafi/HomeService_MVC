@@ -70,8 +70,8 @@ public class AdminController {
     }
 
     @PostMapping("/updateAdminPassword")
-    public String updateAdminPassword(@Valid @RequestBody passwordChangeRequest passwordDTO) {
-        adminServiceImpel.updateAdmin(passwordDTO);
+    public String updateAdminPassword(@Valid @RequestBody passwordChangeRequest passwordChangeRequest) {
+        adminServiceImpel.updateAdmin(passwordChangeRequest);
         return "OK";
     }
 

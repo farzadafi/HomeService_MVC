@@ -15,7 +15,7 @@ public interface ExpertService {
     void addExpertToSubService(String expertEmail,Integer subServicesId);
     Optional<Expert> findByEmail(String expertEmail);
     void removeExpertSubServices(String email,Integer subServicesId);
-    void updatePassword(Integer expertId, passwordChangeRequest passwordDTO);
+    void updatePassword(Integer expertId, passwordChangeRequest passwordChangeRequest);
     void updateBalance(Expert expert);
     void updateStars(Expert expert);
     void updateEnable(Expert expert);

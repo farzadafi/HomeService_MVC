@@ -17,9 +17,9 @@ public class AdminServiceImpel implements AdminService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public void updateAdmin(passwordChangeRequest passwordDTO) {
+    public void updateAdmin(passwordChangeRequest passwordChangeRequest) {
         User user = SecurityUtil.getCurrentUser();
-        user.setPassword(bCryptPasswordEncoder.encode(passwordDTO.getSinglePassword()));
+        user.setPassword(bCryptPasswordEncoder.encode(passwordChangeRequest.getSinglePassword()));
         userRepository.save(user);
     }
 }

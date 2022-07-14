@@ -90,9 +90,9 @@ public class ExpertServiceImpel implements ExpertService {
     }
 
     @Override
-    public void updatePassword(Integer expertId, passwordChangeRequest passwordDTO) {
+    public void updatePassword(Integer expertId, passwordChangeRequest passwordChangeRequest) {
         Expert expert = getById(expertId);
-        expert.setPassword(passwordDTO.getSinglePassword());
+        expert.setPassword(passwordChangeRequest.getSinglePassword());
         expertRepository.save(expert);
     }
 

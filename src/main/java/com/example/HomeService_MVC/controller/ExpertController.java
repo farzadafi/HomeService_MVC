@@ -89,8 +89,8 @@ public class ExpertController {
     }
 
     @PutMapping("/updatePassword")
-    public ResponseEntity<String> updatePassword(@Valid @RequestBody passwordChangeRequest passwordDTO){
-        expertServiceImpel.updatePassword(1,passwordDTO);
+    public ResponseEntity<String> updatePassword(@Valid @RequestBody passwordChangeRequest passwordChangeRequest){
+        expertServiceImpel.updatePassword(1,passwordChangeRequest);
         return ResponseEntity.ok("OK");
     }
 
