@@ -19,6 +19,7 @@ public class ConfirmationTokenController {
     private final UserServiceImpel userServiceImpel;
     private final CustomerServiceImpel customerServiceImpel;
 
+    @GetMapping("/confirm/{token}")
     public String confirmUserAccount(@PathVariable("token") String confirmationToken ) {
         ConfirmationToken token = confirmTokenServiceImpel.findByConfirmToken(confirmationToken);
         if(token == null )
