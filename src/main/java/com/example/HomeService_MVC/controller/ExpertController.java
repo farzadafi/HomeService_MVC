@@ -10,6 +10,7 @@ import com.example.HomeService_MVC.model.enumoration.UserStatus;
 import com.example.HomeService_MVC.service.impel.ConfirmTokenServiceImpel;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
 import com.example.HomeService_MVC.service.impel.UserServiceImpel;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -30,6 +31,7 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/expert")
+@AllArgsConstructor
 public class ExpertController {
 
     private final ExpertServiceImpel expertServiceImpel;
@@ -37,14 +39,6 @@ public class ExpertController {
     private final ConfirmTokenServiceImpel confirmTokenServiceImpel;
     private final JavaMailSender mailSender;
     private final UserServiceImpel userServiceImpel;
-
-
-    public ExpertController(ExpertServiceImpel expertServiceImpel, ConfirmTokenServiceImpel confirmTokenServiceImpel, JavaMailSender mailSender, UserServiceImpel userServiceImpel) {
-        this.expertServiceImpel = expertServiceImpel;
-        this.confirmTokenServiceImpel = confirmTokenServiceImpel;
-        this.mailSender = mailSender;
-        this.userServiceImpel = userServiceImpel;
-    }
 
     @PostMapping(value = "/save",consumes = { MediaType.MULTIPART_FORM_DATA_VALUE} )
     public String save(@Valid @ModelAttribute @RequestBody ExpertDto expertSave) {
