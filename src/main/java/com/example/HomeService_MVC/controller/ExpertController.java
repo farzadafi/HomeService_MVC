@@ -42,12 +42,11 @@ public class ExpertController {
 
     @PostMapping(value = "/save",consumes = { MediaType.MULTIPART_FORM_DATA_VALUE} )
     public String save(@Valid @ModelAttribute @RequestBody ExpertDto expertSave) {
-        expertServiceImpel.save(convertExpertDTO(expertSave));
-        ConfirmationToken confirmationToken = new ConfirmationToken(convertExpertDTO(expertSave));
+        Expert expert = convertExpertDTO(expertSave);
+        expertServiceImpel.save(expert);
+        ConfirmationToken confirmationToken = new ConfirmationToken(expert);
         confirmTokenServiceImpel.save(confirmationToken);
-        String verifyCode = ("please click on link for confirm your email!"
-                +"http://localhost:8080/customer/confirmAccount/"+confirmationToken.getConfirmToken());
-        sendVerificationMessage(expertSave.getEmail(),verifyCode);
+        confirmTokenServiceImpel.sendVerificationMessage(confirmationToken);
         return "OK";
     }
 
