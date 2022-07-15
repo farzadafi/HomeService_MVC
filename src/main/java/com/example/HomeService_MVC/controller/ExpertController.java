@@ -6,7 +6,6 @@ import com.example.HomeService_MVC.dto.user.passwordChangeRequest;
 import com.example.HomeService_MVC.model.ConfirmationToken;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.enumoration.Role;
-import com.example.HomeService_MVC.model.enumoration.UserStatus;
 import com.example.HomeService_MVC.service.impel.ConfirmTokenServiceImpel;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
 import com.example.HomeService_MVC.service.impel.UserServiceImpel;
@@ -16,13 +15,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,21 +43,6 @@ public class ExpertController {
         confirmTokenServiceImpel.save(confirmationToken);
         confirmTokenServiceImpel.sendVerificationMessage(confirmationToken);
         return "OK";
-    }
-
-    @GetMapping("/confirmAccount/{token}")
-    public String confirmUserAccount(@PathVariable("token") String confirmationToken ) {
-        ConfirmationToken token = confirmTokenServiceImpel.findByConfirmToken(confirmationToken);
-        if(token == null )
-            return "شما قبلا ایمیل خود را تایید کرده اید!";
-        Expert expert = (Expert) userServiceImpel.findByEmail(token.getUser().getEmail()).orElseThrow(() -> new UsernameNotFoundException("متاسفانه شما پیدا نشدید!"));
-        if(expert.isEnabled())
-            return "شما قبلا ایمیل خود را تایید کرده اید!";
-        expert.setEnabled(true);
-        expert.setUserStatus(UserStatus.WAITING_FOR_ACCEPT);
-        expertServiceImpel.updateEnable(expert);
-        confirmTokenServiceImpel.deleteToken(token);
-        return "ایمیل شما با موفقیت تایید شد!";
     }
 
     @PutMapping("/updatePassword")
