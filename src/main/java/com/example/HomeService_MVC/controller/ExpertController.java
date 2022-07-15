@@ -50,22 +50,6 @@ public class ExpertController {
         return "OK";
     }
 
-    public void sendVerificationMessage(
-            String mail, String text) {
-        MimeMessage msg = mailSender.createMimeMessage();
-
-        MimeMessageHelper message;
-        try {
-            message = new MimeMessageHelper(msg, true);
-            message.setTo(mail);
-            message.setSubject("تایید ایمیل");
-            message.setText(text, true);
-        } catch (MessagingException e) {
-            System.out.println(e.getMessage());
-        }
-        mailSender.send(msg);
-    }
-
     @GetMapping("/confirmAccount/{token}")
     public String confirmUserAccount(@PathVariable("token") String confirmationToken ) {
         ConfirmationToken token = confirmTokenServiceImpel.findByConfirmToken(confirmationToken);
