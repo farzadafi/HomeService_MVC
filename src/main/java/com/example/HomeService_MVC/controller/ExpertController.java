@@ -10,8 +10,7 @@ import com.example.HomeService_MVC.service.impel.ConfirmTokenServiceImpel;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
 import com.example.HomeService_MVC.service.impel.UserServiceImpel;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -23,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/expert")
@@ -30,7 +30,6 @@ import java.util.List;
 public class ExpertController {
 
     private final ExpertServiceImpel expertServiceImpel;
-    private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     private final ConfirmTokenServiceImpel confirmTokenServiceImpel;
     private final JavaMailSender mailSender;
     private final UserServiceImpel userServiceImpel;
@@ -60,7 +59,7 @@ public class ExpertController {
             expert.setImage(expertSave.getImage().getBytes());
         } catch (IOException e) {
             e.printStackTrace();
-            LOGGER.warn(e.getMessage());
+            log.warn(e.getMessage());
         }
         return expert;
     }
