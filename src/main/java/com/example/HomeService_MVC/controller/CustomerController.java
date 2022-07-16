@@ -41,6 +41,7 @@ public class CustomerController {
         return "OK";
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/updatePassword")
     public ResponseEntity<String> updatePassword(@Valid @RequestBody passwordChangeRequest passwordChangeRequest){
         customerServiceImpel.updatePassword(passwordChangeRequest);
@@ -59,6 +60,7 @@ public class CustomerController {
         return ResponseEntity.ok(dtoList);
     }
 
+    @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/showBalance")
     public String showBalance(){
         return String.valueOf(SecurityUtil.getCurrentUser().getBalance());
