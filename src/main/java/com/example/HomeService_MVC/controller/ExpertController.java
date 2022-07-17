@@ -8,12 +8,10 @@ import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.enumoration.Role;
 import com.example.HomeService_MVC.service.impel.ConfirmTokenServiceImpel;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
-import com.example.HomeService_MVC.service.impel.UserServiceImpel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,12 +29,10 @@ public class ExpertController {
 
     private final ExpertServiceImpel expertServiceImpel;
     private final ConfirmTokenServiceImpel confirmTokenServiceImpel;
-    private final JavaMailSender mailSender;
-    private final UserServiceImpel userServiceImpel;
 
     @PostMapping(value = "/save",consumes = { MediaType.MULTIPART_FORM_DATA_VALUE} )
-    public String save(@Valid @ModelAttribute @RequestBody ExpertDto expertSave) {
-        Expert expert = convertExpertDTO(expertSave);
+    public String save(@Valid @ModelAttribute("expertDto") @RequestBody ExpertDto expertDto) {
+        Expert expert = convertExpertDTO(expertDto);
         expertServiceImpel.save(expert);
         ConfirmationToken confirmationToken = new ConfirmationToken(expert);
         confirmTokenServiceImpel.save(confirmationToken);
