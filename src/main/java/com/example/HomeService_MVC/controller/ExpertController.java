@@ -1,5 +1,6 @@
 package com.example.HomeService_MVC.controller;
 
+import com.example.HomeService_MVC.core.SecurityUtil;
 import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
 import com.example.HomeService_MVC.dto.user.ExpertDto;
 import com.example.HomeService_MVC.dto.user.passwordChangeRequest;
@@ -75,10 +76,10 @@ public class ExpertController {
         return ResponseEntity.ok(dtoList);
     }
 
+    @PreAuthorize("hasRole('EXPERT')")
     @GetMapping("/showBalance")
     public String showBalance(){
-        Expert expert = expertServiceImpel.getById(3);
-        return String.valueOf(expert.getBalance());
+        return String.valueOf(SecurityUtil.getCurrentUser().getBalance());
     }
 
     public ExpertDto convertExpertToExpertDTO(Expert expert){
