@@ -2,6 +2,7 @@ package com.example.HomeService_MVC.service.impel;
 
 import com.example.HomeService_MVC.controller.exception.ExpertNotFoundException;
 import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundException;
+import com.example.HomeService_MVC.core.SecurityUtil;
 import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
 import com.example.HomeService_MVC.dto.user.passwordChangeRequest;
 import com.example.HomeService_MVC.model.Expert;
@@ -90,9 +91,9 @@ public class ExpertServiceImpel implements ExpertService {
     }
 
     @Override
-    public void updatePassword(Integer expertId, passwordChangeRequest passwordChangeRequest) {
-        Expert expert = getById(expertId);
-        expert.setPassword(passwordChangeRequest.getSinglePassword());
+    public void updatePassword(passwordChangeRequest passwordChangeRequest) {
+        Expert expert = (Expert) SecurityUtil.getCurrentUser();
+        expert.setPassword(bCryptPasswordEncoder.encode(passwordChangeRequest.getSinglePassword()));
         expertRepository.save(expert);
     }
 
