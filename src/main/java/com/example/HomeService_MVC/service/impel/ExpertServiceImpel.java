@@ -108,7 +108,7 @@ public class ExpertServiceImpel implements ExpertService {
     }
 
     @Override
-    public void updateEnable(Expert expert) {
+    public void update(Expert expert) {
         expertRepository.save(expert);
     }
 

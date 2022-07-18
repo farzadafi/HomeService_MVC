@@ -37,7 +37,7 @@ public class ConfirmationTokenController {
         if(user.getRole().equals(Role.ROLE_CUSTOMER))
             customerServiceImpel.updateEnable((Customer) user);
         else
-            expertServiceImpel.updateEnable((Expert) user);
+            expertServiceImpel.update((Expert) user);
         confirmTokenServiceImpel.deleteToken(token);
         return "ایمیل شما با موفقیت تایید شد!";
     }

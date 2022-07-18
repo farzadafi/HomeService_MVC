@@ -18,5 +18,5 @@ public interface ExpertService {
     void updatePassword(passwordChangeRequest passwordChangeRequest);
     void updateBalance(Expert expert);
     void updateStars(Expert expert);
-    void updateEnable(Expert expert);
+    void update(Expert expert);
 }
