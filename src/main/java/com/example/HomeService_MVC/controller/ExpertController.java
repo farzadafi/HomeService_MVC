@@ -40,9 +40,10 @@ public class ExpertController {
         return "OK";
     }
 
-    @PutMapping("/updatePassword")
+    @PreAuthorize("hasRole('EXPERT')")
+    @PostMapping("/updatePassword")
     public ResponseEntity<String> updatePassword(@Valid @RequestBody passwordChangeRequest passwordChangeRequest){
-        expertServiceImpel.updatePassword(1,passwordChangeRequest);
+        expertServiceImpel.updatePassword(passwordChangeRequest);
         return ResponseEntity.ok("OK");
     }
 
