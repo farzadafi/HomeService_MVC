@@ -111,4 +111,18 @@ class ExpertControllerTest {
         assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
 
+    @Test
+    @Order(4)
+    public void showBalance() throws Exception {
+        expert.setId(1);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/expert/showBalance/")
+                .with(SecurityMockMvcRequestPostProcessors.user(expert))
+                .contentType(MediaType.APPLICATION_JSON);
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        if(!response.getContentAsString().equals("50000"))
+            fail();
+    }
 }
