@@ -10,4 +10,9 @@ import org.mapstruct.factory.Mappers;
 @DecoratedWith(CustomerMapperDecorator.class)
 public interface CustomerMapper {
 
+    CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
+
+    Customer dtoToModel(CustomerDto customerDto);
+    @InheritInverseConfiguration
+    CustomerDto modelToDto(Customer customer);
 }
