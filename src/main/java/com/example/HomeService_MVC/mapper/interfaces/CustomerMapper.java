@@ -6,6 +6,8 @@ import com.example.HomeService_MVC.model.Customer;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper
 @DecoratedWith(CustomerMapperDecorator.class)
 public interface CustomerMapper {
@@ -18,4 +20,6 @@ public interface CustomerMapper {
     Customer dtoToModel(CustomerDto customerDto);
     @InheritInverseConfiguration
     CustomerDto modelToDto(Customer customer);
+
+    List<CustomerDto> modelListToDtoList(List<Customer> customerList);
 }

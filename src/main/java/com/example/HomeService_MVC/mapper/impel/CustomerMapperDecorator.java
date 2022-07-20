@@ -4,8 +4,10 @@ import com.example.HomeService_MVC.dto.user.CustomerDto;
 import com.example.HomeService_MVC.mapper.interfaces.CustomerMapper;
 import com.example.HomeService_MVC.model.Customer;
 
-public class CustomerMapperDecorator implements CustomerMapper
-{
+import java.util.ArrayList;
+import java.util.List;
+
+public class CustomerMapperDecorator implements CustomerMapper {
 
     private final CustomerMapper customerMapper;
 
@@ -31,5 +33,15 @@ public class CustomerMapperDecorator implements CustomerMapper
         customerDto.setLastName(customer.getLastName());
         customerDto.setEmail(customer.getEmail());
         return customerDto;
+    }
+
+    @Override
+    public List<CustomerDto> modelListToDtoList(List<Customer> customerList) {
+        List<CustomerDto> customerDtoList = new ArrayList<>();
+        for (Customer c : customerList
+        ) {
+            customerDtoList.add(modelToDto(c));
+        }
+        return customerDtoList;
     }
 }
