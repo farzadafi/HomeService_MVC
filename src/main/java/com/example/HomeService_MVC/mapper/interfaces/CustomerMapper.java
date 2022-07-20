@@ -12,6 +12,9 @@ public interface CustomerMapper {
 
     CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
 
+    //@Mappings({ when use we want to map different field to each other!
+    //        @Mapping(target = "firstName", constant="lastName")
+    //})
     Customer dtoToModel(CustomerDto customerDto);
     @InheritInverseConfiguration
     CustomerDto modelToDto(Customer customer);
