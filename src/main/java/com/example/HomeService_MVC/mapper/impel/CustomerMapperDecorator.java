@@ -9,8 +9,8 @@ public class CustomerMapperDecorator implements CustomerMapper
 
     private final CustomerMapper customerMapper;
 
-    public CustomerMapperDecorator(CustomerMapper delegate) {
-        this.customerMapper = delegate;
+    public CustomerMapperDecorator(CustomerMapper customerMapper) {
+        this.customerMapper = customerMapper;
     }
 
     @Override
