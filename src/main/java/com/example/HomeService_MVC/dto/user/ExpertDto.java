@@ -43,7 +43,7 @@ public class ExpertDto {
     private MultipartFile image;
 
     @Password
-    public String[] getPassword(){
+    public String[] getPasswordAndConfPassword(){
         return new String[]{password,confPassword};
     }
 }
