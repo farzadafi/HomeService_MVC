@@ -4,6 +4,7 @@ import com.example.HomeService_MVC.core.SecurityUtil;
 import com.example.HomeService_MVC.dto.user.CustomerDto;
 import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
 import com.example.HomeService_MVC.dto.user.passwordChangeRequest;
+import com.example.HomeService_MVC.mapper.interfaces.CustomerMapper;
 import com.example.HomeService_MVC.model.ConfirmationToken;
 import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.service.impel.ConfirmTokenServiceImpel;
@@ -33,7 +34,7 @@ public class CustomerController {
 
     @PostMapping("/save")
     public String save(@Valid @RequestBody CustomerDto customerDto) throws MessagingException {
-        Customer customer = mapper.map(customerDto,Customer.class);
+        Customer customer = CustomerMapper.INSTANCE.dtoToModel(customerDto);
         customerServiceImpel.save(customer);
         ConfirmationToken confirmationToken = new ConfirmationToken(customer);
         confirmTokenServiceImpel.save(confirmationToken);
