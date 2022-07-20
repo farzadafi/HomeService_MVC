@@ -10,7 +10,6 @@ import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.service.impel.ConfirmTokenServiceImpel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +17,6 @@ import com.example.HomeService_MVC.service.impel.CustomerServiceImpel;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -29,7 +27,6 @@ import java.util.List;
 public class CustomerController {
 
     private final CustomerServiceImpel customerServiceImpel;
-    private final DozerBeanMapper mapper;
     private final ConfirmTokenServiceImpel confirmTokenServiceImpel;
 
     @PostMapping("/save")
@@ -53,11 +50,7 @@ public class CustomerController {
     @PostMapping(value = "/gridSearch")
     public ResponseEntity<List<CustomerDto>> gridSearch(@ModelAttribute @RequestBody DynamicSearchDto dynamicSearch) {
         List<Customer> customerList = customerServiceImpel.filterCustomer(dynamicSearch);
-        List<CustomerDto> dtoList = new ArrayList<>();
-        for (Customer s:customerList
-        ) {
-            dtoList.add(mapper.map(s, CustomerDto.class));
-        }
+        List<CustomerDto> dtoList = CustomerMapper.INSTANCE.modelListToDtoList(customerList);
         return ResponseEntity.ok(dtoList);
     }
 
