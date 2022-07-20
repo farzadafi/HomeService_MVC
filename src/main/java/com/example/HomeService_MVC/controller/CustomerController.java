@@ -50,8 +50,8 @@ public class CustomerController {
     @PostMapping(value = "/gridSearch")
     public ResponseEntity<List<CustomerDto>> gridSearch(@ModelAttribute @RequestBody DynamicSearchDto dynamicSearch) {
         List<Customer> customerList = customerServiceImpel.filterCustomer(dynamicSearch);
-        List<CustomerDto> dtoList = CustomerMapper.INSTANCE.modelListToDtoList(customerList);
-        return ResponseEntity.ok(dtoList);
+        List<CustomerDto> customerDtoList = CustomerMapper.INSTANCE.modelListToDtoList(customerList);
+        return ResponseEntity.ok(customerDtoList);
     }
 
     @PreAuthorize("hasRole('CUSTOMER')")
