@@ -29,7 +29,6 @@ public class AdminController {
     private final ExpertServiceImpel expertServiceImpel;
     private final AdminServiceImpel adminServiceImpel;
     private final DozerBeanMapper mapper;
-    private final ExpertController expertController;
     private final ExpertMapperDecorator expertMapper;
 
     @GetMapping("/getAllExpertFalse")
@@ -76,15 +75,6 @@ public class AdminController {
     public String updateAdminPassword(@Valid @RequestBody passwordChangeRequest passwordChangeRequest) {
         adminServiceImpel.updateAdmin(passwordChangeRequest);
         return "OK";
-    }
-
-    private List<ExpertDto> expertToExpertDto(List<Expert> expertList) {
-        List<ExpertDto> expertDtoList = new ArrayList<>();
-        for (Expert e : expertList
-        ) {
-            expertDtoList.add(expertController.convertExpertToExpertDTO(e));
-        }
-        return expertDtoList;
     }
 
     private List<SubServicesDto> subServiceToSubServiceDto(Set<SubServices> subServicesList) {
