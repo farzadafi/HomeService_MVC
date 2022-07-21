@@ -5,6 +5,7 @@ import com.example.HomeService_MVC.controller.exception.SubServicesNotFoundExcep
 import com.example.HomeService_MVC.dto.services.SubServicesDto;
 import com.example.HomeService_MVC.dto.user.ExpertDto;
 import com.example.HomeService_MVC.dto.user.passwordChangeRequest;
+import com.example.HomeService_MVC.mapper.impel.ExpertMapperDecorator;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.service.impel.AdminServiceImpel;
@@ -29,13 +30,15 @@ public class AdminController {
     private final AdminServiceImpel adminServiceImpel;
     private final DozerBeanMapper mapper;
     private final ExpertController expertController;
+    private final ExpertMapperDecorator expertMapper;
 
     @GetMapping("/getAllExpertFalse")
     public ResponseEntity<List<ExpertDto>> getAllExpertFalse() {
         List<Expert> expertList = expertServiceImpel.findAllByAcceptedFalse();
         if (expertList == null || expertList.size() == 0)
             throw new ExpertNotFoundException("متخصصی برای تایید وجود ندارد");
-        return ResponseEntity.ok(expertToExpertDto(expertList));
+        List<ExpertDto> expertDtoList = expertMapper.modelListToDtoList(expertList);
+        return ResponseEntity.ok(expertDtoList);
     }
 
     @GetMapping("/confirmExpert/{expertId}")
