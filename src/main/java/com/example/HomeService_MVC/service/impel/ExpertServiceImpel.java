@@ -40,6 +40,9 @@ public class ExpertServiceImpel implements ExpertService {
     public void save(Expert expert) {
         expert.setPassword(bCryptPasswordEncoder.encode(expert.getPassword()));
         expert.setUserStatus(UserStatus.NEW);
+        expert.setRole(Role.ROLE_EXPERT);
+        expert.setBalance(5000L);
+        expert.setStars(0);
         expertRepository.save(expert);
     }
 
