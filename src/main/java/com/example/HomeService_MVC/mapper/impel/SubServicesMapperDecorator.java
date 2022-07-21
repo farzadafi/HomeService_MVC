@@ -6,6 +6,7 @@ import com.example.HomeService_MVC.model.SubServices;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class SubServicesMapperDecorator implements SubServicesMapper {
 
@@ -36,9 +37,9 @@ public class SubServicesMapperDecorator implements SubServicesMapper {
     }
 
     @Override
-    public List<SubServicesDto> modelListToDtoList(List<SubServices> subServicesList) {
+    public List<SubServicesDto> modelListToDtoList(Set<SubServices> subServicesSet) {
         List<SubServicesDto> subServicesDtoList = new ArrayList<>();
-        for (SubServices s:subServicesList
+        for (SubServices s:subServicesSet
              ) {
             subServicesDtoList.add(modelToDto(s));
         }
