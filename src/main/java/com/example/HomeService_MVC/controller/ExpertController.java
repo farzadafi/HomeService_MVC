@@ -4,6 +4,7 @@ import com.example.HomeService_MVC.core.SecurityUtil;
 import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
 import com.example.HomeService_MVC.dto.user.ExpertDto;
 import com.example.HomeService_MVC.dto.user.passwordChangeRequest;
+import com.example.HomeService_MVC.mapper.impel.ExpertMapperDecorator;
 import com.example.HomeService_MVC.model.ConfirmationToken;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.enumoration.Role;
@@ -30,10 +31,11 @@ public class ExpertController {
 
     private final ExpertServiceImpel expertServiceImpel;
     private final ConfirmTokenServiceImpel confirmTokenServiceImpel;
+    private final ExpertMapperDecorator expertMapper;
 
     @PostMapping(value = "/save",consumes = { MediaType.MULTIPART_FORM_DATA_VALUE} )
     public String save(@Valid @ModelAttribute("expertDto") @RequestBody ExpertDto expertDto) {
-        Expert expert = convertExpertDTO(expertDto);
+        Expert expert = expertMapper.dtoToModel(expertDto);
         expertServiceImpel.save(expert);
         ConfirmationToken confirmationToken = new ConfirmationToken(expert);
         confirmTokenServiceImpel.save(confirmationToken);
