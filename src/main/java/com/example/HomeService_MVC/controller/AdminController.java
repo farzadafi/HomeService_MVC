@@ -12,12 +12,10 @@ import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.service.impel.AdminServiceImpel;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
 import lombok.AllArgsConstructor;
-import org.dozer.DozerBeanMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -29,7 +27,6 @@ public class AdminController {
 
     private final ExpertServiceImpel expertServiceImpel;
     private final AdminServiceImpel adminServiceImpel;
-    private final DozerBeanMapper mapper;
     private final ExpertMapperDecorator expertMapper;
 
     @GetMapping("/getAllExpertFalse")
@@ -78,14 +75,5 @@ public class AdminController {
     public String updateAdminPassword(@Valid @RequestBody passwordChangeRequest passwordChangeRequest) {
         adminServiceImpel.updateAdmin(passwordChangeRequest);
         return "OK";
-    }
-
-    private List<SubServicesDto> subServiceToSubServiceDto(Set<SubServices> subServicesList) {
-        List<SubServicesDto> subServicesDtoList = new ArrayList<>();
-        for (SubServices s : subServicesList
-        ) {
-            subServicesDtoList.add(mapper.map(s, SubServicesDto.class));
-        }
-        return subServicesDtoList;
     }
 }
