@@ -14,4 +14,5 @@ public interface SubServicesMapper {
     SubServicesMapper INSTANCE = Mappers.getMapper(SubServicesMapper.class);
 
     SubServices dtoToModel(SubServicesDto subServicesDto);
+    SubServicesDto modelToDto(SubServices subServices);
 }

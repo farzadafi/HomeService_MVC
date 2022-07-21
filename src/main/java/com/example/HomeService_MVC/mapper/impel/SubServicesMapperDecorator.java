@@ -19,6 +19,16 @@ public class SubServicesMapperDecorator implements SubServicesMapper {
         subServices.setSubServicesName(subServicesDto.getSubServicesName());
         subServices.setMinimalPrice(subServicesDto.getMinimalPrice());
         subServices.setDescription(subServicesDto.getDescription());
-        return null;
+        return subServices;
+    }
+
+    @Override
+    public SubServicesDto modelToDto(SubServices subServices) {
+        SubServicesDto subServicesDto = subServicesMapper.modelToDto(subServices);
+        subServicesDto.setId(subServices.getId());
+        subServicesDto.setSubServicesName(subServices.getSubServicesName());
+        subServicesDto.setMinimalPrice(subServices.getMinimalPrice());
+        subServicesDto.setDescription(subServices.getDescription());
+        return subServicesDto;
     }
 }
