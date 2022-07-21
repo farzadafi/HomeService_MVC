@@ -1,10 +1,12 @@
 package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.core.SecurityUtil;
+import com.example.HomeService_MVC.dto.user.CustomerDto;
 import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
 import com.example.HomeService_MVC.dto.user.ExpertDto;
 import com.example.HomeService_MVC.dto.user.passwordChangeRequest;
 import com.example.HomeService_MVC.mapper.impel.ExpertMapperDecorator;
+import com.example.HomeService_MVC.mapper.interfaces.CustomerMapper;
 import com.example.HomeService_MVC.model.ConfirmationToken;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.enumoration.Role;
@@ -54,24 +56,13 @@ public class ExpertController {
     @PostMapping(value = "/gridSearch")
     public ResponseEntity<List<ExpertDto>> gridSearch(@ModelAttribute @RequestBody DynamicSearchDto dynamicSearch) {
         List<Expert> expertList = expertServiceImpel.filterExpert(dynamicSearch);
-        List<ExpertDto> dtoList = new ArrayList<>();
-        if(expertList.isEmpty())
-            return ResponseEntity.ok(dtoList);
-        for (Expert e:expertList
-             ) {
-            dtoList.add(convertExpertToExpertDTO(e));
-        }
-        return ResponseEntity.ok(dtoList);
+        List<ExpertDto> expertDtoList = expertMapper.modelListToDtoList(expertList);
+        return ResponseEntity.ok(expertDtoList);
     }
 
     @PreAuthorize("hasRole('EXPERT')")
     @GetMapping("/showBalance")
     public String showBalance(){
         return String.valueOf(SecurityUtil.getCurrentUser().getBalance());
-    }
-
-    public ExpertDto convertExpertToExpertDTO(Expert expert){
-        return new ExpertDto(expert.getId(),expert.getFirstName(),expert.getLastName(),expert.getEmail()
-                            ,expert.getPassword(),expert.getConfPassword(),expert.getCity(),null);
     }
 }
