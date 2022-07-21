@@ -6,6 +6,7 @@ import com.example.HomeService_MVC.dto.services.SubServicesDto;
 import com.example.HomeService_MVC.dto.user.ExpertDto;
 import com.example.HomeService_MVC.dto.user.passwordChangeRequest;
 import com.example.HomeService_MVC.mapper.impel.ExpertMapperDecorator;
+import com.example.HomeService_MVC.mapper.interfaces.SubServicesMapper;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.service.impel.AdminServiceImpel;
@@ -60,8 +61,10 @@ public class AdminController {
         Set<SubServices> subServicesSet = expert.getSubServices();
         if (subServicesSet == null || subServicesSet.size() == 0)
             throw new SubServicesNotFoundException("این متخصص دارای هیچ تخصصی نمی باشد");
-        else
-            return ResponseEntity.ok(subServiceToSubServiceDto(subServicesSet));
+        else {
+            List<SubServicesDto> subServicesDtoList = SubServicesMapper.INSTANCE.modelListToDtoList(subServicesSet);
+            return ResponseEntity.ok(subServicesDtoList);
+        }
     }
 
     @GetMapping("/removeExpertSubServices/{expertEmail}/{subServiceId}")
