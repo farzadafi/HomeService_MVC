@@ -50,20 +50,6 @@ public class ExpertController {
         return ResponseEntity.ok("OK");
     }
 
-    private Expert convertExpertDTO(ExpertDto expertSave){
-        Expert expert = new Expert(expertSave.getFirstName(),expertSave.getLastName(),
-                expertSave.getEmail(),expertSave.getConfPassword(),
-                5000L, Role.ROLE_EXPERT,expertSave.getCity()
-                ,null,0);
-        try {
-            expert.setImage(expertSave.getImage().getBytes());
-        } catch (IOException e) {
-            e.printStackTrace();
-            log.warn(e.getMessage());
-        }
-        return expert;
-    }
-
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/gridSearch")
     public ResponseEntity<List<ExpertDto>> gridSearch(@ModelAttribute @RequestBody DynamicSearchDto dynamicSearch) {
