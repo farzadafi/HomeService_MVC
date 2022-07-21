@@ -7,6 +7,8 @@ import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper
 @DecoratedWith(SubServicesMapperDecorator.class)
 public interface SubServicesMapper {
@@ -15,4 +17,5 @@ public interface SubServicesMapper {
 
     SubServices dtoToModel(SubServicesDto subServicesDto);
     SubServicesDto modelToDto(SubServices subServices);
+    List<SubServicesDto> modelListToDtoList(List<SubServices> subServicesList);
 }

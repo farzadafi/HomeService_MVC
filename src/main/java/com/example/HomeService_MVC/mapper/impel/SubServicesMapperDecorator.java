@@ -4,6 +4,9 @@ import com.example.HomeService_MVC.dto.services.SubServicesDto;
 import com.example.HomeService_MVC.mapper.interfaces.SubServicesMapper;
 import com.example.HomeService_MVC.model.SubServices;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SubServicesMapperDecorator implements SubServicesMapper {
 
     private final SubServicesMapper subServicesMapper;
@@ -30,5 +33,15 @@ public class SubServicesMapperDecorator implements SubServicesMapper {
         subServicesDto.setMinimalPrice(subServices.getMinimalPrice());
         subServicesDto.setDescription(subServices.getDescription());
         return subServicesDto;
+    }
+
+    @Override
+    public List<SubServicesDto> modelListToDtoList(List<SubServices> subServicesList) {
+        List<SubServicesDto> subServicesDtoList = new ArrayList<>();
+        for (SubServices s:subServicesList
+             ) {
+            subServicesDtoList.add(modelToDto(s));
+        }
+        return subServicesDtoList;
     }
 }
