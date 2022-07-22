@@ -1,8 +1,8 @@
 package com.example.HomeService_MVC.controller;
 
-import com.example.HomeService_MVC.core.SecurityUtil;
 import com.example.HomeService_MVC.dto.comment.CommentDto;
-import com.example.HomeService_MVC.model.Customer;
+import com.example.HomeService_MVC.mapper.interfaces.CommentMapper;
+import com.example.HomeService_MVC.model.Comment;
 import com.example.HomeService_MVC.service.impel.CommentServiceImpel;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +23,8 @@ public class CommentController {
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/save/{orderId}")
     public String save(@Valid @RequestBody CommentDto commentDto,@PathVariable("orderId") Integer orderId) {
-        Customer customer = (Customer) SecurityUtil.getCurrentUser();
-        commentServiceImpel.placeAComment(customer,commentDto,orderId);
+        Comment comment = CommentMapper.INSTANCE.dtoToModel(commentDto);
+        commentServiceImpel.placeAComment(comment,orderId);
         return "OK";
     }
 }
