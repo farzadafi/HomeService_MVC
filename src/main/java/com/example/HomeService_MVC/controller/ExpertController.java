@@ -1,15 +1,12 @@
 package com.example.HomeService_MVC.controller;
 
 import com.example.HomeService_MVC.core.SecurityUtil;
-import com.example.HomeService_MVC.dto.user.CustomerDto;
 import com.example.HomeService_MVC.dto.user.DynamicSearchDto;
 import com.example.HomeService_MVC.dto.user.ExpertDto;
 import com.example.HomeService_MVC.dto.user.passwordChangeRequest;
 import com.example.HomeService_MVC.mapper.impel.ExpertMapperDecorator;
-import com.example.HomeService_MVC.mapper.interfaces.CustomerMapper;
 import com.example.HomeService_MVC.model.ConfirmationToken;
 import com.example.HomeService_MVC.model.Expert;
-import com.example.HomeService_MVC.model.enumoration.Role;
 import com.example.HomeService_MVC.service.impel.ConfirmTokenServiceImpel;
 import com.example.HomeService_MVC.service.impel.ExpertServiceImpel;
 import lombok.AllArgsConstructor;
@@ -20,8 +17,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
