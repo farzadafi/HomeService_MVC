@@ -4,6 +4,7 @@ import com.example.HomeService_MVC.dto.comment.CommentDto;
 import com.example.HomeService_MVC.mapper.interfaces.CommentMapper;
 import com.example.HomeService_MVC.model.Comment;
 import com.example.HomeService_MVC.service.impel.CommentServiceImpel;
+import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,13 +13,10 @@ import javax.validation.Valid;
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/comment")
+@AllArgsConstructor
 public class CommentController {
 
     private final CommentServiceImpel commentServiceImpel;
-
-    public CommentController(CommentServiceImpel commentServiceImpel) {
-        this.commentServiceImpel = commentServiceImpel;
-    }
 
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/save/{orderId}")
