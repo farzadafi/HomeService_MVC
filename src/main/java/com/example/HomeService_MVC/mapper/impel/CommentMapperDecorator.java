@@ -3,11 +3,7 @@ package com.example.HomeService_MVC.mapper.impel;
 import com.example.HomeService_MVC.dto.comment.CommentDto;
 import com.example.HomeService_MVC.mapper.interfaces.CommentMapper;
 import com.example.HomeService_MVC.model.Comment;
-import org.mapstruct.DecoratedWith;
-import org.mapstruct.Mapper;
 
-@Mapper
-@DecoratedWith(CommentMapperDecorator.class)
 public class CommentMapperDecorator implements CommentMapper {
 
     private final CommentMapper commentMapper;
