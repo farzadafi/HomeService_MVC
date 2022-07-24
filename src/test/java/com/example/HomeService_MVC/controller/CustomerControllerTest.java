@@ -1,9 +1,7 @@
 package com.example.HomeService_MVC.controller;
 
-import com.example.HomeService_MVC.model.ConfirmationToken;
 import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.enumoration.Role;
-import com.example.HomeService_MVC.service.impel.ConfirmTokenServiceImpel;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -33,8 +31,6 @@ class CustomerControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    @Autowired
-    private ConfirmTokenServiceImpel confirmTokenServiceImpel;
 
     Customer customer = new Customer("farzad", "afshar", "farzadafi50@gmail.com",
             "aA 1!aaa", 50000L, Role.ROLE_CUSTOMER);
@@ -60,20 +56,6 @@ class CustomerControllerTest {
 
     @Test
     @Order(2)
-    public void ConfirmAccount() throws Exception {
-        ConfirmationToken confirmationToken = confirmTokenServiceImpel.findConfirmationTokensByUserId(1);
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/token/confirm/" + confirmationToken.getConfirmToken())
-                .contentType(MediaType.APPLICATION_JSON);
-        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-        MockHttpServletResponse response = result.getResponse();
-
-        if(!response.getContentAsString().equals("ایمیل شما با موفقیت تایید شد!"))
-            fail();
-    }
-
-    @Test
-    @Order(3)
     public void updateCustomerPassword() throws Exception {
         customer.setId(1);
         JSONObject passwordJson = new JSONObject();
@@ -91,7 +73,7 @@ class CustomerControllerTest {
     }
 
     @Test
-    @Order(4)
+    @Order(3)
     public void showBalance() throws Exception {
         customer.setId(1);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
