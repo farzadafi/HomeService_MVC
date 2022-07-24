@@ -2,10 +2,8 @@ package com.example.HomeService_MVC.controller;
 
 
 import com.example.HomeService_MVC.dto.user.ExpertDto;
-import com.example.HomeService_MVC.model.ConfirmationToken;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.enumoration.Role;
-import com.example.HomeService_MVC.service.impel.ConfirmTokenServiceImpel;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.MethodOrderer;
@@ -46,9 +44,6 @@ class ExpertControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    private ConfirmTokenServiceImpel confirmTokenServiceImpel;
-
     ExpertDto expertDto = new ExpertDto(null,"farzad","afshar"
             ,"farzadafi50@gmail.com","aA 1!aaa","aA 1!aaa","kerman",null);
 
@@ -81,20 +76,6 @@ class ExpertControllerTest {
 
     @Test
     @Order(2)
-    public void ConfirmAccount() throws Exception {
-        ConfirmationToken confirmationToken = confirmTokenServiceImpel.findConfirmationTokensByUserId(1);
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .get("/token/confirm/" + confirmationToken.getConfirmToken())
-                .contentType(MediaType.APPLICATION_JSON);
-        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
-        MockHttpServletResponse response = result.getResponse();
-
-        if(!response.getContentAsString().equals("ایمیل شما با موفقیت تایید شد!"))
-            fail();
-    }
-
-    @Test
-    @Order(3)
     public void updateExpertPassword() throws Exception {
         expert.setId(1);
         JSONObject passwordJson = new JSONObject();
@@ -112,7 +93,7 @@ class ExpertControllerTest {
     }
 
     @Test
-    @Order(4)
+    @Order(3)
     public void showBalance() throws Exception {
         expert.setId(1);
         RequestBuilder requestBuilder = MockMvcRequestBuilders
