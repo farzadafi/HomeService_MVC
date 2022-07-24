@@ -34,7 +34,7 @@ public class CustomerServiceImpel implements CustomerService {
     public void save(Customer customer) {
         customer.setBalance(50000L);
         customer.setRole(Role.ROLE_CUSTOMER);
-        customer.setPassword(bCryptPasswordEncoder.encode(customer.getConfPassword()));
+        customer.setPassword(bCryptPasswordEncoder.encode(customer.getPassword()));
         customerRepository.save(customer);
     }
 
