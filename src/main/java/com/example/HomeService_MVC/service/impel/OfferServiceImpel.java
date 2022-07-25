@@ -8,12 +8,10 @@ import com.example.HomeService_MVC.dto.offer.OfferDto;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.Offer;
 import com.example.HomeService_MVC.model.Order;
-import com.example.HomeService_MVC.model.base.User;
 import com.example.HomeService_MVC.model.enumoration.OrderStatus;
 import com.example.HomeService_MVC.repository.OfferRepository;
 import com.example.HomeService_MVC.service.interfaces.OfferService;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
