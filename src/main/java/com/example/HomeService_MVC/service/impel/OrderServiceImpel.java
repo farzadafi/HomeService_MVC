@@ -19,6 +19,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -161,5 +162,10 @@ public class OrderServiceImpel implements OrderService {
         expert.setBalance(expert.getBalance() + price);
         expertServiceImpel.updateBalance(expert);
         orderRepository.save(order);
+    }
+
+    @Override
+    public Optional<Order> findById(Integer id) {
+        return orderRepository.findById(id);
     }
 }

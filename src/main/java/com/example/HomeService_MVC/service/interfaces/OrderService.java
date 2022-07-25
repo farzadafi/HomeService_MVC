@@ -7,6 +7,7 @@ import com.example.HomeService_MVC.model.SubServices;
 import com.example.HomeService_MVC.model.enumoration.OrderStatus;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface OrderService {
@@ -21,4 +22,5 @@ public interface OrderService {
     String setDoneOrder(Offer offer,Integer orderId);
     void paidOrder(Offer offer);
     void paidOnlineOrder(Offer offer);
+    Optional<Order> findById(Integer id);
 }
