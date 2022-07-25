@@ -107,4 +107,17 @@ class OfferControllerTest {
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
+
+    @Test
+    @Order(5)
+    public void viewPriceWithOrderId() throws Exception {
+        customer.setId(2);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/offer/viewPriceWithOrderId/" + 1 )
+                .with(SecurityMockMvcRequestPostProcessors.user(customer));
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
+    }
 }
