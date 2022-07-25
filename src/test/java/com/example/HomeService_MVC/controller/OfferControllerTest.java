@@ -94,4 +94,17 @@ class OfferControllerTest {
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
+
+    @Test
+    @Order(4)
+    public void viewAcceptedOffer() throws Exception {
+        expert.setId(1);
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/offer/viewAcceptedOffer")
+                .with(SecurityMockMvcRequestPostProcessors.user(expert));
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
+    }
 }
