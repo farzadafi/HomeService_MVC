@@ -1,5 +1,6 @@
 package com.example.HomeService_MVC.controller;
 
+import com.example.HomeService_MVC.model.Customer;
 import com.example.HomeService_MVC.model.Expert;
 import com.example.HomeService_MVC.model.enumoration.Role;
 import net.minidev.json.JSONObject;
@@ -37,6 +38,8 @@ class OfferControllerTest {
 
     Expert expert = new Expert("farzadExpert","afshar","fe@gmail.com","aA 1!aaa",0L,
             Role.ROLE_EXPERT,"kerman",null,null);
+    Customer customer = new Customer("farzadCustomer","afshar","fc@gmail.com","aA 1!aaa",0L,
+            Role.ROLE_CUSTOMER);
 
     @BeforeAll
     static void setup(@Autowired DataSource dataSource) {
@@ -60,6 +63,19 @@ class OfferControllerTest {
                 .with(SecurityMockMvcRequestPostProcessors.user(expert))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(offerJson.toJSONString());
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
+    }
+
+    @Test
+    @Order(2)
+    public void viewOffer() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/offer/viewOffer/" + 1 )
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.user(customer));
         MvcResult result = mockMvc.perform(requestBuilder).andReturn();
         MockHttpServletResponse response = result.getResponse();
 
