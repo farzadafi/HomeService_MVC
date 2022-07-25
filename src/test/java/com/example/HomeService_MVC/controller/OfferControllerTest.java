@@ -81,4 +81,17 @@ class OfferControllerTest {
 
         assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
+
+    @Test
+    @Order(3)
+    public void selectOffer() throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .get("/offer/selectOffer/" + 1 + "/" + 1 )
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(SecurityMockMvcRequestPostProcessors.user(customer));
+        MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
+    }
 }
